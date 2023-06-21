@@ -1,0 +1,175 @@
+<app-navbar #navbar></app-navbar>
+
+<div *ngIf="!isErrorOccured">
+
+  <div class=" body-container-padding">
+    <form [formGroup]="dependentForm">
+      <div class="row container-fluid background-f9f9f9">
+        <div class="col-md-6">
+          <div class="card-block">
+
+            <div [ngClass]="{'card': true, 'margin-left':false, 'margin-right':false}">
+              <div [ngClass]="{'card-block': true}">
+                <div [ngClass]="{'form-group': true}">
+                  <strong>Name</strong>
+                  <input type="text" formControlName="nameControl" [ngClass]="{'form-control': true}" placeholder="Name" [(ngModel)]="familyMember.name.firstName"
+                  />
+                  <div *ngIf="dependentForm.controls['nameControl'].hasError('required') && dependentForm.controls['nameControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    This field cannot be empty.
+                  </div>
+                </div>
+
+
+                <div [ngClass]="{'form-group': true}">
+                  <strong>Date Of Birth</strong>
+                  <p-calendar inputStyleClass="form-control" formControlName="dobControl" placeholder="dd/mm/yyyy" [selectOtherMonths]="true"
+                    [monthNavigator]="true" [yearNavigator]="true" [readonlyInput]="true" [maxDate]="maxDate" dateFormat="dd/mm/yy"
+                    yearRange="1900:2100" [(ngModel)]="familyMember.dob">
+                  </p-calendar>
+                  <div *ngIf="dependentForm.controls['dobControl'].hasError('required') && dependentForm.controls['dobControl'].touched" [ngClass]="{'alert': true, 'alert-danger': true}"
+                    role="alert">
+                    This field cannot be empty.
+                  </div>
+                </div>
+
+                <div [ngClass]="{'form-group': true}">
+                  <strong>Relationship</strong>
+                  <select [ngClass]="{'form-control': true}" formControlName="relationControl" [(ngModel)]="familyMember.relationship">
+                    <option *ngFor="let relationshipType of relationShipTypeOptions" value="{{relationshipType.key}}">
+                      {{relationshipType.value}}
+                    </option>
+                  </select>
+                  <div *ngIf="dependentForm.controls['relationControl'].hasError('required') && dependentForm.controls['relationControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    This field cannot be empty.
+                  </div>
+                </div>
+
+
+                <div [ngClass]="{'form-group': true}">
+                  <strong>Life Expectancy</strong>
+                  <select [ngClass]="{'form-control': true}" [(ngModel)]="familyMember.lifeExpectancy" formControlName="lifeExpectancyControl">
+                    <option></option>
+                    <option *ngFor="let age of ageList" value="{{age}}">
+                      {{age}}
+                    </option>
+                  </select>
+                  <div *ngIf="dependentForm.controls['lifeExpectancyControl'].hasError('required') && dependentForm.controls['lifeExpectancyControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    This field cannot be empty.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div>
+            <div class="card-block">
+
+              <div [ngClass]="{'card': true, 'margin-left':false, 'margin-right':false}">
+
+                <div [ngClass]="{'card-block': true}">
+                  <div [ngClass]="{'form-group': true}">
+
+                    <strong>{{healthHistoryTranslations.generalHealthConditionText}}</strong>
+                    <select [ngClass]="{'form-control': true}" [(ngModel)]="familyMember.healthHistory.generalHealthCondition" formControlName="generalHealthConditionControl">
+                      <option *ngFor="let type of generalHealthConditionTypes" value="{{type.key}}">
+                        {{type.value}}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div [ngClass]="{'form-group': true}">
+                    <strong>{{healthHistoryTranslations.regularHealthCheckupText}}</strong>
+                    <input formControlName="regularHealthCheckupControl" type="text" [ngClass]="{'form-control': true}" [(ngModel)]="familyMember.healthHistory.checkupInterval"
+                    />
+                  </div>
+
+                  <div [ngClass]="{'form-group': true}">
+                    <strong>{{healthHistoryTranslations.healthParametersInNormalRangeText}}</strong>
+                    <div>
+                      <input formControlName="isHeathParamertersNormal" (change)="showHideParametersSection()" type="radio" [value]="true" [(ngModel)]="familyMember.healthHistory.isHeathParamertersNormal"
+                        name="isHeathParamertersNormal" />
+                      <span class="margin-left-10px">Yes</span>
+                      <input formControlName="isHeathParamertersNormal" (change)="showHideParametersSection()" class="margin-left-10px" type="radio"
+                        [(ngModel)]="familyMember.healthHistory.isHeathParamertersNormal" [value]="false" name="isHeathParamertersNormal"
+                      />
+                      <span class="margin-left-10px">No</span>
+                    </div>
+                  </div>
+
+                  <div [ngClass]="{'form-group': true}" *ngIf="!familyMember.healthHistory.isHeathParamertersNormal">
+                    <strong>{{healthHistoryTranslations.healthParameterOutOfRangeText}}</strong>
+                    <input formControlName="healthParameterOutOfRangeControl" type="text" [ngClass]="{'form-control': true}" [(ngModel)]="familyMember.healthHistory.parametersOutOfRange"
+                    />
+                    <div *ngIf="dependentForm.controls['healthParameterOutOfRangeControl'].hasError('required') && dependentForm.controls['healthParameterOutOfRangeControl'].touched"
+                      [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                      This field cannot be empty.
+                    </div>
+                  </div>
+
+                  <div [ngClass]="{'form-group': true}">
+                    <strong>{{healthHistoryTranslations.chronicHealthConditionText}}</strong>
+                    <div>
+                      <input formControlName="isChronicHeathConditionNormal" (change)="showHideChronicDurationSection()" type="radio" [value]="true"
+                        [(ngModel)]="familyMember.healthHistory.isChronicHeathConditionNormal" name="isChronicHeathConditionNormal"
+                      />
+                      <span class="margin-left-10px">Yes</span>
+                      <input formControlName="isChronicHeathConditionNormal" (change)="showHideChronicDurationSection()" class="margin-left-10px"
+                        type="radio" [(ngModel)]="familyMember.healthHistory.isChronicHeathConditionNormal" [value]="false"
+                        name="isChronicHeathConditionNormal" />
+                      <span class="margin-left-10px">No</span>
+                    </div>
+                  </div>
+
+                  <div [ngClass]="{'form-group': true}" *ngIf="familyMember.healthHistory.isChronicHeathConditionNormal">
+                    <strong>{{healthHistoryTranslations.chronicHealthConditionDurationText}}</strong>
+                    <input formControlName="chronicHealthConditionDurationControl" type="text" [ngClass]="{'form-control': true}" [(ngModel)]="familyMember.healthHistory.chronicHeathConditionDuration"
+                    />
+                    <div *ngIf="dependentForm.controls['chronicHealthConditionDurationControl'].hasError('required') && dependentForm.controls['chronicHealthConditionDurationControl'].touched"
+                      [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                      This field cannot be empty.
+                    </div>
+                  </div>
+
+                  <div [ngClass]="{'form-group': true}" *ngIf="familyMember.healthHistory.isChronicHeathConditionNormal">
+                    <strong>{{healthHistoryTranslations.regularMedicationText}}</strong>
+                    <div>
+                      <input formControlName="isChronicHeathConditionMedicated" type="radio" [value]="true" [(ngModel)]="familyMember.healthHistory.isChronicHeathConditionMedicated"
+                        name="isChronicHeathConditionMedicated" />
+                      <span class="margin-left-10px">Yes</span>
+                      <input formControlName="isChronicHeathConditionMedicated" class="margin-left-10px" type="radio" [(ngModel)]="familyMember.healthHistory.isChronicHeathConditionMedicated"
+                        [value]="false" name="isChronicHeathConditionMedicated" />
+                      <span class="margin-left-10px">No</span>
+                    </div>
+                  </div>
+
+                  <div [ngClass]="{'form-group': true}">
+                    <strong>{{healthHistoryTranslations.otherHealthConcernText}}</strong>
+                    <input formControlName="otherHealthConcernControl" type="text" [ngClass]="{'form-control': true}" [(ngModel)]="familyMember.healthHistory.otherHealthCondition"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="floating-button">
+    <button (click)="routeBack()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+    <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">
+      <div class="loader"></div>
+    </button>
+    <button type="button" *ngIf="!loadingOnSubmit" (click)="saveDependents()" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Save</button>
+  </div>
+</div>
+
+<p-growl [(value)]="msgs"></p-growl>
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

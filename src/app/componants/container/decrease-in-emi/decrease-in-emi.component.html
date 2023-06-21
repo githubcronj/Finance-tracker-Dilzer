@@ -1,0 +1,107 @@
+<app-navbar #navbar></app-navbar>
+
+<div *ngIf="!isErrorOccured" [ngClass]="{'margin-top-40px': true, 'float-left': true, 'width-100per': true}">
+    <div [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'assets-center-align': true}">
+        <div [ngClass]="{'card': true}">
+            <div [ngClass]="{'card-block': true}">
+                <form [formGroup]='decreaseInEmiForm'>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{decreaseInEmiTranslations.percentageDecreaseText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" (keyup)="didChangePercentage()" formControlName="percentageDecreaseControl"  [(ngModel)]="liability.decreaseInEmi.decreasePercentage" 
+                                class="form-control" />
+                            <span class="percentage">%</span>
+                            <span class="percentage" pTooltip={{decreaseInEmiTranslations.decreaseInEmiPercentHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                                                                          
+                        </div>
+                        <div *ngIf="decreaseInEmiForm.controls['percentageDecreaseControl'].hasError('required') && decreaseInEmiForm.controls['percentageDecreaseControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{decreaseInEmiTranslations.emptyErrorText}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{decreaseInEmiTranslations.decreasedEMIText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" (keyup)="didChangeEmiAmount()" formControlName="decreasedEMIControl"  [(ngModel)]="liability.decreaseInEmi.emiPaidAfterRevision" 
+                                class="form-control" />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{decreaseInEmiTranslations.decreaseInEmiPercentHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                                                                                                      
+                        </div>
+                        <div *ngIf="decreaseInEmiForm.controls['decreasedEMIControl'].hasError('required') && decreaseInEmiForm.controls['decreasedEMIControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{decreaseInEmiTranslations.emptyErrorText}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{decreaseInEmiTranslations.revisedRateText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" (keyup)="didChangeRate()" formControlName="rateOfInterestControl"  [(ngModel)]="liability.decreaseInEmi.revisedRate" 
+                                class="form-control" />
+                            <span class="percentage">% per annum</span>
+                        </div>
+                        <div *ngIf="decreaseInEmiForm.controls['rateOfInterestControl'].hasError('required') && decreaseInEmiForm.controls['rateOfInterestControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{decreaseInEmiTranslations.emptyErrorText}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{decreaseInEmiTranslations.repaymentsPayableAfterRevisionText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" formControlName="repaymentsPayableAfterRevisionControl"  [(ngModel)]="liability.decreaseInEmi.numberOfRepaymentsPayableAfterRevision" 
+                                class="form-control" />
+                            <span class="percentage" pTooltip={{decreaseInEmiTranslations.decreaseInEmiPercentHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                                                                                                          
+                        </div>
+                        <div *ngIf="decreaseInEmiForm.controls['repaymentsPayableAfterRevisionControl'].hasError('required') && decreaseInEmiForm.controls['repaymentsPayableAfterRevisionControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{decreaseInEmiTranslations.emptyErrorText}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{decreaseInEmiTranslations.interestPayableAfterRevisionText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" formControlName="interestPayableAfterRevisionControl" [(ngModel)]="liability.decreaseInEmi.remainingInterestPayableAfterRevision" 
+                                class="form-control" />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{decreaseInEmiTranslations.decreaseInEmiPercentHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                                                                                                      
+                        </div>
+                        <div *ngIf="decreaseInEmiForm.controls['interestPayableAfterRevisionControl'].hasError('required') && decreaseInEmiForm.controls['interestPayableAfterRevisionControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{decreaseInEmiTranslations.emptyErrorText}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{decreaseInEmiTranslations.additionalInterestPayableText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" formControlName="additionalInterestPayableControl" class="form-control"  [(ngModel)]="liability.decreaseInEmi.additionalInterestPayableAfterRevision" 
+                            />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{decreaseInEmiTranslations.decreaseInEmiPercentHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                                                                                                      
+                        </div>
+                        <div *ngIf="decreaseInEmiForm.controls['additionalInterestPayableControl'].hasError('required') && decreaseInEmiForm.controls['additionalInterestPayableControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{decreaseInEmiTranslations.emptyErrorText}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <button *ngIf="!loadingOnSubmit" type="button" class='btn btn-primary' (click)="didClickDecreaseInEmi()">{{addUpdateDecreaseInEmiButtonText}}</button>
+                        <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'justify-content-center': true}">
+                            <div class="loader"></div>
+                        </button>
+                        <button (click)="didClickCancelButton()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+

@@ -1,0 +1,2 @@
+<app-income-category *ngIf="showIncomeCategory" [clientId]="clientId" (showIncomeDetail)="showIncomes($event)"></app-income-category>
+<app-incomes *ngIf="!showIncomeCategory" [client]="client" [clientId]="clientId" [kind]="incomeKind" (routeBackEvent)="routeBack()"></app-incomes>

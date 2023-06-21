@@ -1,0 +1,184 @@
+<app-navbar #navbar></app-navbar>
+
+<div *ngIf="!isErrorOccured" class=" body-container-padding">
+    <div class="sub-heading-holder float-left width-100per user-details-head">
+        <div class="float-left headings">Income Information</div>
+        <span class="float-right">
+            <button type="button" routerLink="{{editIncomeInformation}}" class="btn btn-link">Edit</button>
+        </span>
+    </div>
+    <table class="displayTableData" width="100%">
+        <colgroup>
+            <col width="25%">
+            <col width="75%">
+        </colgroup>
+        <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">{{incomeDetailTranslations.incomeNameText}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(incomeInformation && incomeInformation.name) ? incomeInformation.name : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">{{incomeDetailTranslations.incomeTypeText}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(incomeInformation && incomeInformation.kind != null) ? (incomeInformation.displayIncomeTypeName()) : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Associated Asset</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(incomeInformation && incomeInformation.associatedAsset) ? (associatedAssetName) : 'None'}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">{{incomeDetailTranslations.incomeOwnerText}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(incomeInformation && incomeInformation.owners) ? ownerName : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">{{incomeDetailTranslations.amountText}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(incomeInformation && incomeInformation.amount) ? '&#8377;'+ incomeInformation.displayCurrencyString(incomeInformation.amount) : ''}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">{{incomeDetailTranslations.frequencyText}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(incomeInformation && incomeInformation.frequency != null) ? (incomeInformation.frequencyDisplayString()) : ''}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">{{incomeDetailTranslations.growthRateText}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(incomeInformation && incomeInformation.growthRate != null) ? (incomeInformation.growthRate)+' %' : ''}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">{{incomeDetailTranslations.startDateText}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(incomeInformation && incomeInformation.startDate) ? (incomeInformation.displayStartDate()) : ''}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">{{incomeDetailTranslations.endDateText}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(incomeInformation && incomeInformation.endDate) ? (incomeInformation.displayEndDate()) : ''}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td valign="top">
+                    <div>
+                        <label class="em-title-block margin-left-10px">Beneficiary Details</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block" [innerHtml]="(incomeInformation && incomeInformation.beneficiary != undefined) ? incomeInformation.beneficiary.displayBeneficiaryDetails() : ''">
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <!-- Attachments Section -->
+    <div class="sub-heading-holder float-left width-100per user-details-head">
+        <div class="float-left headings">Attachments</div>
+
+        <span class="float-right margin-left-10px">
+            <label class="btn btn-link" for="upload-file-selector">
+                <input id="upload-file-selector" type="file" (change)="addAttachment($event)">
+                Add Attachment
+            </label>
+        </span>
+
+    </div>
+    <table *ngIf="incomeInformation && incomeInformation.attachments && incomeInformation.attachments.length > 0" class="displayTableData"
+        width="100%">
+        <colgroup>
+            <col width="70%">
+            <col width="40%">
+        </colgroup>
+        <tbody>
+            <tr *ngFor="let attachment of incomeInformation.attachments">
+                <td valign="top">
+                    {{attachment.originalname}}
+                </td>
+
+                <td class="text-right">
+                    <button type="button" (click)="downloadAttachment(attachment._id, attachment.originalname, attachment.mimetype)" class="btn btn-link">Download</button>
+                    <span class="float-right margin-left-10px">
+                        <button type="button" (click)="deleteAttachment(attachment._id)" class="btn btn-link">Delete</button>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+

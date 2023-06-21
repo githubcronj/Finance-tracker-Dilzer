@@ -1,0 +1,427 @@
+<app-navbar #navbar></app-navbar>
+
+<div *ngIf="!isErrorOccured" class=" body-container-padding">
+    <div class="sub-heading-holder float-left width-100per user-details-head">
+        <div class="float-left headings">Asset Information </div>
+        <span class="float-right">
+            <button type="button" routerLink="{{editAssetInformation}}" class="btn btn-link">Edit</button>
+        </span>
+    </div>
+    <table class="displayTableData" width="100%">
+        <colgroup>
+            <col width="25%">
+            <col width="75%">
+        </colgroup>
+        <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Name Of The Asset</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(assetInformation && assetInformation.name) ? assetInformation.name : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Current Valuation Amount</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(assetInformation && assetInformation.currentValuation) ? '&#8377;'+(assetInformation.displayCurrencyString(assetInformation.currentValuation)) : '0'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Owner Of This Resource</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(assetInformation && assetInformation.owners) ? (ownersName) : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Asset Type</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(assetInformation && assetInformation.kind) ? (assetInformation.displayAssetTypeName()) : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Asset Sub Type</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(assetInformation && assetInformation.assetSubtype) ? (assetInformation.getSubAssetType()) : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr *ngIf="describeAssetRowHideShow">
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Asset Description</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(assetInformation && assetInformation.description) ? (assetInformation.description) : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Maturity Date</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(assetInformation && assetInformation.maturityDate) ? (assetInformation.maturityDate | date: 'dd/MM/yyyy') : '-'}}
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="insuranceSectionHideShow">
+        <div class="sub-heading-holder float-left width-100per user-details-head">
+            <div class="float-left headings">Insurance Information </div>
+            <span class="float-right">
+                <button type="button" routerLink="/auth/client/{{clientId}}/asset/{{assetId}}/insurance" class="btn btn-link">Edit</button>
+            </span>
+        </div>
+        <table class="displayTableData" width="100%">
+            <colgroup>
+                <col width="25%">
+                <col width="75%">
+            </colgroup>
+
+            <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Sum Assured / Fund Value</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(assetInformation && assetInformation.sumAssured) ? '&#8377;'+assetInformation.displayCurrencyString(assetInformation.sumAssured) : ''}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Death Benefit</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(assetInformation && assetInformation.deathBenefit) ? '&#8377;'+assetInformation.displayCurrencyString(assetInformation.deathBenefit) : ''}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Premium</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(assetInformation && assetInformation.premium) ? '&#8377;'+(assetInformation.displayAnnualPremium()) : ''}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Premium Frequency</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(assetInformation && assetInformation.premiumFrequency != null) ?  (assetInformation.premiumFrequencyDisplayString()) :
+                            ''}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Premium Start Date</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{assetInformation.premiumStartDate | date: 'dd/MM/y'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Premium End Date</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{assetInformation.premiumEndDate | date: 'dd/MM/y'}}
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Total Number Of Premiums Paid Till Date</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(assetInformation && assetInformation.numberOfPremiumPaid) ? (assetInformation.numberOfPremiumPaid) : '-'}}
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Total Number Of Premiums Payable</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(assetInformation && assetInformation.numberOfPremiumPayable) ? (assetInformation.numberOfPremiumPayable) : '-'}}
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Bonus</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(assetInformation && assetInformation.bonus) ? '&#8377;' +assetInformation.displayCurrencyString(assetInformation.bonus) : '-'}}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+
+    <!-- Survival Benefits Section -->
+    <div *ngIf="survivalBenefitHideShow">
+        <div class="sub-heading-holder float-left width-100per user-details-head">
+            <div class="float-left headings">Survival Benefits</div>
+            <span class="float-right margin-left-10px">
+                <button type="button" routerLink="/auth/client/{{clientId}}/asset/{{assetId}}/survival-benefit" class="btn btn-link">Add</button>
+            </span>
+        </div>
+        <table class="displayTableData" width="100%">
+            <colgroup>
+                <col width="25%">
+                <col width="55%">
+                <col width="20%">
+            </colgroup>
+
+            <tbody>
+                <tr *ngFor="let survivalBenefit of assetInformation.survivalBenefits">
+                    <td valign="" class="margin-left-10px">
+                        <label class=" margin-left-10px">{{(survivalBenefit.amount) ? '&#8377;' +survivalBenefit.displayCurrencyString(survivalBenefit.amount) : ''}}</label>
+                    </td>
+                    <td class="em-result-block result-block">
+                        <b>{{(survivalBenefit.startDate) ? 'On ' : ''}} {{survivalBenefit.startDate | date: 'dd/MM/y'}}</b>
+                    </td>
+                    <td class="text-right">
+                        <button type="button" (click)="editSurvivalBenefit(survivalBenefit._id)" class="btn btn-link">Edit</button>
+                        <span class="float-right margin-left-10px">
+                            <button type="button" (click)="deleteSurvivalBenefit(survivalBenefit._id)" class="btn btn-link">Delete</button>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Attachments Section -->
+    <div class="sub-heading-holder float-left width-100per user-details-head">
+        <div class="float-left headings">Attachments</div>
+
+        <span class="float-right margin-left-10px">
+            <label class="btn btn-link" for="upload-file-selector">
+                <input class="btn btn-link" id="upload-file-selector" type="file" (change)="addAttachments($event)"> Add Attachment
+            </label>
+        </span>
+
+    </div>
+    <table *ngIf="assetInformation && assetInformation.attachments && assetInformation.attachments.length > 0" class="displayTableData"
+        width="100%">
+        <colgroup>
+            <col width="70%">
+            <col width="40%">
+        </colgroup>
+        <tbody>
+            <tr *ngFor="let attachment of assetInformation.attachments">
+                <td valign="" class="padding-left-10px">
+                    {{attachment.originalname}}
+                </td>
+
+                <td class="text-right">
+                    <button type="button" (click)="downloadAttachments(attachment._id, attachment.originalname, attachment.mimetype)" class="btn btn-link">Download</button>
+                    <span class="float-right margin-left-10px">
+                        <button type="button" (click)="deleteAttachments(attachment._id)" class="btn btn-link">Delete</button>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="keychainService.isLoggedInAsAdmin()">
+        <div class="sub-heading-holder float-left width-100per user-details-head">
+            <div class="float-left headings">Rate Of Returns </div>
+            <span class="float-right margin-left-10px">
+                <button type="button" (click)="addRateOfReturns()" class="btn btn-link">{{rateOfReturnButton}}</button>
+            </span>
+        </div>
+
+        <table *ngIf="assetInformation && assetInformation.rateOfReturns && assetInformation.rateOfReturns.length > 0" class="displayTableData"
+            width="100%">
+            <colgroup>
+                <col width="25%">
+                <col width="55%">
+                <col width="20%">
+            </colgroup>
+
+            <tbody>
+                <tr *ngFor="let rateOfReturn of assetInformation.rateOfReturns">
+
+                    <td valign="">
+                        <label class="margin-left-10px">{{(rateOfReturn.fromDate) ? 'From ' + rateOfReturn.displayFromDate() : ''}}</label>
+                    </td>
+                    <td class="em-result-block result-block">
+                        <label>{{rateOfReturn.description()}}</label>
+                    </td>
+
+
+                    <td class="text-right">
+                        <button type="button" (click)="editRateOfReturns(rateOfReturn._id)" class="btn btn-link">Edit</button>
+                        <span class="float-right margin-left-10px">
+                            <button type="button" (click)="deleteRateOfReturn(rateOfReturn._id)" class="btn btn-link">Delete</button>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div *ngIf="!insuranceSectionHideShow">
+        <div class="sub-heading-holder float-left width-100per user-details-head">
+            <div class="float-left headings">Committed Savings </div>
+            <span class="float-right margin-left-10px">
+                <button type="button" routerLink="/auth/client/{{clientId}}/asset/{{assetId}}/committed-saving" class="btn btn-link">Add</button>
+            </span>
+        </div>
+        <table *ngIf="assetInformation && assetInformation.committedSavings && assetInformation.committedSavings.length > 0" class="displayTableData"
+            width="100%">
+            <colgroup>
+                <col width="25%">
+                <col width="55%">
+                <col width="20%">
+            </colgroup>
+
+            <tbody>
+                <tr *ngFor="let committedSaving of assetInformation.committedSavings">
+                    <td valign="">
+                        <label class="margin-left-10px">{{(committedSaving.kind) ? displayKind(committedSaving.kind) : ''}} {{committedSaving.name ? '(' + committedSaving.name +
+                        ')' : ''}}</label>
+                    </td>
+                    <td>
+                        <div>
+                            <b>{{committedSaving.amount? '&#8377;' +committedSaving.displayCurrencyString(committedSaving.amount) :''}} {{committedSaving.frequency!= null
+                                ? '(' + committedSaving.frequencyDisplayString() + ')' : '' }} </b>
+                        </div>
+                        <div *ngIf="committedSaving.absoluteAmount && committedSaving.kind == committedSavingType.RegularSaving">
+                            <span style="font-size:12px;color: grey;"> {{'&#8377;' +committedSaving.displayCurrencyString(committedSaving.absoluteAmount)}} is incremented per annum</span>
+                        </div>
+                        <div>
+                            <span style="font-size:12px;color: grey;">{{committedSaving.displayString(client)}}</span>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <button type="button" (click)="editCommittedSavings(committedSaving._id)" class="btn btn-link">Edit</button>
+                        <span class="float-right margin-left-10px">
+                            <button type="button" (click)="deleteCommittedSavings(committedSaving._id)" class="btn btn-link">Delete</button>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="keychainService.isLoggedInAsAdmin()">
+        <div class="sub-heading-holder float-left width-100per user-details-head">
+            <div class="float-left headings">Current Asset Allocation </div>
+            <span class="float-right margin-left-10px">
+                <button type="button" (click)="editCurrentAssetAllocation(assetInformation.currentAssetAllocation)" class="btn btn-link">Edit</button>
+            </span>
+        </div>
+
+        <table *ngIf="assetInformation && assetInformation.currentAssetAllocation" class="displayTableData" width="100%">
+
+            <tbody>
+                <tr>
+                    <label class="margin-left-10px">{{assetInformation.currentAssetAllocation.description(assetInformation.kind)}}</label>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <div class="sub-heading-holder float-left width-100per user-details-head">
+            <div class="float-left headings">Desired Asset Allocation </div>
+            <span class="float-right margin-left-10px">
+                <button type="button" (click)="editDesiredAssetAllocation(assetInformation.desiredAssetAllocation)" class="btn btn-link">Edit</button>
+            </span>
+        </div>
+
+        <table *ngIf="assetInformation && assetInformation.desiredAssetAllocation" class="displayTableData" width="100%">
+
+            <tbody>
+                <tr>
+                    <label class="margin-left-10px">{{assetInformation.desiredAssetAllocation.description()}}</label>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+

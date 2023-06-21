@@ -1,0 +1,481 @@
+<div [ngClass]="{'activate-block': true }">
+  <!--<div [ngClass]="{'col-md-6': true, 'col-lg-4': true, 'col-sm-12': true, 'col-12': true, 'col': true, 'activate-center-align': true}">-->
+  <div [ngClass]="{'d-flex': true, 'justify-content-center': true, 'logo-block': true}">
+    <img src="{{resources.logo}}" alt="Logo" routerLink="" />
+  </div>
+
+
+  <div *ngIf="activatedSuccessFlag" class="container margin d-flex justify-content-center align-items-center">
+    <div class="card col col-md-6">
+      <div class="card-block">
+        <p class="card-text text-center">{{activatedMessage}}<br>
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="activateFailureFlag" class="alert-danger alert">
+    {{activatedMessage}}
+  </div>
+
+  <div>
+    <form [formGroup]='initialInfoForm' *ngIf="initialFormShowHide">
+      <div [ngClass]="{}">
+        <h4>{{pageTitle}}</h4>
+      </div>
+      <br>
+      <div [ngClass]="{'card': true, 'margin-left-10px':true, 'margin-right-10px':true}">
+        <div [ngClass]="{'row': true,'container-fluid': true}">
+
+
+          <div [ngClass]="{'col-md-4':true}">
+            <div [ngClass]="">
+              <div [ngClass]="{'card-block': true}">
+
+
+                <!--personalEmail-->
+                <div [ngClass]="{'form-group': true}">
+                  <strong>{{initialInfoTranslations.contactInformationText}}<span class="padding-5">*</span></strong>
+                  <input type="text" placeholder="{{initialInfoTranslations.personalMail}}" readonly [ngClass]="{'form-control': true}" formControlName="personalMailControl"
+                    [(ngModel)]="userInfo.email" />
+                  <div *ngIf="initialInfoForm.controls['personalMailControl'].hasError('required') && initialInfoForm.controls['personalMailControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    {{initialInfoTranslations.emptyEmailError}}
+                  </div>
+                </div>
+
+                <!--ph-->
+                <div [ngClass]="{'form-group': true}">
+                  <strong>{{initialInfoTranslations.phoneHeaderText}}<span class="padding-5">*</span></strong>
+                  <div class="row">
+                    <div class="col col-4 padding-0">
+                      <select name="countryCode" id="" placeholder="ISD" [ngClass]="{'form-control': true, 'padding-0': true}" [(ngModel)]="userInfo.ph.isd"
+                        formControlName="dilzerIsdControl">  
+                       <option value = "{{countriesCodes.dial_code}}"  *ngFor="let countriesCodes of countriesCode"> {{countriesCodes.code + "  " + countriesCodes.dial_code}}</option>
+                    </select>
+                    </div>
+                    <div class="col col-8 padding-0">
+                      <input type="text" placeholder="{{initialInfoTranslations.mobileNumber}}" [ngClass]="{'form-control': true}" formControlName="mobileNumberControl"
+                        [(ngModel)]="userInfo.ph.ph" />
+                    </div>
+                  </div>
+                  <div *ngIf="initialInfoForm.controls['mobileNumberControl'].hasError('required') && initialInfoForm.controls['mobileNumberControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    {{initialInfoTranslations.emptyMobileNumber}}
+                  </div>
+                </div>
+
+                <!--DOB-->
+                <div [ngClass]="{'form-group': true, 'col-12': true, 'padding-0': true}">
+                  <strong>{{initialInfoTranslations.dobHeadText}}<span class="padding-5">*</span></strong>
+                  <p-calendar formControlName="dobControl" placeholder="{{initialInfoTranslations.dobText}}" [(ngModel)]="userInfo.dob" [monthNavigator]="true"
+                    [yearNavigator]="true" inputStyleClass="form-control" [readonlyInput]="true" dateFormat="dd/mm/yy" [maxDate]="maxDate" yearRange="1931:{{maxDate.getFullYear()}}"></p-calendar>
+                </div>
+
+
+
+                <!--maritalStatus-->
+                <div [ngClass]="{'form-group': true}">
+                  <strong>{{initialInfoTranslations.maritalStatusText}}<span class="padding-5">*</span></strong>
+                  <select (change)="showMaritalStatus($event,userInfo.maritalStatus)" [ngClass]="{'form-control': true}" formControlName="maritalStatusControl"
+                    [(ngModel)]="userInfo.maritalStatus">
+                    <option *ngFor = "let maritalStatus of maritalStatusOptions"
+                      value = "{{maritalStatus.key}}">
+                      {{maritalStatus.value}}
+                    </option>
+                  </select>
+                  <div *ngIf="initialInfoForm.controls['maritalStatusControl'].hasError('required') && initialInfoForm.controls['maritalStatusControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    {{initialInfoTranslations.emptyMaritalStatus}}
+                  </div>
+                </div>
+
+
+                <!--spouse name-->
+                <div *ngIf="spouseInfoFormShowHide">
+                  <strong>{{initialInfoTranslations.spouseNameHeadText}}</strong>
+                  <div [ngClass]="{'form-group': true}">
+                    <input [ngClass]="{'form-control': true}" type="text" placeholder="{{initialInfoTranslations.spousefirstName}}" formControlName="spousefirstNameControl"
+                      [(ngModel)]="userInfo.spouseName.firstName" />
+                  </div>
+                  <div [ngClass]="{'form-group': true}">
+                    <input [ngClass]="{'form-control': true}" type="text" placeholder="{{initialInfoTranslations.spouselastName}}" formControlName="spouselastNameControl"
+                      [(ngModel)]="userInfo.spouseName.lastName" />
+                  </div>
+                </div>
+
+
+
+                <!--residentialAddress-->
+                <strong>{{initialInfoTranslations.addressHeatText}}</strong>
+
+                <div [ngClass]="{'card': true, 'margin-left':false, 'margin-right':false}">
+
+                  <div [ngClass]="{'card-block': true}">
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.addressLine1}}" [ngClass]="{'form-control': true}" formControlName="residentialAddress1Control"
+                        [(ngModel)]="userInfo.residentialAddress.addressLine1" />
+                      <div *ngIf="initialInfoForm.controls['residentialAddress1Control'].hasError('required') && initialInfoForm.controls['residentialAddress1Control'].touched"
+                        [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                        {{initialInfoTranslations.emptyAddressLine}}
+                      </div>
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.addressLine2}}" [ngClass]="{'form-control': true}" formControlName="residentialAddress2Control"
+                        [(ngModel)]="userInfo.residentialAddress.addressLine2" />
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.locality}}" [ngClass]="{'form-control': true}" formControlName="residentiallocalityControl"
+                        [(ngModel)]="userInfo.residentialAddress.locality" />
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.city}}" [ngClass]="{'form-control': true}" formControlName="residentialcityControl"
+                        [(ngModel)]="userInfo.residentialAddress.city" />
+                      <div *ngIf="initialInfoForm.controls['residentialcityControl'].hasError('required') && initialInfoForm.controls['residentialcityControl'].touched"
+                        [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                        {{initialInfoTranslations.emptyCity}}
+                      </div>
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.pincode}}" [ngClass]="{'form-control': true}" formControlName="residentialpincodeControl"
+                        [(ngModel)]="userInfo.residentialAddress.pincode" />
+                      <div *ngIf="initialInfoForm.controls['residentialpincodeControl'].hasError('required') && initialInfoForm.controls['residentialpincodeControl'].touched"
+                        [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                        {{initialInfoTranslations.emptyPinCode}}
+                      </div>
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.country}}" [ngClass]="{'form-control': true}" formControlName="residentialcountryControl"
+                        [(ngModel)]="userInfo.residentialAddress.country" />
+                      <div *ngIf="initialInfoForm.controls['residentialcountryControl'].hasError('required') && initialInfoForm.controls['residentialcountryControl'].touched"
+                        [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                        {{initialInfoTranslations.emptyCountry}}
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <br/>
+                <!--Reference-->
+                <div [ngClass]="{'form-group': true}">
+                  <strong>{{initialInfoTranslations.hearAboutUsText}}<span class="padding-5">*</span></strong>
+                  <div *ngFor="let hearAbout of hearAboutUs">
+                    <label>
+                      <input type="checkbox" formControlName = "hearAboutUsControl" value="{{hearAbout.key}}" (change)="showReferenceOther($event, hearAbout.key)" />   {{hearAbout.value}}
+                    </label>
+                    <div [ngClass]="{'form-group': true}" id="hearAboutUs{{hearAbout.key}}" style="display:none;">
+                      <label>Please provide details for Reference</label>
+                      <div>
+                        <input #referenceDesc [ngClass]="{'form-control': true}" type="text" formControlName="referenceOthersControl" (keyup)="referenceDescription(referenceDesc.value, hearAbout.key)"
+                        />
+                        <div *ngIf="initialInfoForm.controls['referenceOthersControl'].hasError('required') && initialInfoForm.controls['referenceOthersControl'].touched"
+                          [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                          {{initialInfoTranslations.emptyError}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div *ngIf="initialInfoForm.controls['hearAboutUsControl'].hasError('required') && initialInfoForm.controls['hearAboutUsControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    {{initialInfoTranslations.emptyHearAboutUs}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div [ngClass]="{'col-md-4':true}">
+            <div [ngClass]="">
+              <div [ngClass]="{'card-block': true}">
+
+
+                <!--jobType-->
+                <div [ngClass]="{'form-group': true}">
+                  <strong>{{initialInfoTranslations.jobTypeText}}</strong>
+                  <select [ngClass]="{'form-control': true}" formControlName="jobTypeControl" [(ngModel)]="userInfo.jobType">
+                    <option *ngFor = "let jobType of jobType"
+                      value = "{{jobType.key}}">
+                      {{jobType.value}}
+                    </option>
+                  </select>
+                </div>
+
+                <!--jobDescription-->
+                <div [ngClass]="{'form-group': true}">
+                  <strong>{{initialInfoTranslations.jobDescriptionText}}<span class="padding-5">*</span></strong>
+                  <input type="text" placeholder="{{initialInfoTranslations.jobDescription}}" [ngClass]="{'form-control': true}" formControlName="jobDescriptionControl"
+                    [(ngModel)]="userInfo.jobDescription" />
+                  <div *ngIf="initialInfoForm.controls['jobDescriptionControl'].hasError('required') && initialInfoForm.controls['jobDescriptionControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    {{initialInfoTranslations.emptyJobDescription}}
+                  </div>
+                </div>
+
+                <!--companyName-->
+
+                <strong>{{initialInfoTranslations.companyHeatText}}</strong>
+
+                <div [ngClass]="{'card': true}">
+
+                  <div [ngClass]="{'card-block': true}">
+                    <div [ngClass]="{'form-group': true}">
+                      <input [ngClass]="{'form-control': true}" type="text" placeholder="{{initialInfoTranslations.companyName}}" [ngClass]="{'form-control': true}"
+                        formControlName="companyNameControl" [(ngModel)]="userInfo.companyName" />
+                    </div>
+                    <!--companyAddress-->
+                    <div [ngClass]="{'form-group': true}">
+                      <input [ngClass]="{'form-control': true}" type="text" placeholder="{{initialInfoTranslations.companyAddressLine1}}" [ngClass]="{'form-control': true}"
+                        formControlName="companyAddress1Control" [(ngModel)]="userInfo.companyAddress.addressLine1" />
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.companyAddressLine2}}" [ngClass]="{'form-control': true}" formControlName="companyAddress2Control"
+                        [(ngModel)]="userInfo.companyAddress.addressLine2" />
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.companyLocality}}" [ngClass]="{'form-control': true}" formControlName="companylocalityControl"
+                        [(ngModel)]="userInfo.companyAddress.locality" />
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.companyCity}}" [ngClass]="{'form-control': true}" formControlName="companycityControl"
+                        [(ngModel)]="userInfo.companyAddress.city" />
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.companyPincode}}" [ngClass]="{'form-control': true}" formControlName="companypincodeControl"
+                        [(ngModel)]="userInfo.companyAddress.pincode" />
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.companyCountry}}" [ngClass]="{'form-control': true}" formControlName="companycountryControl"
+                        [(ngModel)]="userInfo.companyAddress.country" />
+                    </div>
+
+                    <!--officialEmail-->
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.officialMail}}" [ngClass]="{'form-control': true}" formControlName="officialMailControl"
+                        [(ngModel)]="userInfo.officialEmail" />
+                      <div *ngIf="initialInfoForm.controls['officialMailControl'].hasError('required') && initialInfoForm.controls['officialMailControl'].touched"
+                        [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                        {{initialInfoTranslations.emptyEmailError}}
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+
+
+
+                <!--socialProfiles-->
+                <br/>
+                <strong>{{initialInfoTranslations.socialProfileText}}</strong>
+
+                <div [ngClass]="{'card': true}">
+
+                  <div [ngClass]="{'card-block': true}">
+
+
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" [ngClass]="{'form-control': true}" placeholder="{{initialInfoTranslations.twitterText}}" formControlName="twitter"
+                      />
+                      <div *ngIf="initialInfoForm.controls['twitter'].hasError('required') && initialInfoForm.controls['twitter'].touched" [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}"
+                        role="alert">
+                        {{profileConstants.emptyError}}
+                      </div>
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" [ngClass]="{'form-control': true}" placeholder="{{initialInfoTranslations.googlePlusText}}" formControlName="googleplus"
+                      />
+                      <div *ngIf="initialInfoForm.controls['googleplus'].hasError('required') && initialInfoForm.controls['googleplus'].touched"
+                        [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}" role="alert">
+                        {{profileConstants.emptyError}}
+                      </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" [ngClass]="{'form-control': true}" placeholder="{{initialInfoTranslations.linkedinText}}" formControlName="linkedin"
+                      />
+                      <div *ngIf="initialInfoForm.controls['linkedin'].hasError('required') && initialInfoForm.controls['linkedin'].touched" [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}"
+                        role="alert">
+                        {{profileConstants.emptyError}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+          <div [ngClass]="{'col-md-4':true}">
+            <div [ngClass]="">
+              <div [ngClass]="{'card-block': true}">
+
+
+                <!--family income source-->
+                <div [ngClass]="{'form-group': true}">
+                  <strong>{{initialInfoTranslations.familyIncomeText}}<span class="padding-5">*</span></strong>
+                  <select [ngClass]="{'form-control': true}" formControlName="familyIncomeControl" [(ngModel)]="userInfo.incomeSources">
+                    <option *ngFor = "let familyIncome of familyIncome"
+                    value = "{{familyIncome.key}}">
+                    {{familyIncome.value}}
+                    </option>
+                  </select>
+                  <div *ngIf="initialInfoForm.controls['familyIncomeControl'].hasError('required') && initialInfoForm.controls['familyIncomeControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    {{initialInfoTranslations.emptyFamilyIncomeSource}}
+                  </div>
+                </div>
+
+
+                <!--numberOfDependents-->
+                <div [ngClass]="{'form-group': true}">
+                  <strong>{{initialInfoTranslations.peopleDependOnYouText}}</strong>
+                  <select [ngClass]="{'form-control': true}" formControlName="peopleDependOnYouControl" [(ngModel)]="userInfo.numberOfDependents">
+                      <option *ngFor = "let peopleDependOnYou of peopleDependOnYou"
+                        value = "{{peopleDependOnYou.key}}">
+                        {{peopleDependOnYou.value}}
+                      </option>
+                    </select>
+                </div>
+
+
+
+                <!--approximateNetIncome-->
+                <div [ngClass]="{'form-group': true}">
+                  <strong>{{initialInfoTranslations.netAnualEarning}}<span class="padding-5">*</span></strong>
+                  <div [ngClass]="{'row': true}">
+                    <div [ngClass]="{'col-4': true, 'padding-0': true}">
+                      <select [ngClass]="{'form-control': true}" formControlName="currency" [(ngModel)]="userInfo.currency">
+                          <option *ngFor = "let currency of currencyTitleOptions" value = "{{currency.key}}">
+                            {{currency.value}}
+                          </option>
+                      </select>
+                    </div>
+                    <div [ngClass]="{'col-8': true, 'padding-0': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.netAnualEarningPlaceHolder}}" [ngClass]="{'form-control': true}"
+                        formControlName="netAnualEarningControl" [(ngModel)]="userInfo.approximateNetIncome" />
+                    </div>
+                  </div>
+                  <div *ngIf="initialInfoForm.controls['netAnualEarningControl'].hasError('required') && initialInfoForm.controls['netAnualEarningControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    {{initialInfoTranslations.emptyError}}
+                  </div>
+                </div>
+
+
+
+                <!--objectiveOfUtilisingService-->
+                <div [ngClass]="{'form-group': true}">
+                  <strong>{{initialInfoTranslations.objectiveOfUtilisingServiceText}} <span class="padding-5">*</span></strong>
+                  <div *ngFor="let objective of objectiveOfUtilisingService">
+                    <label>
+                      <input type="checkbox" formControlName = "objectiveOfUtilisingServiceControl" (change) = "entryObjectiveUtilizingService($event, objective.key)"/> {{objective.value}}
+                    </label>
+                  </div>
+                  <div *ngIf="initialInfoForm.controls['objectiveOfUtilisingServiceControl'].hasError('required') && initialInfoForm.controls['objectiveOfUtilisingServiceControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    {{initialInfoTranslations.emptyObjectiveUtilizingService}}
+                  </div>
+                </div>
+
+
+
+                <!--selfOccupiedProperty-->
+                <div [ngClass]="{'form-group': true}">
+                  <strong>{{initialInfoTranslations.homeSelfOccupied}}<span class="padding-5">*</span></strong>
+                  <div>
+                    <input type="radio" value="1" formControlName="homeSelfOccupiedControl" (change)="homeSelfOccupied($event)" />
+                    <span class="margin-left-10px">Yes</span>
+                    <input class="margin-left-10px" type="radio" value="0" formControlName="homeSelfOccupiedControl" (change)="homeSelfOccupied($event)"
+                    />
+                    <span class="margin-left-10px">No</span>
+                  </div>
+                  <div *ngIf="initialInfoForm.controls['homeSelfOccupiedControl'].hasError('required') && initialInfoForm.controls['homeSelfOccupiedControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    {{initialInfoTranslations.emptyError}}
+                  </div>
+                </div>
+
+                <!--assets-->
+                <div [ngClass]="{'form-group': true}">
+                  <strong>{{initialInfoTranslations.financialAssetsText}} <span class="padding-5">*</span> </strong>
+                  <div *ngFor="let financialAssets of financialAssetsOptions">
+                    <label>
+                      <input type="checkbox" formControlName = "financialAssetsControl" value="financialAssets.key" (change) = "entryFinancialAssests($event, financialAssets.key)"/> {{financialAssets.value}}
+
+                    </label>
+
+                    <div [ngClass]="{'form-group': true}" id="financialAsset{{financialAssets.key}}" style="display:none;">
+                      <label>Please provide details of Asset</label>
+                      <div>
+                        <input #financAsset [ngClass]="{'form-control': true}" type="text" formControlName="otherFinancialAssetControl" (keyup)="financialAssetDescription(financAsset.value, financialAssets.key)"
+                        />
+                        <div *ngIf="initialInfoForm.controls['otherFinancialAssetControl'].hasError('required') && initialInfoForm.controls['otherFinancialAssetControl'].touched"
+                          [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                          {{initialInfoTranslations.emptyError}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div *ngIf="initialInfoForm.controls['financialAssetsControl'].hasError('required') && initialInfoForm.controls['financialAssetsControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    {{initialInfoTranslations.emptyFinancialAssestsOwned}}
+                  </div>
+                </div>
+
+                <strong>{{initialInfoTranslations.financialDecisionHeader}}</strong>
+
+                <div [ngClass]="{'card': true}">
+
+                  <div [ngClass]="{'card-block': true}">
+
+
+                    <!--bestFinancialDecision-->
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.bestFinancialDecision}}" [ngClass]="{'form-control': true}" formControlName="bestFinancialDecisionControl"
+                        [(ngModel)]="userInfo.bestFinancialDecision" />
+                    </div>
+
+                    <!--worstFinancialDecision-->
+                    <div [ngClass]="{'form-group': true}">
+                      <input type="text" placeholder="{{initialInfoTranslations.worstFinancialDecision}}" [ngClass]="{'form-control': true}" formControlName="worstFinancialDecisionControl"
+                        [(ngModel)]="userInfo.worstFinancialDecision" />
+                    </div>
+                  </div>
+
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-center margin-top-20px">
+        <div [ngClass]="{'form-group': true,'button-width': true}" *ngIf="!loadingOnSubmit">
+          <button type="button" (click)="submitInitialInfo()" [ngClass]="{'btn': true, 'btn-background': true, 'active': true}">Submit</button>
+        </div>
+        <div [ngClass]="{'form-group': true,'button-width': true}" *ngIf="loadingOnSubmit">
+          <button type="button" [ngClass]="{'btn': true, 'btn-background': true, 'active': true,'justify-content-center': true}">
+              <div class="loader"></div>
+            </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--</div>-->
+</div>

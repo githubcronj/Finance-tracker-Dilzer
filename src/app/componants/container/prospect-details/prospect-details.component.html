@@ -1,0 +1,297 @@
+<app-navbar #navbar></app-navbar>
+<div [ngClass]="{'stage-change-holder': true}" *ngIf="prospectInitialInformation">
+    <h3 class="float-left margin-0">Initial User Information</h3>
+    <button type="button" [disabled]="!prospectInitialInformation" class="float-right btn btn-primary" (click)="sendRegistrationFeeInvoice()">Send Registration Fee Invoice</button>
+</div>
+
+<div class="margin-top-30px body-container-padding" *ngIf="!isErrorOccured && !prospectInitialInformation">
+    <div class="card">
+        <div class="card-block">
+            <h3 class="card-title text-center">Initial Information Has Not Been Filled Yet.</h3>
+            <div class="text-center">
+                <button type="button" class="btn btn-primary" (click)="resendInitialInfoLink()">Resend Initial Info Link</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="margin-top-30px body-container-padding" *ngIf="!isErrorOccured && prospectInitialInformation">
+    <table class="displayTableData" width="100%">
+        <colgroup>
+            <col width="25%">
+            <col width="75%">
+        </colgroup>
+        <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Name</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.name) ? prospectInitialInformation.name.fullName() : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Personal Email</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.email) ? prospectInitialInformation.email : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Official Email</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.officialEmail) ? prospectInitialInformation.officialEmail : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Mobile Number</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.ph) ? prospectInitialInformation.ph.displayPhoneNumber() : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Date Of Birth</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.dob) ? (prospectInitialInformation.displayDOB()) : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Marital Status</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.maritalStatus != null) ? prospectInitialInformation.displayMaritalStatus()
+                        : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <div>
+                        <label class="em-title-block">Residential Address</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block" [innerHtml]="(prospectInitialInformation && prospectInitialInformation.residentialAddress) ? prospectInitialInformation.residentialAddress.displayFullAddress() : ''">
+                        {{(prospectInitialInformation && prospectInitialInformation.residentialAddress) ? prospectInitialInformation.residentialAddress.displayFullAddress()
+                        : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Spouse Name</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.spouseName && prospectInitialInformation.spouseName) ? prospectInitialInformation.spouseName.fullName()
+                        : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Job Type</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.jobType) ? prospectInitialInformation.jobType : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Job Description</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.jobDescription) ? prospectInitialInformation.jobDescription :
+                        ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Company Name</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.companyName) ? prospectInitialInformation.companyName : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <div>
+                        <label class="em-title-block">Company Address</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block" [innerHtml]="(prospectInitialInformation && prospectInitialInformation.companyAddress) ? prospectInitialInformation.companyAddress.displayFullAddress() : ''">
+                        {{(prospectInitialInformation && prospectInitialInformation.companyAddress) ? prospectInitialInformation.companyAddress.displayFullAddress()
+                        : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Net Annual Earnings</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.approximateNetIncome) ? prospectInitialInformation.displayNetAmount()
+                        : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Is Your Home Self-Occupied?</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{prospectInitialInformation.selfOccupiedProperty}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">How many people are dependent on you financially</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{prospectInitialInformation.numberOfDependents}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Family Income Sources</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{prospectInitialInformation.incomeSources}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">Financial Assets</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block" *ngIf="prospectInitialInformation && prospectInitialInformation.assets">
+                        <div *ngFor="let financialAsset of prospectInitialInformation.assets">
+                            {{prospectInitialInformation.displayFinancialAssets(financialAsset.assetType)}} {{financialAsset.description? '(' + financialAsset.description
+                            + ')' : ''}}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">What is the objective of utilising our services ?</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block" *ngFor="let objective of prospectInitialInformation.objective">
+                        {{prospectInitialInformation.displayServiceObjectives(objective)}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">BEST financial decision you made in life?</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.bestFinancialDecision ) ? prospectInitialInformation.bestFinancialDecision
+                        : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">WORST financial decision you made in life?</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(prospectInitialInformation && prospectInitialInformation.worstFinancialDecision ) ? prospectInitialInformation.worstFinancialDecision
+                        : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block">How did you hear about us?</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block" *ngIf="prospectInitialInformation && prospectInitialInformation.reference">
+                        <div *ngFor="let reference of prospectInitialInformation.reference">
+                            {{prospectInitialInformation.displayReferenceFrom(reference.referenceType)}} {{reference.description? '(' + reference.description
+                            + ')' : ''}}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+<p-growl [(value)]="msgs"></p-growl>

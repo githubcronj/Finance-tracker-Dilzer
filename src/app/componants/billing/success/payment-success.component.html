@@ -1,0 +1,19 @@
+<div [ngClass]="{'d-flex': true, 'justify-content-center': true, 'logo-block': true}">
+    <img src="{{resources.logo}}" alt="Logo" routerLink="" />
+</div>
+
+<div class="container margin d-flex justify-content-center align-items-center">
+    <div class="card col col-sm-5">
+        <div class="card-block">
+            <h3 class="card-title text-center">Thank You.!</h3>
+            <p class="card-text text-center">Your payment is received successfully. The details have been sent to your Email<br>
+            </p>
+            <p class="card-text text-center">
+            </p>
+        </div>
+
+        <div [ngClass]="{'form-group': true}">
+            <button type="button" routerLink="/login" [ngClass]="{'btn': true, 'btn-background': true, 'form-control': true, 'active': true}">Login</button>
+        </div>
+    </div>
+</div>

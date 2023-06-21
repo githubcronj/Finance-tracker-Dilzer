@@ -1,0 +1,73 @@
+<div *ngIf="!isErrorOccured" class="margin-top-30px margin-bottom-10px">
+  <div class="row align-items-center">
+    <div class="col col-3 padding-0">
+      <h4 *ngIf="!editEnable" class="margin-0">Team
+      </h4>
+      <div *ngIf="editEnable">
+        <h4 class="margin-0 float-left">Selected ({{selectedClientCount}})</h4>
+        <a class="float-left margin-left-10px" (click)="deletePlanners()">Delete Selected</a>
+      </div>
+    </div>
+    <div class="col col-3 text-center">
+      <input *ngIf="!editEnable" type="text" (keyup)="searchTeamList()" [(ngModel)]="searchTerm" class="form-control" placeholder="Search"
+      />
+    </div>
+    <div class="col col-6 padding-0 text-right">
+      <button type="button" *ngIf="isChief" class="btn btn-link float-right margin-left-10px" (click)="editTeamDetail()">{{editButtonText}}</button>
+      <button type="button" class="btn btn-link float-right margin-left-10px" *ngIf="isChief" routerLink="/auth/admin/invite">Add</button>
+      <select *ngIf="!editEnable" class="sort-by-team-type form-control" [(ngModel)]="sortByTeamType" (change)="searchTeamList()">
+        <option value="">All Role</option>
+        <option *ngFor="let allTeam of sortTeamMemberArray" value="{{allTeam.key}}">{{allTeam.value}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!isErrorOccured">
+  <p-table [scrollable]="true" scrollHeight="350px" [columns]="cols" [value]="teamList" id="paginationColor">
+    <ng-template pTemplate="colgroup" let-columns>
+      <colgroup>
+        <col *ngFor="let col of columns" class="column-width">
+      </colgroup>
+    </ng-template>
+
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngIf="isChief && editEnable">
+          <input type="checkbox" (change)="selectDeselectAll($event)" />
+        </th>
+        <th *ngFor="let col of columns">{{col.header}}</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-planner>
+      <tr>
+        <td *ngIf="isChief && editEnable">
+          <input [disabled]="planner['role'] == teamRole.ChiefFinancialPlanner" type="checkbox" (change)="countSelected()" [(ngModel)]="planner['isSelected']"
+          />
+          <button [disabled]="planner['role'] == teamRole.ChiefFinancialPlanner" *ngIf="!planner['active']" (click)="reinvite(planner['email'])"
+            [ngClass]="{'btn': true, 'btn-link': true, 'active': true}">Reinvite</button>
+          <button type="button" [disabled]="planner['role']==teamRole.ChiefFinancialPlanner" (click)="deletePlanner(planner['_id'])"
+            class="btn btn-link">Delete</button>
+        </td>
+        <td>
+          <button (click)="teamMemberDetails(planner)" type="button" [disabled]="planner['role']==teamRole.ChiefFinancialPlanner" class="btn btn-link">
+            <span pTooltip="{{(planner['name'] && planner['name'].firstName) ? planner['name'].firstName : ''}} {{(planner['name'] && planner['name'].lastName)
+              ? planner['name'].lastName : ''}}"> {{planner['name'].firstName}} </span>
+          </button>
+        </td>
+        <td>{{displayMemberRole(planner['role'])}}</td>
+        <td class="table-cell-word-wrap">{{planner && planner.email ? planner.email : "-"}}</td>
+        <td>{{planner && planner.ph && planner.ph.ph ? planner.ph.ph : "-"}}</td>
+        <td>{{(planner && planner['doj']) ? (planner['doj'] | date: 'dd/MM/yyyy') : "-"}}</td>
+        <td>{{(planner && planner['dob']) ? (planner['dob'] | date: 'dd/MM/yyyy') : "-"}}</td>
+        <td>{{(planner && planner.qualification) ? (planner.qualification) : "-"}}</td>
+        <td>{{(planner && planner.certification) ? (planner.certification) : "-"}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+
+<p-growl [(value)]="msgs"></p-growl>
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

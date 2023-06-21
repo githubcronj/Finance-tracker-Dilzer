@@ -1,0 +1,12 @@
+.footer-block {
+    display: block;
+    padding: 20px 0;
+    background-color: white;
+    border-top: 1px solid #e5e5e5;
+    text-align: center;
+    line-height: 14px;
+    letter-spacing: .006em;
+    margin-top: 30px;
+    float: left;
+    width: 100%;
+}

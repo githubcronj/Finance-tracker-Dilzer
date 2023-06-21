@@ -1,0 +1,152 @@
+<app-navbar #navbar></app-navbar>
+
+<div *ngIf="!isErrorOccured" [ngClass]="{'margin-top-40px': true}">
+    <div [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'assets-center-align': true}">
+        <div [ngClass]="{'card': true}">
+            <div [ngClass]="{'card-block': true}">
+                <form [formGroup]="insuranceForm">
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Sum Assured / Fund Value</label>
+                        <div class="input-group margin-0">
+                            <input type="number" formControlName="sumAssuredControl" class="form-control" [(ngModel)]="asset.sumAssured" />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{tooltipTranslations.sumAssuredHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                        <div *ngIf="insuranceForm.controls['sumAssuredControl'].hasError('required') && insuranceForm.controls['sumAssuredControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{insuranceTranslations.sumAssuredErrorMessage}}
+                        </div>
+
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Death Benefit</label>
+                        <div class="input-group margin-0">
+                            <input type="number" formControlName="deathBenefitControl" class="form-control" [(ngModel)]="asset.deathBenefit" />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{tooltipTranslations.deathBenefitHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                        <div *ngIf="insuranceForm.controls['deathBenefitControl'].hasError('required') && insuranceForm.controls['deathBenefitControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{insuranceTranslations.deathBenefitErrorMessage}}
+                        </div>
+                    </div>
+
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Premium</label>
+                        <div class="input-group margin-0">
+                            <input type="number" formControlName="premiumControl" class="form-control" [(ngModel)]="asset.premium" />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{tooltipTranslations.premiumHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                        <div *ngIf="insuranceForm.controls['premiumControl'].hasError('required') && insuranceForm.controls['premiumControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{insuranceTranslations.premiumErrorMessage}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Premium Frequency</label>
+                        <div class="input-group margin-0">
+                            <select [(ngModel)]="asset.premiumFrequency" formControlName="frequencyPeriodControl" class="form-control" (change)="didSelectInsuranceFrequency($event)">
+                                <option *ngFor="let type of insuranceFrequencyTypes" value="{{type.key}}">{{type.value}}</option>
+                            </select>
+                            <span class="percentage" pTooltip={{tooltipTranslations.premiumFrequencyHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Premium Start Date</label>
+                        <p-calendar inputStyleClass="form-control" placeholder="dd/mm/yyyy" formControlName="premiumStartDateControl" [selectOtherMonths]="true"
+                            [monthNavigator]="true" [yearNavigator]="true" [(ngModel)]="asset.premiumStartDate" [readonlyInput]="true"
+                            dateFormat="dd/mm/yy" (onSelect)="didClickStartDateTextBox($event)" yearRange="1930:2100">
+                        </p-calendar>
+                        <div *ngIf="insuranceForm.controls['premiumStartDateControl'].hasError('required') && insuranceForm.controls['premiumStartDateControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{insuranceTranslations.premiumStartDateErrorMessage}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Premium End Date</label>
+                        <p-calendar [minDate]="asset.premiumStartDate" inputStyleClass="form-control" placeholder="dd/mm/yyyy" formControlName="premiumEndDateControl"
+                            [selectOtherMonths]="true" [monthNavigator]="true" [yearNavigator]="true" [(ngModel)]="asset.premiumEndDate"
+                            [readonlyInput]="true" dateFormat="dd/mm/yy" (onSelect)="didClickEndDateTextBox($event)" yearRange="1930:2100">
+                        </p-calendar>
+                        <div *ngIf="insuranceForm.controls['premiumEndDateControl'].hasError('required') && insuranceForm.controls['premiumEndDateControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{insuranceTranslations.premiumEndDateErrorMessage}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Total Number Of Premiums Paid Till Date</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" formControlName="numberOfPremiumPaidControl" class="form-control" [(ngModel)]="asset.numberOfPremiumPaid"
+                            />
+                            <span class="percentage" pTooltip={{tooltipTranslations.numberOfPremiumsPaid}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                        <div *ngIf="insuranceForm.controls['numberOfPremiumPaidControl'].hasError('required') && insuranceForm.controls['numberOfPremiumPaidControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{insuranceTranslations.sumAssuredErrorMessage}}
+                        </div>
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Total Number Of Premiums Payable</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" formControlName="numberOfPremiumPayableControl" class="form-control" [(ngModel)]="asset.numberOfPremiumPayable"
+                            />
+                            <span class="percentage" pTooltip={{tooltipTranslations.numberOfPremiumsPayable}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                        <div *ngIf="insuranceForm.controls['numberOfPremiumPayableControl'].hasError('required') && insuranceForm.controls['numberOfPremiumPayableControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{insuranceTranslations.sumAssuredErrorMessage}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Bonus</label>
+                        <div class="input-group margin-0">
+                            <input type="number" formControlName="bonusControl" class="form-control" [(ngModel)]="asset.bonus" />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{tooltipTranslations.bonusHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div [ngClass]="{'form-group': true}">
+                        <button *ngIf="!loadingOnSubmit" (click)="createInsurance()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">{{addUpdateInsuranceButtonText}}</button>
+                        <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'justify-content-center': true}">
+                            <div class="loader"></div>
+                        </button>
+                        <button (click)="routeBack()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-growl [(value)]="msgs"></p-growl>
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+

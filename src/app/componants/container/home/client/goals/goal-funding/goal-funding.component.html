@@ -1,0 +1,96 @@
+<div class="margin-top-30px margin-bottom-10px">
+    <mat-sidenav-container>
+
+        <mat-sidenav *ngIf="goalFundingViewModel.goals && goalFundingViewModel.goals.length > 0 && goalFundingViewModel.assets && goalFundingViewModel.assets.length > 0" mode="side" opened="true" position="end" class="width-300px divider">
+            <div>
+                <div class="card asset-card-dimesion " [ngClass]="{'mapped-asset': asset.isMappedToGoal}" *ngFor="let asset of goalFundingViewModel.assetViewModel"
+                    (onDragStart)="dragStart($event, asset, asset.isMappedToGoal)" pDraggable="assets">
+                    <div class="horizontal-vertical-align-center asset-img-block">
+                        <img src="{{resources.assetIconPath + asset.getImage()}}" width='30px' />
+                    </div>
+                    <div class="horizontal-vertical-align-center asset-content-block">
+                        <div class="card-body">
+                            <div class="margin-right-10px margin-left-10px text-wrap-ellipsis">
+                                <b>{{asset.name}}</b>
+                            </div>
+                            <div class="margin-right-10px margin-left-10px text-wrap-ellipsis">
+                                <b>{{asset.assetTypeDisplayString}}</b>
+                            </div>
+                            <div class="margin-right-10px margin-left-10px asset-sub-type text-wrap-ellipsis">
+                                {{asset.assetSubTypeDisplayString}}
+                            </div>
+                            <div class="margin-right-10px margin-left-10px">
+                                <b>&#8377; {{asset.currentValuationDisplayString}}</b>
+                            </div>
+                        </div>
+                        <div *ngIf="asset.maturityDateString" class="available-from-date">Available From: {{asset.maturityDateString}}</div>
+                    </div>
+                </div>
+            </div>
+        </mat-sidenav>
+
+        <mat-sidenav-content *ngIf="goalFundingViewModel.goals && goalFundingViewModel.goals.length > 0 && goalFundingViewModel.assets && goalFundingViewModel.assets.length > 0" class="width-100per">
+            <div>
+                <div class="card goal-card-dimesion" *ngFor="let goal of goalFundingViewModel.goalsViewModel" pDroppable="assets" (onDrop)="drop($event, goal)">
+                    <div class="card-block row">
+                        <div>
+                            <img width="30px" src="{{resources.goalIconPath + goalFundingViewModel.getGoalImage(goal)}}" />
+                        </div>
+                        <div class="col col-9 col-md-3 col-sm-3 col-lg-3">
+                            <div>{{goal.name}}</div>
+                            <div class="font-size-12px">
+                                <b>{{goal.currentValuationDisplayString}}</b>
+                            </div>
+                        </div>
+                        <div class="col col-12 col-md-4 col-sm-4 col-lg-4">
+                            <div class="text-center ">
+                                &#8377; {{goal.fundedAmountDisplayString}}/ &#8377; {{goal.corpusRequiredDisplayString}}
+                            </div>
+                            <div class="progress" [ngClass]="{'progress-zero': (goal.pecentageFunded == 0)}" (click)="showCorpusRequiredBreakUp(goal)">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="goal.pecentageFunded"
+                                    [ngClass]="{'background-green': (goal.pecentageFunded >= 100), 'background-red': (goal.pecentageFunded <= 50), 'background-orange': (goal.pecentageFunded > 50 && goal.pecentageFunded < 100)}"
+                                    aria-valuemin="0" aria-valuemax="100" [style.width.%]="goal.pecentageFunded">{{goal.pecentageFunded}}%</div>
+                            </div>
+                        </div>
+                        <div class="col col-12 col-md-4 col-sm-4 col-lg-4">
+                            <button class="goal-funding-added-link" mat-icon-button [matMenuTriggerFor]="menu" *ngIf="goal.allocatedAssetDetails && goal.allocatedAssetDetails.length > 0">
+                                {{goal.allocatedAssetDetails[0].displayString }} - &#8377; {{goal.allocatedAssetDetails[0].amountFormat}}
+                                <span *ngIf="goal.allocatedAssetDetails && goal.allocatedAssetDetails.length > 1">(+ {{goal.allocatedAssetDetails.length - 1}})</span>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <div *ngFor="let allocatedAsset of goal.allocatedAssetDetails" class="multi-goal-funded">
+                                    <div (click)="showAssetBreakUp(allocatedAsset)">{{allocatedAsset.displayString}} - &#8377; {{allocatedAsset.amountFormat}}</div>
+                                    <div mat-menu-item class="delete-goal-funded" (click)="deleteAssetMapped(goal, allocatedAsset)">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </mat-menu>
+                        </div>
+                    </div>
+                    <div *ngIf="goal.goalTimelineDisplayString" class="available-from-date">{{goal.goalTimelineDisplayString}}</div>
+                </div>
+            </div>
+        </mat-sidenav-content>
+        <div *ngIf="goalFundingViewModel.goals && goalFundingViewModel.goals.length == 0 && goalFundingViewModel.assets && goalFundingViewModel.assets.length == 0"
+            [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'center-align-div': true}">
+            There are no goals and assets added. Start adding the goals and assets to proceed further.
+        </div>
+        <div *ngIf="goalFundingViewModel.assets && goalFundingViewModel.assets.length == 0 && goalFundingViewModel.goals && goalFundingViewModel.goals.length > 0"
+            [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'center-align-div': true}">
+            There are no assets added. Start adding assets to proceed further.
+        </div>
+        <div *ngIf="goalFundingViewModel.goals && goalFundingViewModel.goals.length == 0 && goalFundingViewModel.assets && goalFundingViewModel.assets.length > 0"
+            [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'center-align-div': true}">
+            There are no goals added. Start adding goals to proceed further.
+        </div>
+
+    </mat-sidenav-container>
+
+    <div class="floating-button">
+        <button type="button" (click)="cancelAll()" [ngClass]="{'btn': true, 'btn-default': true, 'active': true}">Cancel</button>
+        <button type="button" (click)="saveMap()" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Save</button>
+    </div>
+</div>
+
+
+<p-growl [(value)]="msgs"></p-growl>

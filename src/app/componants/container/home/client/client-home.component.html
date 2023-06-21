@@ -1,0 +1,42 @@
+<app-navbar *ngIf="shouldShowNavBar && !isErrorOccured" #navbar></app-navbar>
+<div *ngIf="!isErrorOccured">
+    <mat-tab-group [(selectedIndex)]="selectedTab" (selectedTabChange)="tabChanged($event)">
+        <mat-tab label="Information">
+            <div class="body-container-padding">
+                <app-information #information [clientId]="clientId" *ngIf="tabSelected == 0"></app-information>
+            </div>
+        </mat-tab>
+        <mat-tab label="Risk Profile">
+            <div class="body-container-padding">
+                <app-risk-profile-questions [clientId]="clientId" #riskProfileQuestions *ngIf="tabSelected == 1"></app-risk-profile-questions>
+            </div>
+        </mat-tab>
+        <mat-tab label="Net Worth">
+            <div class="body-container-padding">
+                <app-networth #networth [clientId]="clientId" *ngIf="tabSelected == 2"></app-networth>
+            </div>
+        </mat-tab>
+        <mat-tab label="Cash Flow">
+            <div class="body-container-padding">
+                <app-cashflow #cashflow [clientId]="clientId" *ngIf="tabSelected == 3"></app-cashflow>
+            </div>
+        </mat-tab>
+        <mat-tab label="Goals">
+            <div class="body-container-padding">
+                <app-goals #goals [clientId]="clientId" *ngIf="tabSelected == 4"></app-goals>
+            </div>
+        </mat-tab>
+        <mat-tab label="Calculations">
+            <div class="body-container-padding">
+                <app-calculations [clientId]="clientId" *ngIf="tabSelected == 5"></app-calculations>
+            </div>
+        </mat-tab>
+        <mat-tab label="Insurance Analysis">
+            <div class="body-container-padding">
+                <app-calculations [clientId]="clientId" *ngIf="tabSelected == 6"></app-calculations>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

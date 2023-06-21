@@ -1,0 +1,9 @@
+<app-navbar #navbar></app-navbar>
+<div class="sidesubmenu margin-top-30px margin-bottom-10px">
+        <app-sidemenu #sidemenu (tabchange)="detectTabChange()"></app-sidemenu>
+</div>
+<div class="content-block"  *ngIf="!isErrorOccured">
+        <app-assetClassSetting #assetClassSetting *ngIf="activeTab == 0"> </app-assetClassSetting>
+        <app-riskProfileSetting #riskProfileSetting *ngIf="activeTab == 1"></app-riskProfileSetting>
+</div>
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

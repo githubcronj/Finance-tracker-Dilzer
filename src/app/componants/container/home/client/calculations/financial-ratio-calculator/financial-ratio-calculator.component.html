@@ -1,0 +1,263 @@
+<p-growl [(value)]="msgs">
+</p-growl>
+
+<div class="center-position" *ngIf="!isErrorOccured">
+  <div class="box-design">
+      <table class="table table-striped">
+        <colgroup>
+          <col width="16%">
+          <col width="16%">
+          <col width="17%">
+          <col width="17%">
+          <col width="17%">
+          <col width="17%">
+        </colgroup>
+        <thead>
+          <tr>
+              <th>Financial Ratios</th>
+              <th>Formula</th>
+              <th>Particulars</th>
+              <th>Amount</th>
+              <th>Actual</th>
+              <th>Range</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+              <td>
+                  BASIC LIQUID RATIO
+              </td>
+              <td>
+                Cash/Liquid Assests
+                <hr>
+                Monthly Expenses
+              </td>
+              <td>
+                This ratio indicates one's ability to mandatory monthly expenses & other emergency needs.
+              </td>
+              <td>
+                <div class="em-result-block result-block text-right">
+                  <button type="button" class="btn btn-link" (click)="didOpenCashInHandBreakupDialog(financialRatioCalculatorViewModel.financialRatio.cashAssetBreakUp)">{{(financialRatioCalculatorViewModel && financialRatioCalculatorViewModel.financialRatio.cashAssetCurrencyFormat) ? '&#8377;' +(financialRatioCalculatorViewModel.financialRatio.cashAssetCurrencyFormat)
+                      : '&#8377;' +0}}
+                  </button>
+                </div>
+                <hr>
+                <div class="em-result-block result-block text-right">
+                  <button type="button" class="btn btn-link" (click)="didOpenCashInHandBreakupDialog(financialRatioCalculatorViewModel.financialRatio.monthlyExpenseBreakUp)">{{(financialRatioCalculatorViewModel && financialRatioCalculatorViewModel.financialRatio.monthlyExpenseCurrencyFormat) ? '&#8377;' +(financialRatioCalculatorViewModel.financialRatio.monthlyExpenseCurrencyFormat)
+                      : '&#8377;' +0}}
+                  </button>
+                </div>
+              </td>
+              <td>
+                {{financialRatioCalculatorViewModel.financialRatio.basicLiquidityRatio}}%
+              </td>
+              <td>
+                <tr>
+                  < 3 Adverse
+                </tr>
+                <tr>
+                  3-5 Moderate
+                </tr>
+                <tr>
+                  5-6 Optimum 
+                </tr>
+                <tr>
+                  > 6 Less Optimum
+                </tr>
+              </td>  
+          </tr>
+          <tr>
+              <td>EXPANDED LIQUIDITY RATIO</td>
+              <td>
+                Liquid Assests
+                <hr>
+                Net Worth
+              </td>
+              <td>
+                  This ratio is required during emergency situations when it may not be possible to convert one's assets into cash.
+              </td>
+              <td>
+                <div class="em-result-block result-block text-right">
+                  <button type="button" class="btn btn-link" (click)="didOpenCashInHandBreakupDialog(financialRatioCalculatorViewModel.financialRatio.liquidAssetBreakUp)">{{(financialRatioCalculatorViewModel && financialRatioCalculatorViewModel.financialRatio.liquidAssetCurrencyFormat) ? '&#8377;' +(financialRatioCalculatorViewModel.financialRatio.liquidAssetCurrencyFormat)
+                      : '&#8377;' +0}}
+                  </button>
+                </div>
+                <hr>
+                <div class="em-result-block result-block text-right">
+                  <button type="button" class="btn btn-link" (click)="didOpenCashInHandBreakupDialog(financialRatioCalculatorViewModel.financialRatio.netWorthBreakUp)">{{(financialRatioCalculatorViewModel && financialRatioCalculatorViewModel.financialRatio.netWorthCurrencyFormat) ? '&#8377;' +(financialRatioCalculatorViewModel.financialRatio.netWorthCurrencyFormat)
+                      : '&#8377;' +0}}
+                  </button>
+                </div>
+              </td>
+              <td>
+                {{financialRatioCalculatorViewModel.financialRatio.expandedLiquidityRatio}}%
+              </td>
+              <td>
+                <tr>
+                  < 10% Adverse
+                </tr>
+                <tr>
+                  10% - 15% Moderate
+                </tr>
+                <tr>
+                  > 15% - Optimum
+                </tr>
+              </td>
+          </tr>
+          <tr>
+              <td>SAVINGS RATIO</td>
+              <td>
+                Savings
+                <hr>
+                Gross Inflow
+              </td>
+              <td>
+                  This ratio calculates the proportion of income an individual sets aside for savings out of the total income.
+              </td>
+              <td>
+                <div class="em-result-block result-block text-right">
+                  <button type="button" class="btn btn-link" (click)="didOpenCashInHandBreakupDialog(financialRatioCalculatorViewModel.financialRatio.savingsBreakUp)">{{(financialRatioCalculatorViewModel && financialRatioCalculatorViewModel.financialRatio.savingsCurrencyFormat) ? '&#8377;' +(financialRatioCalculatorViewModel.financialRatio.savingsCurrencyFormat)
+                      : '&#8377;' +0}}
+                  </button>
+                </div>
+                <hr>
+                <div class="em-result-block result-block text-right">
+                  <button type="button" class="btn btn-link" (click)="didOpenCashInHandBreakupDialog(financialRatioCalculatorViewModel.financialRatio.netSalaryBreakUp)">{{(financialRatioCalculatorViewModel && financialRatioCalculatorViewModel.financialRatio.netSalaryCurrencyFormat) ? '&#8377;' +(financialRatioCalculatorViewModel.financialRatio.netSalaryCurrencyFormat)
+                      : '&#8377;' +0}}
+                  </button>
+                </div>
+              </td>
+              <td>
+                {{financialRatioCalculatorViewModel.financialRatio.savingsRatio}}%
+              </td>
+              <td>
+                <tr>
+                  < 10% Adverse
+                </tr>
+                <tr>
+                  10% - 25% Moderate
+                </tr>
+                <tr>
+                  > 25% - Optimum
+                </tr>
+              </td>
+          </tr>
+          <tr>
+              <td>DEBT ASSET RATIO</td>
+              <td>
+                Total Liabilities
+                <hr>
+                Total Assets
+              </td>
+              <td>
+                  This ratio calculates an individual's ability to pay liabilities out of assets.
+              </td>
+              <td>
+                <div class="em-result-block result-block text-right">
+                  <button type="button" class="btn btn-link" (click)="didOpenCashInHandBreakupDialog(financialRatioCalculatorViewModel.financialRatio.totalLiabilitiesBreakUp)">{{(financialRatioCalculatorViewModel && financialRatioCalculatorViewModel.financialRatio.totalLiabilitiesCurrencyFormat) ? '&#8377;' +(financialRatioCalculatorViewModel.financialRatio.totalLiabilitiesCurrencyFormat)
+                      : '&#8377;' +0}}
+                  </button>
+                </div>
+                <hr>
+                <div class="em-result-block result-block text-right">
+                  <button type="button" class="btn btn-link" (click)="didOpenCashInHandBreakupDialog(financialRatioCalculatorViewModel.financialRatio.totalAssetsBreakUp)">{{(financialRatioCalculatorViewModel && financialRatioCalculatorViewModel.financialRatio.totalAssetsCurrencyFormat) ? '&#8377;' +(financialRatioCalculatorViewModel.financialRatio.totalAssetsCurrencyFormat)
+                      : '&#8377;' +0}}
+                  </button>
+                </div>
+              </td>
+              <td>
+                {{financialRatioCalculatorViewModel.financialRatio.debtAssetRatio}}%
+              </td>
+              <td>
+                <tr>
+                  < 30% - Optimum
+                </tr>
+                <tr>
+                  30% - 50% - Moderate
+                </tr>
+                <tr>
+                  > 50% - Adverse
+                </tr>
+              </td>
+          </tr>
+          <tr>
+              <td>SOLVENCY RATIO</td>
+              <td>
+                Net Worth(Assets- Liabilties)
+                <hr>
+                Total Assets
+              </td>
+              <td>
+                  This ratio is used to measure the potential of long-term solvency.
+              </td>
+              <td>
+                <div class="em-result-block result-block text-right">
+                  <button type="button" class="btn btn-link" (click)="didOpenCashInHandBreakupDialog(financialRatioCalculatorViewModel.financialRatio.netWorthBreakUp)">{{(financialRatioCalculatorViewModel && financialRatioCalculatorViewModel.financialRatio.netWorthCurrencyFormat) ? '&#8377;' +(financialRatioCalculatorViewModel.financialRatio.netWorthCurrencyFormat)
+                      : '&#8377;' +0}}
+                  </button>
+                </div>
+                <hr>
+                <div class="em-result-block result-block text-right">
+                  <button type="button" class="btn btn-link" (click)="didOpenCashInHandBreakupDialog(financialRatioCalculatorViewModel.financialRatio.totalAssetsBreakUp)">{{(financialRatioCalculatorViewModel && financialRatioCalculatorViewModel.financialRatio.totalAssetsCurrencyFormat) ? '&#8377;' +(financialRatioCalculatorViewModel.financialRatio.totalAssetsCurrencyFormat)
+                      : '&#8377;' +0}}
+                  </button>
+                </div>
+              </td>
+              <td>
+                {{financialRatioCalculatorViewModel.financialRatio.solvencyRatio}}%
+              </td>
+              <td>
+                <tr>
+                  < 30% - Adverse
+                </tr>
+                <tr>
+                  30% - 50% - Moderate
+                </tr>
+                <tr>
+                  > 50% - Optimum
+                </tr>
+              </td>
+          </tr>
+          <tr>
+              <td>DEBT SERVICE RATIO</td>
+              <td>
+                Annual Debt Payments
+                <hr>
+                Annual Take-Home
+              </td>
+              <td>
+                  These ratios are used to measure an individual's ability to make debt repayments out of Net Take Home.
+              </td>
+              <td>
+                <div class="em-result-block result-block text-right">
+                  <button type="button" class="btn btn-link" (click)="didOpenCashInHandBreakupDialog(financialRatioCalculatorViewModel.financialRatio.annualDebtPaymentBreakUp)">{{(financialRatioCalculatorViewModel && financialRatioCalculatorViewModel.financialRatio.annualDebtPaymentCurrencyFormat) ? '&#8377;' +(financialRatioCalculatorViewModel.financialRatio.annualDebtPaymentCurrencyFormat)
+                      : '&#8377;' +0}}
+                  </button>
+                </div>
+                <hr>
+                <div class="em-result-block result-block text-right">
+                  <button type="button" class="btn btn-link" (click)="didOpenCashInHandBreakupDialog(financialRatioCalculatorViewModel.financialRatio.netSalaryBreakUp)">{{(financialRatioCalculatorViewModel && financialRatioCalculatorViewModel.financialRatio.netSalaryCurrencyFormat) ? '&#8377;' +(financialRatioCalculatorViewModel.financialRatio.netSalaryCurrencyFormat)
+                      : '&#8377;' +0}}
+                  </button>
+                </div>
+              </td>
+              <td>
+                {{financialRatioCalculatorViewModel.financialRatio.debtServiceRatio}}% 
+              </td>
+              <td>
+                <tr>
+                  < 25% - Optimum
+                </tr>
+                <tr>
+                  25% - 45% - Moderate
+                </tr>
+                <tr>
+                  >45% - Adverse
+                </tr>
+              </td>
+          </tr>
+        </tbody>  
+      </table>
+  </div>
+</div>
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

@@ -1,0 +1,27 @@
+<div class="liability-breakdown-holder">
+    <table>
+        <tr>
+            <td colspan="5" style="text-align:center;font-size:20px">
+                <b>{{heading}}</b>
+                <i class="fa fa-times float-right closeIcon" (click)="didClickCloseDialog()"></i>
+            </td>
+        </tr>
+        <tr>
+            <td *ngFor="let translation of translations">
+                <label class="text-left">{{translation}}</label>
+            </td>
+        </tr>
+
+        <tr *ngFor="let breakup of breakups">
+            <td *ngFor="let bp of breakup">
+                <label class="text-left">{{(bp) ? (bp) : '-'}}</label>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="border-right-style:none;" colspan="5">
+                <button type="button" class='btn btn-primary' (click)="didClickCloseDialog(true)">OK</button>
+            </td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,45 @@
+<div class="breakdown-holder">
+    <table>
+        <tr>
+            <td colspan="6" style="text-align:center;font-size:20px">
+                <b>{{breakupDetail.breakup.displayString}} {{translations.BreakupHeadingText}}</b>
+                <i class="fa fa-times float-right closeIcon" (click)="didClickCloseDialog()"></i>
+            </td>
+        </tr>
+        <tr>
+            <th>{{translations.date}}</th>
+            <th>{{translations.openingBalance}}</th>
+            <th>{{translations.rate}}</th>
+            <th>{{translations.contribution}}</th>
+            <th>{{translations.months}}</th>
+            <th>{{translations.closingBalanace}}</th>
+        </tr>
+
+        <tr *ngFor="let breakup of breakupDetail.breakup.breakup">
+            <td>
+                <label>{{(breakup.date) ? formatDate(breakup.date) : '-'}}</label>
+            </td>
+            <td>
+                <label>{{(breakup.openingBalance) ? '&#8377;' + displayCurrency(breakup.openingBalance) : '&#8377;' + '0'}}</label>
+            </td>
+            <td>
+                <label>{{(breakup.rate) ? (breakup.rate) : '-'}}</label>
+            </td>
+            <td>
+                <label class="text-left">{{(breakup.contribution) ? '&#8377;' + displayCurrency(breakup.contribution) : '&#8377;' + '0'}}</label>
+            </td>
+            <td>
+                <label class="text-center">{{(breakup.months) ? (breakup.months) : '0'}}</label>
+            </td>
+            <td>
+                <label class="text-left">{{(breakup.closingBalanace) ? '&#8377;' + displayCurrency(breakup.closingBalanace) : '&#8377;' + '0'}}</label>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="border-right-style:none;" colspan="6">
+                <button type="button" class='btn btn-primary' (click)="didClickCloseDialog(true)">{{translations.buttonText}}</button>
+            </td>
+        </tr>
+    </table>
+</div>

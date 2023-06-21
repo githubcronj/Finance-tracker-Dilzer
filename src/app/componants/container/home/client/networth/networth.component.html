@@ -1,0 +1,10 @@
+<div *ngIf="showDashboard" class="sidesubmenu margin-top-30px margin-bottom-10px">
+    <app-sidemenu #sidemenu (tabchange)="detectTabChange()"></app-sidemenu>
+</div>
+<div class="content-block" *ngIf="showDashboard">
+    <app-dashboard [clientId]="clientId" *ngIf="activeTab == 0"> </app-dashboard> 
+    <app-asset-category-navigator [clientId]="clientId" [assetCategoryType]=assetCategory.FinancialAsset [client]="client" *ngIf="activeTab == 1"></app-asset-category-navigator>
+    <app-asset-category-navigator [clientId]="clientId" [assetCategoryType]=assetCategory.OtherAsset [client]="client" *ngIf="activeTab == 2"></app-asset-category-navigator>
+    <app-liability-category-navigator [clientId]="clientId"  *ngIf="activeTab == 3" [client]="client"></app-liability-category-navigator>
+</div>
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

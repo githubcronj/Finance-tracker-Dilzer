@@ -1,0 +1,51 @@
+<div *ngIf="!isErrorOccured">
+    <div class="float-left width-100per">
+        <div class="dashboard-content-block">
+            <div class="margin-top-30px">
+                <h4 class="margin-bottom-10px">Dashboard</h4>
+                <p-table [scrollable]="true" *ngIf="dashboardViewModel.totalCashflow != 0" [value]="dashboardViewModel.cashflowItems"
+                    scrollHeight="250px" id="paginationColor">
+
+                    <ng-template pTemplate="body" let-item idx>
+                        <tr>
+                            <td>
+                                <div>
+                                    <label (click)="navigate(idx)">{{item.title}}</label>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <label>{{item.percentage}}</label>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <label>{{item.amountDisplayString}}</label>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="footer">
+                        <tr>
+                            <td>Cashflow :</td>
+                            <td></td>
+                            <td>{{ dashboardViewModel.totalCashflowDisplayString }}</td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+            </div>
+        </div>
+
+        <div class="dashboard-content-block margin-top-20px">
+            <p-chart *ngIf="dashboardViewModel.cashflowItems && dashboardViewModel.totalCashflow != 0" type="pie" [data]="dashboardViewModel.graphData"
+                [options]="dashboardViewModel.graphData.options" (onDataSelect)="navigate($event.element._index)"></p-chart>
+        </div>
+        <div *ngIf="dashboardViewModel.totalCashflow == 0" [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'center-align-div': true}">
+            There are no Incomes and Expenses added for this client.
+        </div>
+    </div>
+</div>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

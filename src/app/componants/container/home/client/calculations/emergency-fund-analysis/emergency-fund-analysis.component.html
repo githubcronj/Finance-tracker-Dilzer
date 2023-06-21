@@ -1,0 +1,121 @@
+<div class="center-position" *ngIf="!isErrorOccured">
+    <div class="box-design">
+        <div class="heading-holder float-left width-100per user-details-head">
+            <div class="text-center headings">{{translations.currentMonthlyExpenseHeadingText}}</div>
+        </div>
+
+        <table class="displayTableData" width="100%">
+            <colgroup>
+                <col width="60%">
+                <col width="40%">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">{{translations.householdExpensesText}}</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block text-right">
+                            <button type="button" [disabled]="emergencyFundViewModel.householdExpense == 0" class="btn btn-link" (click)="didOpenExpenseBreakupDialog(emergencyFundViewModel.emergencyFund.householdExpenseBreakUp)">{{(emergencyFundViewModel && emergencyFundViewModel.emergencyFund.householdExpense) ? '&#8377;' +(emergencyFundViewModel.displayCurrency(emergencyFundViewModel.emergencyFund.householdExpense))
+                                : '&#8377;' +0}}
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">{{translations.insurancePremiumsText}}</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block text-right">
+                            <button type="button" [disabled]="emergencyFundViewModel.insurancePremiums == 0" class="btn btn-link" (click)="didOpenAssetBreakupDialog(emergencyFundViewModel.emergencyFund.insurancePremiumBreakUp)">{{(emergencyFundViewModel && emergencyFundViewModel.emergencyFund.insurancePremium) ? '&#8377;' +(emergencyFundViewModel.displayCurrency(emergencyFundViewModel.emergencyFund.insurancePremium))
+                                : '&#8377;' +0}}
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">{{translations.loanEMIServicingText}}</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block text-right">
+                            <button type="button" [disabled]="emergencyFundViewModel.loanEMI == 0" class="btn btn-link" (click)="didOpenLiabilityBreakupDialog(emergencyFundViewModel.emergencyFund.loanEMIServicingBreakUp)">{{(emergencyFundViewModel && emergencyFundViewModel.emergencyFund.loanEMIServicing) ? '&#8377;' +(emergencyFundViewModel.displayCurrency(emergencyFundViewModel.emergencyFund.loanEMIServicing))
+                                : '&#8377;' +0}}
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">{{translations.totalMonthlyExpensesText}}</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block align-to-right">
+                            {{(emergencyFundViewModel && emergencyFundViewModel.emergencyFund.totalMonthlyExpense) ? '&#8377;' +(emergencyFundViewModel.displayCurrency(emergencyFundViewModel.emergencyFund.totalMonthlyExpense))
+                            : '&#8377;' +0}}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="heading-holder float-left width-100per user-details-head">
+            <div class="text-center headings">{{translations.emergencyFundRequirementHeadingText}}</div>
+        </div>
+        <table class="displayTableData" width="100%">
+            <colgroup>
+                <col width="60%">
+                <col width="40%">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">{{translations.emergencyPeriodToBudgetText}}</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block align-to-right">
+                            <input type="number" class="cursor-position" [(ngModel)]="emergencyFundViewModel.emergencyFund.emergencyPeriod" (keyup)="emergencyFundViewModel.autoCalculateEmergencyFundsRequired()"
+                            />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="result-text margin-left-10px">{{translations.emergencyFundsRequiredText}}</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="result-text align-to-right">
+                            {{(emergencyFundViewModel && emergencyFundViewModel.emergencyFund.emergencyFundRequired) ? '&#8377;' +(emergencyFundViewModel.displayCurrency(emergencyFundViewModel.emergencyFund.emergencyFundRequired))
+                            : '&#8377;' +0}}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="displayTableData" width="100%" height="75px">
+            <tr>
+                <td>
+                    <div class="floating-button">
+                        <button (click)="emergencyFundViewModel.calculateEmergencyFundRequired()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Update Emergency Goal</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

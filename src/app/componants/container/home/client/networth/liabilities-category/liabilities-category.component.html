@@ -1,0 +1,54 @@
+<div *ngIf="!isErrorOccured" class="float-left width-100per">
+    <div class="dashboard-content-block">
+        <div class="margin-top-30px">
+            <h4 class="margin-bottom-10px">Liabilities
+                <button type="button" class="btn btn-link float-right margin-left-10px" routerLink='/auth/client/{{clientId}}/add-liability'>Add</button>
+            </h4>
+
+            <p-table *ngIf="liabilitiesCategoryViewModel.liabilitiesItems && liabilitiesCategoryViewModel.liabilitiesItems.length > 0"
+                [scrollable]="true" scrollHeight="250px" [columns]="cols" [value]="liabilitiesCategoryViewModel.liabilitiesItems"
+                id="paginationColor">
+                <ng-template pTemplate="colgroup" let-columns>
+                    <colgroup>
+                        <col *ngFor="let col of columns" class="column-width">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngIf="editEnable">
+                            <input type="checkbox" />
+                        </th>
+                        <th>Liability Name</th>
+                        <th>Valuation</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-liability>
+                    <tr>
+                        <td>
+                            <img width="20px" src="{{resources.liabilityIconPath  + liability.imageName}}" />
+                            <a class="liability-image" (click)="showLiabilities(liability.kind)">{{liability.liabilityTypeDisplayString}}</a>
+                        </td>
+
+                        <td>{{liability.currentValuationDisplayString}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr>
+                        <td>Total :</td>
+                        <td>{{liabilitiesCategoryViewModel.totalValuationDisplayString}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <div *ngIf="liabilitiesCategoryViewModel.graphData && liabilitiesCategoryViewModel.liabilitiesItems && liabilitiesCategoryViewModel.liabilitiesItems.length > 0"
+        class="dashboard-content-block margin-top-20px">
+        <p-chart *ngIf="liabilitiesCategoryViewModel.graphData" type="pie" [data]="liabilitiesCategoryViewModel.graphData" [options]="liabilitiesCategoryViewModel.graphData.options"
+        (onDataSelect)="showLiabilities(liabilitiesCategoryViewModel.liabilityTypeUtils.getLiabilityKindName($event.element._model.label))"></p-chart>
+    </div>
+    <div *ngIf="liabilitiesCategoryViewModel.liabilitiesItems && liabilitiesCategoryViewModel.liabilitiesItems.length == 0" [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'center-align-div': true}">
+        There are no Liabilities added for this client. Click on the Add button to add the Liabilities.
+    </div>
+</div>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

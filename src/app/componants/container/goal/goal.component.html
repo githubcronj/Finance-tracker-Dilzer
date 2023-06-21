@@ -1,0 +1,226 @@
+<app-navbar #navbar></app-navbar>
+
+
+<div *ngIf="!isErrorOccured" class=" body-container-padding">
+    <div class="sub-heading-holder float-left width-100per user-details-head">
+        <div class="float-left headings">Goal Information </div>
+        <span class="float-right">
+            <button type="button" routerLink="{{editGoalInformation}}" class="btn btn-link">Edit</button>
+        </span>
+    </div>
+    <table class="displayTableData" width="100%">
+        <colgroup>
+            <col width="25%">
+            <col width="45%">
+            <col width="30%">
+        </colgroup>
+        <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Name of the goal</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(goalInformation && goalInformation.name) ? goalInformation.name : ''}}
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Present value of goal expense</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(goalInformation && goalInformation.currentValuation) ? '&#8377;' + goalInformation.displayCurrencyString(goalInformation.currentValuation) +' per annum': '0'}}
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr  *ngIf="goalInformation && GoalType && goalInformation.kind == GoalType.RetirementGoal && userDetails.spouse.dob && soleSurvivorHideShow">
+                <td valign="">
+                    <label class="margin-left-10px">Sole Survivor Retirement Living Expenses</label>
+                </td>
+
+                <td class="em-result-block result-block">
+                    <div  *ngIf = "goalInformation.soleSurvivor.amount">
+                        <b> {{'&#8377;' + goalInformation.displayCurrencyString(goalInformation.soleSurvivor.amount)}} per annum</b>
+                        <br/>
+                        <span style="font-size:12px;color: grey;">{{goalInformation.soleSurvivor.createSoleSurvivorExpenseStartDateDisplayString()}} to {{goalInformation.soleSurvivor.createSoleSurvivorExpenseEndDateDisplayString()}}</span>
+                    </div>
+                </td>
+
+                <td class="text-right">
+                    <button type="button" routerLink="/auth/client/{{clientId}}/goal/{{goalId}}/sole-survivor" class="btn btn-link" *ngIf="!addButtonText">Edit</button>
+                    <span class="float-right margin-left-10px" *ngIf="!addButtonText">
+                        <button type="button" (click)="deleteSoleSurvivor(goalInformation.soleSurvivor._id)" class="btn btn-link">Delete</button>
+                    </span>
+                    <span class="float-right margin-left-10px" *ngIf="addButtonText">
+                        <button type="button" routerLink="/auth/client/{{clientId}}/goal/{{goalId}}/sole-survivor" class="btn btn-link">{{addButtonText}}</button>                
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Owner of the Goal</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(goalInformation && goalInformation.owners != null ) ? ownerName : ''}}
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Goal Type</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(goalInformation && goalInformation.kind) ? (goalInformation.displayGoalTypeName()) : ''}}
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Inflation Rate</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(goalInformation && goalInformation.inflationRate != null ) ? (goalInformation.inflationRate +' % per annum') : ''}}
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr *ngIf="describeGoalRowHideShow">
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Goal Type Description</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(goalInformation && goalInformation.description) ? (goalInformation.description) : ''}}
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Goal Period</label>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="goalInformation && goalInformation.goalTimeLine" class="em-result-block result-block">
+
+                        {{goalInformation.goalTimeLine.displayString(userDetails)}}
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!-- Sole Survivor Section -->
+    <!-- <div  *ngIf="goalInformation && GoalType && goalInformation.kind == GoalType.RetirementGoal && userDetails.spouse.dob && soleSurvivorHideShow">
+        <div class="sub-heading-holder float-left width-100per user-details-head">
+            <div class="float-left headings"> Sole Survivor Section</div>
+            <span class="float-right margin-left-10px" *ngIf="addButtonText">
+                <button type="button" routerLink="/auth/client/{{clientId}}/goal/{{goalId}}/sole-survivor" class="btn btn-link">{{addButtonText}}</button>                
+            </span>
+        </div>
+        <table class="displayTableData" width="100%" *ngIf = "goalInformation.soleSurvivor.amount">
+            <colgroup>
+                <col width="25%">
+                <col width="45%">
+                <col width="30%">
+            </colgroup>
+
+            <tbody>
+                <tr>
+                    <td valign="">
+                        Sole Survivor Retirement Living Expenses
+                    </td>
+
+                    <td class="em-result-block result-block">
+                        <b>₹ {{goalInformation.soleSurvivor.amount}} per annum</b>
+                        <br/>
+                        <span style="font-size:12px;color: grey;">{{goalInformation.soleSurvivor.createSoleSurvivorExpenseStartDateDisplayString()}} to {{goalInformation.soleSurvivor.createSoleSurvivorExpenseEndDateDisplayString()}}</span>
+                    </td>
+
+                    <td class="text-right">
+                        <button type="button" routerLink="/auth/client/{{clientId}}/goal/{{goalId}}/sole-survivor" class="btn btn-link">Edit</button>
+                        <span class="float-right margin-left-10px">
+                            <button type="button" (click)="deleteSoleSurvivor(goalInformation.soleSurvivor._id)" class="btn btn-link">Delete</button>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div> -->
+
+
+
+
+
+    <div *ngIf="keychainService.isLoggedInAsAdmin()">
+        <div class="sub-heading-holder float-left width-100per user-details-head">
+            <div class="float-left headings">Goal Corpus Rate Of Return </div>
+            <span class="float-right margin-left-10px">
+                <button type="button" routerLink="/auth/client/{{clientId}}/goal/{{goalId}}/goalCorpusRateOfReturn" class="btn btn-link">{{rateOfReturnButton}}</button>
+            </span>
+        </div>
+
+        <table *ngIf="goalInformation && goalInformation.rateOfReturns && goalInformation.rateOfReturns.length > 0" class="displayTableData"
+            width="100%">
+            <colgroup>
+                <col width="25%">
+                <col width="55%">
+                <col width="20%">
+            </colgroup>
+
+            <tbody>
+                <tr *ngFor="let rateOfReturn of goalInformation.rateOfReturns">
+
+                    <td valign="top margin-left-10px">
+                        <label class="margin-left-10px">{{(rateOfReturn.fromDate) ? 'From ' + rateOfReturn.displayFromDate() : '-'}}</label>
+                    </td>
+                    <td class="em-result-block result-block">
+                        {{rateOfReturn.description()}}
+                    </td>
+
+
+                    <td class="text-right">
+                        <button type="button" (click)="editRateOfReturns(rateOfReturn._id)" class="btn btn-link">Edit</button>
+                        <span class="float-right margin-left-10px">
+                            <button type="button" (click)="deleteRateOfReturn(rateOfReturn._id)" class="btn btn-link">Delete</button>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+

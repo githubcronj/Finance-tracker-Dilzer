@@ -1,0 +1,38 @@
+.stage-change-holder {
+    padding: 15px 2rem;
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #e5e5e5;
+}
+.stage-change-holder .form-control {
+    width: 20%;
+}
+.em-title-block {
+    font-size: 13px;
+    color: #4c4c4c;
+}
+.em-result-block {
+    color: #4c4c4c;
+}
+.em-result-block::first-letter {
+    text-transform: capitalize;
+}
+div {
+    display: inline-block;
+    width: 100%;
+}
+.user-details-head {
+    display: flex;
+    align-items: center;
+}
+.family-member-name {
+    font-size: 15px;
+}
+.family-member-relation {
+    font-size: 13px;
+    font-family: 'roboto-light';
+}
+.padding-left-20 {
+    padding-left: 20px !important;
+}
+

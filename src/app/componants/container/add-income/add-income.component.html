@@ -1,0 +1,249 @@
+<app-navbar #navbar></app-navbar>
+<div *ngIf="!isErrorOccured">
+
+  <div [ngClass]="{'margin-top-40px': true}">
+    <div *ngIf="income" [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'assets-center-align': true}">
+      <div [ngClass]="{'card': true}">
+        <div [ngClass]="{'card-block': true}">
+          <form [formGroup]="incomeDetailForm">
+            <h4 [ngClass]="{'margin-bottom-20px': true}">{{blockHeader}}</h4>
+            <div [ngClass]="{'form-group': true}">
+              <label>{{incomeTranslations.incomeNameText}}</label>
+              <div class="input-group margin-0">
+                <input type="text" formControlName="incomeNameControl" class="form-control" [(ngModel)]="income.name" />
+                <span class="percentage" pTooltip={{tooltipTranslations.incomeNameHelpTip}} tooltipPosition="right">
+                  <img src="{{resources.infoIcon}}" class="infoIcon" />
+                </span>
+              </div>
+              <div *ngIf="incomeDetailForm.controls['incomeNameControl'].hasError('required') && incomeDetailForm.controls['incomeNameControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{incomeTranslations.emptyNameError}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <label>{{incomeTranslations.incomeTypeText}}</label>
+              <div class="input-group margin-0">
+                <select formControlName="incomeTypeControl" class="form-control" [(ngModel)]="income.kind">
+                  <option *ngFor="let incomeType of incomeTypeList" value="{{incomeType.key}}">
+                    {{incomeType.value}}
+                  </option>
+                </select>
+                <span class="percentage" pTooltip={{tooltipTranslations.incomeTypeHelpTip}} tooltipPosition="right">
+                  <img src="{{resources.infoIcon}}" class="infoIcon" />
+                </span>
+              </div>
+              <div *ngIf="incomeDetailForm.controls['incomeTypeControl'].hasError('required') && incomeDetailForm.controls['incomeTypeControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{incomeTranslations.emptyIncomeType}}
+              </div>
+            </div>
+
+            <div [ngClass]="{'form-group': true}">
+              <label>Associated Asset</label>
+              <div class="input-group margin-0">
+                <select formControlName="associatedAssetControl" class="form-control" [(ngModel)]="income.associatedAsset">
+                  <option value="">None</option>
+                  <option *ngFor="let associatedAsset of associatedAssetList" value="{{associatedAsset.key}}">
+                    {{associatedAsset.value}}
+                  </option>
+                </select>
+                <span class="percentage" pTooltip={{tooltipTranslations.associatedAssetHelpTip}} tooltipPosition="right">
+                  <img src="{{resources.infoIcon}}" class="infoIcon" />
+                </span>
+              </div>
+            </div>
+
+            <div [ngClass]="{'form-group': true}">
+              <label>{{incomeTranslations.incomeOwnerText}}</label>
+              <div class="input-group margin-0">
+                <select (change)="didChangeOwner($event)" formControlName="incomeOwnerControl" class="form-control" [(ngModel)]="ownerName">
+                  <option *ngFor="let owner of ownerOfResourceList" value="{{owner.key}}">
+                    {{owner.value}}
+                  </option>
+                </select>
+                <span class="percentage" pTooltip={{tooltipTranslations.incomeOwnerHelpTip}} tooltipPosition="right">
+                  <img src="{{resources.infoIcon}}" class="infoIcon" />
+                </span>
+              </div>
+              <div *ngIf="incomeDetailForm.controls['incomeOwnerControl'].hasError('required') && incomeDetailForm.controls['incomeOwnerControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{incomeTranslations.emptyOwnerError}}
+              </div>
+            </div>
+
+            <div [ngClass]="{'form-group': true}">
+              <label>{{incomeTranslations.amountText}}</label>
+              <div class="input-group margin-0">
+                <input type="number" formControlName="amountControl" class="form-control" [(ngModel)]="income.amount" />
+                <span class="percentage">₹</span>
+                <span class="percentage" pTooltip={{tooltipTranslations.amountHelpTip}} tooltipPosition="right">
+                  <img src="{{resources.infoIcon}}" class="infoIcon" />
+                </span>
+              </div>
+              <div *ngIf="incomeDetailForm.controls['amountControl'].hasError('required') && incomeDetailForm.controls['amountControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{incomeTranslations.emptyAmountError}}
+              </div>
+            </div>
+
+            <div [ngClass]="{'form-group': true}">
+              <label>{{incomeTranslations.frequencyText}}</label>
+              <div class="input-group margin-0">
+                <select formControlName="frequencyControl" class="form-control" [(ngModel)]="income.frequency">
+                  <option *ngFor="let type of incomeFrequencyTypes" value="{{type.key}}">{{type.value}}</option>
+                </select>
+                <span class="percentage" pTooltip={{tooltipTranslations.frequencyHelpTip}} tooltipPosition="right">
+                  <img src="{{resources.infoIcon}}" class="infoIcon" />
+                </span>
+              </div>
+            </div>
+
+            <div [ngClass]="{'form-group': true}">
+              <label>{{incomeTranslations.growthRateText}}</label>
+              <div class="input-group margin-0">
+                <input type="number" formControlName="growthRateControl" class="form-control" [(ngModel)]="income.growthRate" />
+                <span class="percentage">%</span>
+                <span class="percentage" pTooltip={{tooltipTranslations.growthRateHelpTip}} tooltipPosition="right">
+                  <img src="{{resources.infoIcon}}" class="infoIcon" />
+                </span>
+              </div>
+              <div *ngIf="incomeDetailForm.controls['growthRateControl'].hasError('required') && incomeDetailForm.controls['growthRateControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{incomeTranslations.emptyGrowthRateError}}
+              </div>
+            </div>
+
+            <div [ngClass]="{'form-group': true}">
+              <label>{{incomeTranslations.startDateText}}</label>
+              <p-calendar [monthNavigator]="true" [yearNavigator]="true" inputStyleClass="form-control" placeholder="dd/mm/yyyy" formControlName="startDateControl"
+                [selectOtherMonths]="true" (onSelect)="didEndClickForFromDateField($event)" [minDate]="minDate" [readonlyInput]="true"
+                dateFormat="dd/mm/yy" yearRange="1930:2200" [(ngModel)]="income.startDate"></p-calendar>
+              <div *ngIf="incomeDetailForm.controls['startDateControl'].hasError('required') && incomeDetailForm.controls['startDateControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{incomeTranslations.emptyStartDateError}}
+              </div>
+            </div>
+
+            <div [ngClass]="{'form-group': true}">
+              <label>{{incomeTranslations.endDateText}}</label>
+              <p-calendar [monthNavigator]="true" yearRange="{{minDate.getFullYear()}}:2200" [minDate]="income.startDate || minDate" [yearNavigator]="true"
+                inputStyleClass="form-control" placeholder="dd/mm/yyyy" formControlName="endDateControl" [selectOtherMonths]="true"
+                [readonlyInput]="true" dateFormat="dd/mm/yy" [(ngModel)]="income.endDate"></p-calendar>
+              <div *ngIf="incomeDetailForm.controls['endDateControl'].hasError('required') && incomeDetailForm.controls['endDateControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{incomeTranslations.emptyEndDateError}}
+              </div>
+            </div>
+
+            <div [ngClass]="{'form-group': true}">
+              <div class="row">
+                <label class="col-10 padding-0 title">{{incomeTranslations.beneficiaryText}}</label>
+                <div class="col-2 padding-0 checkbox">
+                  <input type="checkbox" formControlName="beneficiaryControl" (change)="showBeneficiaryDetailsSection($event)" value="true"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Beneficiary Details -->
+            <div *ngIf="showOrHideBeneficiaryDetailsSection">
+              <div [ngClass]="{'card': true, 'margin-left':false, 'margin-right':false}">
+                <div [ngClass]="{'card-block': true}">
+                  <h5 [ngClass]="{'margin-bottom-20px': true}">{{childBlockHeader}}</h5>
+
+
+                  <div [ngClass]="{'form-group': true}">
+                    <label>{{incomeTranslations.beneficiaryName}}</label>
+                    <select (change)="didCalculateBeneficiaryEndDate()" [(ngModel)]="income.beneficiary.owner" formControlName="beneficiaryIncomeOwnerControl"
+                      class="form-control">
+                      <option *ngFor="let owner of ownerOfResourceList" value="{{owner.key}}">
+                        {{owner.value}}
+                      </option>
+                    </select>
+                    <div *ngIf="incomeDetailForm.controls['beneficiaryIncomeOwnerControl'].hasError('required') && incomeDetailForm.controls['beneficiaryIncomeOwnerControl'].touched"
+                      [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                      {{incomeTranslations.emptyOwnerError}}
+                    </div>
+                  </div>
+
+                  <div [ngClass]="{'form-group': true}">
+                    <label>{{incomeTranslations.amountText}}</label>
+                    <div class="input-group margin-0">
+                      <input [(ngModel)]="income.beneficiary.amount" type="number" formControlName="beneficiaryIncomeAmountControl" class="form-control"
+                      />
+                      <span class="percentage">₹</span>
+                    </div>
+                    <div *ngIf="incomeDetailForm.controls['beneficiaryIncomeAmountControl'].hasError('required') && incomeDetailForm.controls['beneficiaryIncomeAmountControl'].touched"
+                      [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                      {{incomeTranslations.emptyAmountError}}
+                    </div>
+                  </div>
+
+                  <div [ngClass]="{'form-group': true}">
+                    <label>{{incomeTranslations.frequencyText}}</label>
+                    <select [(ngModel)]="income.beneficiary.frequency" formControlName="beneficiaryIncomeFrequencyControl" class="form-control">
+                      <option *ngFor="let type of incomeFrequencyTypes" value="{{type.key}}">{{type.value}}</option>
+                    </select>
+                  </div>
+
+                  <div [ngClass]="{'form-group': true}">
+                    <label>{{incomeTranslations.growthRateText}}</label>
+                    <div class="input-group margin-0">
+                      <input [(ngModel)]="income.beneficiary.growthRate" type="number" formControlName="beneficiaryIncomeGrowthRateControl" class="form-control"
+                      />
+                      <span class="percentage">%</span>
+                    </div>
+                    <div *ngIf="incomeDetailForm.controls['beneficiaryIncomeGrowthRateControl'].hasError('required') && incomeDetailForm.controls['beneficiaryIncomeGrowthRateControl'].touched"
+                      [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                      {{incomeTranslations.emptyGrowthRateError}}
+                    </div>
+                  </div>
+
+                  <div [ngClass]="{'form-group': true}">
+                    <label>{{incomeTranslations.startDateText}}</label>
+                    <p-calendar [minDate]="income.endDate" [(ngModel)]="income.beneficiary.startDate" [monthNavigator]="true" [yearNavigator]="true"
+                      inputStyleClass="form-control" placeholder="dd/mm/yyyy" formControlName="beneficiaryIncomeStartDateControl"
+                      [selectOtherMonths]="true" [readonlyInput]="true" dateFormat="dd/mm/yy" yearRange="1930:2100" (onSelect)="didBenificiaryEndClickForFromDateField($event)"></p-calendar>
+                    <div *ngIf="incomeDetailForm.controls['beneficiaryIncomeStartDateControl'].hasError('required') && incomeDetailForm.controls['beneficiaryIncomeStartDateControl'].touched"
+                      [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                      {{incomeTranslations.emptyStartDateError}}
+                    </div>
+                  </div>
+
+                  <div [ngClass]="{'form-group': true}">
+                    <label>{{incomeTranslations.endDateText}}</label>
+                    <p-calendar [minDate]="income.beneficiary.startDate" [(ngModel)]="income.beneficiary.endDate" [monthNavigator]="true" [minDate]="income.startDate"
+                      [yearNavigator]="true" inputStyleClass="form-control" placeholder="dd/mm/yyyy" formControlName="beneficiaryIncomeEndDateControl"
+                      [selectOtherMonths]="true" [readonlyInput]="true" dateFormat="dd/mm/yy" yearRange="1930:2100"></p-calendar>
+                    <div *ngIf="incomeDetailForm.controls['beneficiaryIncomeEndDateControl'].hasError('required') && incomeDetailForm.controls['beneficiaryIncomeEndDateControl'].touched"
+                      [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                      {{incomeTranslations.emptyEndDateError}}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
+
+            <div [ngClass]="{ 'margin-top-20px': true}">
+              <div [ngClass]="{'form-group': true}">
+                <button *ngIf="!loadingOnSubmit" (click)="createBasicIncome()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">{{addUpdateIncomeButtonText}}</button>
+                <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'justify-content-center': true}">
+                  <div class="loader"></div>
+                </button>
+                <button (click)="routeBack()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

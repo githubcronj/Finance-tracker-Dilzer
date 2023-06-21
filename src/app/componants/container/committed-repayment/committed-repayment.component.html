@@ -1,0 +1,256 @@
+<app-navbar #navbar></app-navbar>
+
+<div *ngIf="!isErrorOccured" [ngClass]="{'margin-top-40px': true, 'float-left': true, 'width-100per': true}">
+    <div [ngClass]="{'assets-center-align': true}" class="col col-12 col-md-10 col-sm-12 col-lg-8 col-xl-6">
+        <div [ngClass]="{'card': true}">
+            <div [ngClass]="{'card-block': true}">
+                <form [formGroup]='committedSavingDepositForm'>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{committedTranslations.committedTypeText}}</label>
+                        <div class="input-group margin-0">
+                            <select formControlName="committedSavingTypeControl" class="form-control" [(ngModel)]="committedSaving.kind">
+                                <option *ngFor="let committedSavingType of committedSavingArray" value="{{committedSavingType.key}}">{{committedSavingType.value}}</option>
+                            </select>
+                            <span class="percentage" pTooltip={{tooltipTranslations.committedRepaymentTypeHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{committedTranslations.nameText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="text" formControlName="depositNameControl" class="form-control" [(ngModel)]="committedSaving.name" />
+                            <span class="percentage" pTooltip={{tooltipTranslations.committedRepaymentNameHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{committedTranslations.amountText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" formControlName="depositAmountControl" (keyup)="autoCalculateAbsoluteAmount()" (change)="didEndEditingAmount()"
+                                class="form-control" [(ngModel)]="committedSaving.amount" />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{tooltipTranslations.committedRepaymentAmountHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                        <div *ngIf="committedSavingDepositForm.controls['depositAmountControl'].hasError('required') && committedSavingDepositForm.controls['depositAmountControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Please enter amount.
+                        </div>
+                    </div>
+                    <div *ngIf="committedSaving.kind == committedSavingType.RegularSaving">
+                        <div [ngClass]="{'form-group': true}">
+                            <label>{{committedTranslations.frequencyText}}</label>
+                            <div class="input-group margin-0">
+                                <select formControlName="frequencyPeriodControl" class="form-control" (change)="autoCalculateAbsoluteAmount()" [(ngModel)]="committedSaving.frequency">
+                                    <option *ngFor="let type of committedSavingFrequencyTypes" value="{{type.key}}">{{type.value}}</option>
+                                </select>
+                                <span class="percentage" pTooltip={{tooltipTranslations.committedRepaymentFrequencyHelpTip}} tooltipPosition="right">
+                                    <img src="{{resources.infoIcon}}" class="infoIcon" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="committedSaving.kind == committedSavingType.RegularSaving" [ngClass]="{'form-group': true}">
+                        <label>{{committedTranslations.incrementalRateText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" (keyup)="autoCalculateAbsoluteAmount()" formControlName="incrementalRateControl" class="form-control"
+                                [(ngModel)]="committedSaving.incrementalRate" />
+                            <span class="percentage">% Per Annum</span>
+                            <span class="percentage" pTooltip={{tooltipTranslations.committedRepaymentIncrementalRateHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="committedSaving.kind == committedSavingType.RegularSaving" [ngClass]="{'form-group': true}">
+                        <label>{{committedTranslations.absoluteAmountText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" formControlName="absoluteAmountControl" (keyup)="autoCalculateIncrementalRateOfContribution()"
+                                class="form-control" [(ngModel)]="committedSaving.absoluteAmount" />
+                            <span class="percentage">₹ Per Annum</span>
+                            <span class="percentage" pTooltip={{tooltipTranslations.committedRepaymentAbsoluteAmountHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                        <div *ngIf="committedSavingDepositForm.controls['absoluteAmountControl'].hasError('required') && committedSavingDepositForm.controls['absoluteAmountControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Please enter amount.
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}"  *ngIf="this.keychainService.isLoggedInAsAdmin()">
+                        <div class="row">
+                            <label class="col-10 padding-0 title"> Exclude from Cash Flow</label>
+                            <div class="col-2 padding-0 checkbox">
+                                <input type="checkbox" formControlName="excludeCashFlowControl" value="{{committedSaving.excludeFromCashFlow}}" [(ngModel)]="committedSaving.excludeFromCashFlow"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}" *ngIf="committedSaving.kind == committedSavingType.LupsumDeposit">
+                        <label>{{committedTranslations.depositHappenText}}</label>
+                        <div class="margin-top-10px">
+
+                            <app-date-picker #lumpsumStartDatePicker (datePickerEmitter)="autoCalculate()"> </app-date-picker>
+
+
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}" *ngIf="committedSaving.kind == committedSavingType.RegularSaving">
+                        <label>{{committedTranslations.regularSavingStartText}}</label>
+                        <div class="margin-top-10px">
+
+                            <app-date-picker #regularStartDatePicker (datePickerEmitter)="changeDate()"> </app-date-picker>
+
+                        </div>
+                    </div>
+                    <div [ngClass]="{'form-group': true}" *ngIf="committedSaving.kind == committedSavingType.RegularSaving">
+                        <label>{{committedTranslations.regularSavingEndText}}</label>
+                        <div class="margin-top-10px">
+
+                            <app-date-picker #regularEndDatePicker [isCommittedRepaymentEndDate]="true"> </app-date-picker>
+
+                        </div>
+                    </div>
+
+
+
+                    <!-- Savings After Lumpsum Repayment -->
+
+                    <div *ngIf="this.keychainService.isLoggedInAsAdmin() && committedSaving.kind == committedSavingType.LupsumDeposit">
+                        <strong>Savings After Lumpsum Repayment</strong>
+
+                        <div [ngClass]="{'card': true, 'margin-left':false, 'margin-right':false}">
+                            <div [ngClass]="{'card-block': true}">
+
+                                <div [ngClass]="{'form-group': true}">
+                                    <label>{{committedTranslations.outstandingAmountAfterLumpsumRepaymentText}}</label>
+                                    <div class="input-group margin-0">
+                                        <input [(ngModel)]="committedSaving.outstandingAmountAfterPayment" [readonly]="true" formControlName="outstandingAmountAfterLumpsumRepaymentControl"
+                                            type="number" [ngClass]="{'form-control': true}" />
+                                        <span class="percentage">₹</span>
+                                        <span class="percentage" pTooltip={{tooltipTranslations.outstandingAmountAfterLumpsumRepaymentHelpTip}} tooltipPosition="right">
+                                            <img src="{{resources.infoIcon}}" class="infoIcon" />
+                                        </span>
+                                    </div>
+                                    <div *ngIf="committedSavingDepositForm.controls['outstandingAmountAfterLumpsumRepaymentControl'].hasError('required') && committedSavingDepositForm.controls['outstandingAmountAfterLumpsumRepaymentControl'].touched"
+                                        [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                        Please enter outstanding amount after lumpsum repayment.
+                                    </div>
+                                </div>
+
+                                <div [ngClass]="{'form-group': true}">
+                                    <label>{{committedTranslations.interestPayableAfterLumpsumRepaymentText}}</label>
+                                    <div class="input-group margin-0">
+                                        <input [(ngModel)]="committedSaving.interestPayableAfterPayment" [readonly]="true" formControlName="interestPayableAfterLumpsumRepaymentControl"
+                                            type="number" [ngClass]="{'form-control': true}" />
+                                        <span class="percentage">₹</span>
+                                        <span class="percentage" pTooltip={{tooltipTranslations.interestPayableAfterLumpsumRepaymentHelpTip}} tooltipPosition="right">
+                                            <img src="{{resources.infoIcon}}" class="infoIcon" />
+                                        </span>
+                                    </div>
+                                    <div *ngIf="committedSavingDepositForm.controls['interestPayableAfterLumpsumRepaymentControl'].hasError('required') && committedSavingDepositForm.controls['interestPayableAfterLumpsumRepaymentControl'].touched"
+                                        [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                        Please enter interest payable after lumpsum repayment.
+                                    </div>
+                                </div>
+
+                                <div [ngClass]="{'form-group': true}">
+                                    <label>{{committedTranslations.savingsAfterLumpsumRepaymentText}}</label>
+                                    <div class="input-group margin-0">
+                                        <input [(ngModel)]="committedSaving.savingsAfterRepayment" [readonly]="true" formControlName="savingsAfterLumpsumRepaymentControl"
+                                            type="number" [ngClass]="{'form-control': true}" />
+                                        <span class="percentage">₹</span>
+                                        <span class="percentage" pTooltip={{tooltipTranslations.savingsAfterLumpsumRepaymentHelpTip}} tooltipPosition="right">
+                                            <img src="{{resources.infoIcon}}" class="infoIcon" />
+                                        </span>
+                                    </div>
+                                    <div *ngIf="committedSavingDepositForm.controls['savingsAfterLumpsumRepaymentControl'].hasError('required') && committedSavingDepositForm.controls['savingsAfterLumpsumRepaymentControl'].touched"
+                                        [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                        Please enter savings after lumpsum repayment.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Comparision With Mutual Funds -->
+
+                        <div [ngClass]="{'margin-top-20px': true}">
+                            <strong>Comparison With Mutual Funds</strong>
+
+                            <div [ngClass]="{'card': true, 'margin-left':false, 'margin-right':false}">
+                                <div [ngClass]="{'card-block': true}">
+
+                                    <div [ngClass]="{'form-group': true}">
+                                        <label>{{committedTranslations.mutualFundRORText}}</label>
+                                        <div class="input-group margin-0">
+                                            <input [(ngModel)]="committedSaving.mutualFundROR" formControlName="mutualFundRORControl" (keyup)="didChangeMutualFundROR()"
+                                                type="number" [ngClass]="{'form-control': true}" />
+                                            <span class="percentage">%</span>
+                                            <span class="percentage" pTooltip={{tooltipTranslations.mutualFundRORHelpTip}} tooltipPosition="right">
+                                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                                            </span>
+                                        </div>
+                                        <div *ngIf="committedSavingDepositForm.controls['mutualFundRORControl'].hasError('required') && committedSavingDepositForm.controls['mutualFundRORControl'].touched"
+                                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                            Please enter rate of return.
+                                        </div>
+                                    </div>
+
+                                    <div [ngClass]="{'form-group': true}">
+                                        <label>{{committedTranslations.mutualFundFutureValueText}}</label>
+                                        <div class="input-group margin-0">
+                                            <input [(ngModel)]="committedSaving.mutualFundFutureValue" [readonly]="true" formControlName="mutualFundFutureValueControl"
+                                                type="number" [ngClass]="{'form-control': true}" />
+                                            <span class="percentage">₹</span>
+                                        </div>
+                                        <div *ngIf="committedSavingDepositForm.controls['mutualFundFutureValueControl'].hasError('required') && committedSavingDepositForm.controls['mutualFundFutureValueControl'].touched"
+                                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                            Please enter mutual fund future value.
+                                        </div>
+                                    </div>
+
+                                    <div [ngClass]="{'form-group': true}">
+                                        <label>{{committedTranslations.mutualFundNetGainText}}</label>
+                                        <div class="input-group margin-0">
+                                            <input [(ngModel)]="committedSaving.mutualFundNetGain" [readonly]="true" formControlName="mutualFundNetGainControl" type="number"
+                                                [ngClass]="{'form-control': true}" />
+                                            <span class="percentage">₹</span>
+                                        </div>
+                                        <div *ngIf="committedSavingDepositForm.controls['mutualFundNetGainControl'].hasError('required') && committedSavingDepositForm.controls['mutualFundNetGainControl'].touched"
+                                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                            Please enter mutual fund net gain.
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div [ngClass]="{'form-group': true, 'margin-top-20px': true}">
+                        <button *ngIf="!loadingOnSubmit" type="button" class='btn btn-primary' (click)="didClickAddCommittedSaving()">{{addUpdateCommittedRepaymentButtonText}}</button>
+                        <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'justify-content-center': true}">
+                            <div class="loader"></div>
+                        </button>
+                        <button (click)="didClickCancelButton()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+

@@ -1,0 +1,175 @@
+<app-navbar #navbar></app-navbar>
+<div *ngIf="!isErrorOccured" [ngClass]="{'margin-top-40px': true}">
+    <div *ngIf="goal" [ngClass]="{'col-md-10': true, 'col-12': true, 'col-lg-8': true, 'col-sm-6': true, 'assets-center-align': true}">
+        <div [ngClass]="{'card': true}">
+            <div [ngClass]="{'card-block': true}" >
+                <form [formGroup]="goalDetailForm">
+                    <h4 [ngClass]="{'margin-bottom-20px': true}">{{blockHeader}}</h4>
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Name Of the Goal</label>
+                        <div class="input-group margin-0">
+                            <input type="text" formControlName="goalNameControl" class="form-control" [(ngModel)]="goal.name" />
+                            <span class="percentage" pTooltip={{tooltipTranslations.goalNameHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                        <div *ngIf="goalDetailForm.controls['goalNameControl'].hasError('required') && goalDetailForm.controls['goalNameControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Please enter goal name.
+                        </div>
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Choose Goal Type</label>
+                        <div class="input-group margin-0">
+                            <select formControlName="goalTypeControl" (change)="didChangeGoalType()" class="form-control" [(ngModel)]="goal.kind">
+                                <option *ngFor="let goalType of goalTypeList" value="{{goalType.key}}">
+                                    {{goalType.value}}
+                                </option>
+                            </select>
+                            <span class="percentage" pTooltip={{tooltipTranslations.goalTypeHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                        <div *ngIf="goalDetailForm.controls['goalTypeControl'].hasError('required') && goalDetailForm.controls['goalTypeControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Please enter goal type.
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}" *ngIf="showOtherFeild">
+                        <label>Describe The Goal</label>
+                        <input type="text" formControlName="otherGoalControl" class="form-control" [(ngModel)]="goal.description" />
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Present Value of Goal Expense</label>
+                        <div class="input-group margin-0">
+                            <input type="number" min="0" formControlName="currentValuationControl" class="form-control" [(ngModel)]="goal.currentValuation"
+                            />
+                            <span class="percentage">₹ per annum</span>
+                            <span class="percentage" pTooltip={{tooltipTranslations.goalCurrentValuationHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                        <div *ngIf="goalDetailForm.controls['currentValuationControl'].hasError('required') && goalDetailForm.controls['currentValuationControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Please enter the amount.
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Owner of the Goal</label>
+                        <div class="input-group margin-0">
+                            <select (change)="didChangeOwner($event)" formControlName="goalOwnerControl" class="form-control" [(ngModel)]="ownerName">
+                                <option *ngFor="let owner of ownerOfGoalList" value="{{owner.key}}">
+                                    {{owner.value}}
+                                </option>
+                            </select>
+                            <span class="percentage" pTooltip={{tooltipTranslations.goalOwnerHelpTip}} tooltipPosition="right">
+                                <img src="{{resources.infoIcon}}" class="infoIcon" />
+                            </span>
+                        </div>
+                        <div *ngIf="goalDetailForm.controls['goalOwnerControl'].hasError('required') && goalDetailForm.controls['goalOwnerControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Please select the owner.
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Inflation Rate</label>
+                        <div class="row">
+                            <div class="input-group margin-0">
+                                <input [ngClass]="{'form-control': true}" list=rate formControlName="inflationRateControl" [(ngModel)]="goal.inflationRate">
+                                <datalist id=rate>
+
+                                    <option *ngFor="let list of inflationList" [value]="list"></option>
+
+                                </datalist>
+                                <span class="percentage">% per annum</span>
+                                <span class="percentage" pTooltip={{tooltipTranslations.goalInflationRateHelpTip}} tooltipPosition="right">
+                                    <img src="{{resources.infoIcon}}" class="infoIcon" />
+                                </span>
+                            </div>
+                        </div>
+                        <div *ngIf="goalDetailForm.controls['inflationRateControl'].hasError('required') && goalDetailForm.controls['inflationRateControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Please enter inflation rate.
+                        </div>
+                        <div *ngIf="goalDetailForm.controls['inflationRateControl'].hasError('pattern') && goalDetailForm.controls['inflationRateControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Inflation rate must be within 6 to 10.
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <div class="row">
+                            <label class="col-10 padding-0 title"> Need Insurance Analysis</label>
+                            <div class="col-2 padding-0 checkbox">
+                                <input type="checkbox" formControlName="needInsuranceAnalysisControl" value="{{goal.needInsuranceAnalysis}}" [(ngModel)]="goal.needInsuranceAnalysis"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>When does this Goal Start?</label>
+
+                        <div class="margin-top-10px">
+                            <app-date-picker #startDatePicker (datePickerEmitter)="changeDate()"> </app-date-picker>
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <strong>Does the goal happen for more than one year?</strong>
+                        <div class="row radio-inline margin-right-10px">
+                            <div class="radio-inline margin-right-30px">
+
+                                <input type="radio" [value]="true" formControlName="categoryControl" name="categoryControl" [(ngModel)]="isGoalHAppenMoreThanYear"
+                                    (change)="changeCategory()" />
+                                <span class="margin-left-10px">Yes</span>
+
+
+                                <input type="radio" [value]="false" formControlName="categoryControl" name="categoryControl" [(ngModel)]="isGoalHAppenMoreThanYear"
+                                    (change)="changeCategory()" />
+                                <span class="margin-left-10px">No</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="showDiv" [ngClass]="{'form-group': true}">
+                        <label> When does this Goal end? </label>
+
+                        <div class="margin-top-10px">
+
+                            <app-date-picker #endDatePicker> </app-date-picker>
+
+                        </div>
+                        <div [ngClass]="{'form-group': true}" class="margin-top-10px">
+                            <label>How often is this goal?</label>
+                            <div class="input-group margin-0">
+                                <select formControlName="goalFrequencyControl" class="form-control margin-top-10px" [(ngModel)]="goalTimeLine.frequency">
+                                    <option *ngFor="let frequency of goalFrequency" value="{{frequency.key}}">{{frequency.value}}</option>
+                                </select>
+                                <span class="percentage" pTooltip={{tooltipTranslations.goalFrequencyHelpTip}} tooltipPosition="right">
+                                    <img src="{{resources.infoIcon}}" class="infoIcon" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <button *ngIf="!loadingOnSubmit" (click)="createBasicGoal()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">{{addUpdateGoalButtonText}}</button>
+                        <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'justify-content-center': true}">
+                            <div class="loader"></div>
+                        </button>
+                        <button (click)="routeBack()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

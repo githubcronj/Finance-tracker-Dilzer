@@ -1,0 +1,49 @@
+<app-navbar #navbar></app-navbar>
+
+<div *ngIf="!isErrorOccured" [ngClass]="{'margin-top-40px': true, 'float-left': true, 'width-100per': true}">
+  <div [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'assets-center-align': true}">
+    <div [ngClass]="{'card': true}">
+      <div [ngClass]="{'card-block': true}">
+        <form [formGroup]='survivalBenefitForm'>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>{{translations.amountText}}</label>
+            <div class="input-group margin-0">
+              <input type="number" formControlName="amountControl" [(ngModel)]="survivalBenefit.amount" placeholder="{{translations.amountPlaceHolderText}}"
+                class="form-control" />
+              <span class="percentage">₹</span>
+              <span class="percentage" pTooltip={{tooltipTranslations.survivalBenfitAmountHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>              
+            </div>
+            <div *ngIf="survivalBenefitForm.controls['amountControl'].hasError('required') && survivalBenefitForm.controls['amountControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              {{translations.emptyErrorText}}
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>{{translations.startDateText}}</label>
+            <p-calendar [minDate]="minDate" [monthNavigator]="true" [yearNavigator]="true" [(ngModel)]="survivalBenefit.startDate" inputStyleClass="form-control"
+              placeholder="dd/mm/yyyy" formControlName="startDateControl" [selectOtherMonths]="true" [readonlyInput]="true"
+              dateFormat="dd/mm/yy" yearRange="1930:2080"></p-calendar>
+            <div *ngIf="survivalBenefitForm.controls['startDateControl'].hasError('required') && survivalBenefitForm.controls['startDateControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              {{translations.emptyErrorText}}
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <button *ngIf="!loadingOnSubmit" type="button" class='btn btn-primary' (click)="didClickAddSurvivalBenefit()">{{addUpdateSurvivalBenefitButtonText}}</button>
+            <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'justify-content-center': true}">
+              <div class="loader"></div>
+            </button>
+            <button (click)="didClickCancelButton()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+

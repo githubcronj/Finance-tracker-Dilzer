@@ -1,0 +1,42 @@
+/* .risk-profile-center-align {
+    margin-right: auto;
+    margin-left: auto;
+} */
+
+.questions {
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+}
+
+.tbody tr td:nth-of-type(odd) {
+    background-color: rgba(0,0,0,.05);
+}
+
+.cancelButton {
+    right: -15px;
+    top: -15px;
+    position: relative;
+    float: right;
+}
+
+.riskProfile {
+    margin: 0px;
+}
+
+
+@media all and (max-width: 800px) {
+    .dialog-header {
+        height: 600px !important;
+        width: 100%;
+    }
+}
+.dialog-header {
+    height: 320px;;
+}
+
+.error {
+    color: #a94442 !important;
+  }

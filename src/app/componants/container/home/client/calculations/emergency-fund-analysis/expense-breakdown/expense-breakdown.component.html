@@ -1,0 +1,29 @@
+<div class="expense-breakdown-holder">
+    <table>
+        <tr>
+            <td colspan="5" style="text-align:center;font-size:20px">
+                <b>{{translations.expenseBreakupHeadingText}}</b>
+                <i class="fa fa-times float-right closeIcon" (click)="didClickCloseDialog()"></i>
+            </td>
+        </tr>
+        <tr>
+            <th>{{translations.nameText}}</th>
+            <th>{{translations.amountText}}</th>
+        </tr>
+
+        <tr *ngFor="let expense of expenses">
+            <td>
+                <label>{{(expense.name) ? (expense.name) : '-'}}</label>
+            </td>
+            <td>
+                <label>{{(expense.amount) ? '&#8377;' +(emergencyFundViewModel.displayCurrency(expense.amount)) : '&#8377;' +'0'}}</label>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="border-right-style:none;" colspan="5">
+                <button type="button" class='btn btn-primary' (click)="didClickCloseDialog(true)">{{translations.okButtonText}}</button>
+            </td>
+        </tr>
+    </table>
+</div>

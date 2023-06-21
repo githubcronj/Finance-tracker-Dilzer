@@ -1,0 +1,64 @@
+<div [ngClass]="{'login-block': true }">
+  <div [ngClass]="{'col-md-6': true, 'col-lg-4': true, 'col-sm-8': true, 'col-12': true, 'col': true, 'login-center-align': true}">
+    <div [ngClass]="{'d-flex': true, 'justify-content-center': true, 'logo-block': true}">
+      <img src="{{resources.logo}}" alt="Logo"  routerLink=""/>
+    </div>
+    <div>
+      <div *ngIf="loginErrorStatus" [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+        {{loginMessage}}
+      </div>
+      <div *ngIf="loginSuccessStatus" [ngClass]="{'alert': true, 'alert-success': true}" role="success">
+        {{loginMessage}}
+      </div>
+      <form [formGroup]='loginForm'>
+        <div [ngClass]="{'card': true}">
+          <div [ngClass]="{'card-block': true}">
+            <h4 [ngClass]="{'margin-bottom-20px': true}">{{loginTranslations.loginHeadText}}</h4>
+            <div [ngClass]="{'form-group': true}">
+              <input type="text" placeholder="{{loginTranslations.emailText}}" id="dilzerEmail" [ngClass]="{'form-control': true}" formControlName="dilzerEmailControl"
+                [(ngModel)]="loginUserData.email" />
+              <div *ngIf="loginForm.controls['dilzerEmailControl'].hasError('required') && loginForm.controls['dilzerEmailControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{loginTranslations.emptyEmailError}}
+              </div>
+              <div *ngIf="loginForm.controls['dilzerEmailControl'].hasError('pattern') && loginForm.controls['dilzerEmailControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{loginTranslations.notValidEmailError}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <div [ngClass]="{'input-group': true}">
+                <input type="password" placeholder="{{loginTranslations.passwordText}}" id="dilzerPassword" [ngClass]="{'form-control': true, 'password-text': true}"
+                  formControlName="dilzerPasswordControl" [(ngModel)]="loginUserData.password" />
+              </div>
+              <div *ngIf="loginForm.controls['dilzerPasswordControl'].hasError('required') && loginForm.controls['dilzerPasswordControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{loginTranslations.emptyPasswordError}}
+              </div>
+              <div [ngClass]="{'form-group': true }">
+                <a [ngClass]="{'float-right': true, 'margin-bottom-10px' :true}" routerLink="/forgot-password"> Trouble Sign in</a>
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}" *ngIf="!loadingOnSubmit">
+              <button type="button" (click)="loginUser()" [ngClass]="{'btn': true, 'btn-background': true, 'form-control': true, 'active': true}">{{loginTranslations.loginButtonText}}</button>
+            </div>
+            <div [ngClass]="{'form-group': true}" *ngIf="loadingOnSubmit">
+              <button type="button" [ngClass]="{'btn': true, 'btn-background': true, 'form-control': true, 'active': true, 'd-flex': true, 'justify-content-center': true}"><div class="loader"></div></button>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <input type="checkbox" /> {{loginTranslations.keepMeLoggedInText}}
+            </div>
+            <div [ngClass]="{'margin-top-20px': true}">
+              <fieldset [ngClass]="{'fieldset-header': true}">
+                <legend [ngClass]="{'legend': true}">{{loginTranslations.newToDilzerText}}</legend>
+              </fieldset>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <button type="button" routerLink="/register" [ngClass]="{'btn': true, 'btn-secondary': true, 'form-control': true, 'active': true}">{{loginTranslations.createNewAccountText}}</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

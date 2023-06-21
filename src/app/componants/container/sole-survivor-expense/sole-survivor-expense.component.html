@@ -1,0 +1,151 @@
+<app-navbar #navbar></app-navbar>
+<div *ngIf="!isErrorOccured">
+
+
+    <div [ngClass]="{'card': true, 'margin-20px': true, 'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true}">
+        <div [ngClass]="{'card-block': true}">
+            <form [formGroup]="expenseForm">
+                <div [ngClass]="{'form-group': true}">
+                    <label>Inflation Rate</label>
+                    <div class="row">
+                        <div>
+                            <input [ngClass]="{'form-control': true}" list=rate formControlName="inflationRateControl" [(ngModel)]="inflationRate">
+                            <datalist id=rate>
+                                <option *ngFor="let list of inflationList" [value]="list"></option>
+                            </datalist>
+                        </div>
+                        <div class = "margin-top-10px margin-left-5px" > <span class="percentage">%</span></div>
+                    </div>
+                    <div *ngIf="expenseForm.controls['inflationRateControl'].hasError('required') && expenseForm.controls['inflationRateControl'].touched"
+                        [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                        Please enter inflation rate.
+                    </div>
+
+                    <div *ngIf="expenseForm.controls['inflationRateControl'].hasError('pattern') && expenseForm.controls['inflationRateControl'].touched"
+                        [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                        Inflation rate must be within 6 to 10.
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div [ngClass]="{'card': true, 'margin-20px': true}" *ngFor="let expenseCategoriesViewModel of expenseCategoriesViewModels">
+
+        <h4 class="heading-section">{{expenseCategoriesViewModel.displayName()}}</h4>
+        <div [ngClass]="{'card-block': true}" id="{{expenseType.kind}}" *ngFor="let expenseType of expenseCategoriesViewModel.expenseTypes">
+
+            <div>
+                <h5 class="float-left margin-0">{{expenseType.displayName(expenseCategoriesViewModel.category)}}</h5>
+                <button type="button" (click)="add(expenseType)" class="btn btn-link">Add</button>
+            </div>
+
+            <table class="width-100per expense-table">
+                <thead>
+                    <tr>
+                        <th>Expense Name</th>
+                        <th class="text-center">Early Retirement</th>
+                        <th class="text-center">Frequency</th>
+                        <th colspan="2" class="text-center">Insurance Need Analysis</th>
+                        <th class="text-center">Current Inflation Rate</th>
+                        <th colspan="3" class="text-center">Late Retirement</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th class="text-center">₹</th>
+                        <th></th>
+                        <th class="text-center">Client</th>
+                        <th class="text-center">Spouse</th>
+                        <th class="text-center">%</th>
+                        <th class="text-center">₹</th>
+                        <th class="text-center">%</th>
+                        <th class="text-center">%</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                            <th></th>
+                            <th class="text-center"></th>
+                            <th></th>
+                            <th class="text-center"><input type="checkbox" (change)="selectDeselectAll($event,expenseType, 'client')" /></th>
+                            <th class="text-center"><input type="checkbox" (change)="selectDeselectAll($event,expenseType, 'spouse')"/></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th></th>
+                        </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let expenseViewModel of expenseType.expenses">
+                        <td class="width-300px">
+                            <input type="text" class="form-control" disabled="{{!expenseViewModel.isEditable()}}"  [(ngModel)]="expenseViewModel.soleSurvivalExpense.name"
+                                [ngClass]="{'has-error': expenseViewModel.soleSurvivalExpense.isNameEmpty}" />
+                        </td>
+                        <td class="width-100px">
+                            <input type="number" class="form-control" (keyup)="calculateExpenseAmount(expenseViewModel.soleSurvivalExpense)" id="{{expenseViewModel.soleSurvivalExpense.kind}}{{expenseViewModel.soleSurvivalExpense.name}}Amount" [(ngModel)]="expenseViewModel.soleSurvivalExpense.earlyRetirementExpenseAmount"
+                            />
+                        </td>
+
+                        <td class="width-100px">
+                            <select class="form-control" [(ngModel)]="expenseViewModel.soleSurvivalExpense.frequency">
+                                <option *ngFor="let type of expenseFrequencyTypes" value="{{type.key}}">{{type.value}}</option>
+                            </select>
+                        </td>
+
+                        <td class="width-70px text-center">
+                                <input type="checkbox" value="{{expenseViewModel.soleSurvivalExpense.isClientInsuranceNeedAnalysis}}" class="" [(ngModel)]="expenseViewModel.soleSurvivalExpense.isClientInsuranceNeedAnalysis"
+                                />
+                            </td>
+    
+                            <td class="width-70px text-center">
+                                <input type="checkbox" value="{{expenseViewModel.soleSurvivalExpense.isSpouseInsuranceNeedAnalysis}}" class="" [(ngModel)]="expenseViewModel.soleSurvivalExpense.isSpouseInsuranceNeedAnalysis"
+                                />
+                            </td>
+                            <td class="width-100px text-center">
+                                <input [ngClass]="{'form-control': true}" list=currentrate  [(ngModel)]="expenseViewModel.soleSurvivalExpense.currentInflationRate">
+                                <datalist id=currentrate>
+                                    <option *ngFor="let list of inflationList" [value]="list"></option>
+                                </datalist>
+                            </td>
+
+                        <td class="width-100px">
+                            <input type="number" class="form-control" (keyup)="calculateLateRetirementExpensePercentage(expenseViewModel.soleSurvivalExpense)" [(ngModel)]="expenseViewModel.soleSurvivalExpense.lateRetirementExpenseAmount"
+                            />
+                        </td>
+
+
+                        <td class="width-100px">
+                            <input type="number" class="form-control" (keyup)="calculateLateRetirementExpenseAmount(expenseViewModel.soleSurvivalExpense)" [(ngModel)]="expenseViewModel.soleSurvivalExpense.lateRetirementExpensePercentage"
+                            />
+                        </td>
+
+                        <td class="width-100px text-center">
+                                <input [ngClass]="{'form-control': true}" list=currentrate  [(ngModel)]="expenseViewModel.soleSurvivalExpense.lateRetirementExpenseInflationRate">
+                                <datalist id=currentrate>
+                                    <option *ngFor="let list of inflationList" [value]="list"></option>
+                                </datalist>
+                            </td>
+
+                        <td class="width-100px">
+                            <button type="button" (click)="delete(expenseType, expenseViewModel)" class="btn btn-link">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="floating-button">
+        <button type="button" (click)="save()" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Save</button>
+        <div *ngIf="showExpenseErrorMessage" class="errorMessage"> You have not entered any expenses.</div>
+    </div>
+
+
+</div>
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

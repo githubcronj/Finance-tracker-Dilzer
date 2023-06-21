@@ -1,0 +1,22 @@
+.column-width {
+    width: auto;
+}
+@media all and (max-width: 800px) {
+    .column-width {
+        width: 160px;
+    }
+}
+
+.center-align-div {
+    margin-top: 80px;
+    margin-right: auto;
+    margin-left: auto;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+:host /deep/ .ui-table tfoot{
+    background: #285C83;
+    font-weight: bold;
+    color: white;
+}

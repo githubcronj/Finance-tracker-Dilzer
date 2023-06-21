@@ -1,0 +1,10 @@
+<div class="mdl-tabs vertical-mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+  <div class="mdl-tabs__tab-bar">
+    <div *ngFor="let submenu of menuList;let idx=index;">
+      <a *ngIf="submenu" class="mdl-tabs__tab" [ngClass]="{'is-active': (activeTab == idx)}" (click)="changeTabs(idx)">
+        <span class="hollow-circle"></span>
+        {{submenu}}
+      </a>
+    </div>
+  </div>
+</div>

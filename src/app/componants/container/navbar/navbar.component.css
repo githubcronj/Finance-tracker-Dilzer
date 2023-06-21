@@ -1,0 +1,27 @@
+.navbar {
+    background-color: #f9f9f9;
+    padding: 7px 2rem;
+    position: static;
+}
+.active {
+    border-bottom: 1px solid #808080;
+}
+.active a {
+    color: #4c4c4c !important;
+}
+li {
+    padding: 5px 0px;
+    min-width: 100px;
+    text-align: center;
+}
+.navbar-nav {
+    flex-direction: row;
+}
+.navigate-route-back {
+    font-size: 14px;
+}
+.navbar-title {
+    text-transform: capitalize;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

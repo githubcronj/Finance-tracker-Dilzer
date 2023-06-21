@@ -1,0 +1,2 @@
+<app-liabilities-category *ngIf="showLiabilitiesCategory" [clientId]="clientId" (showLiabilitiesDetails)="showLiabilities($event)"></app-liabilities-category>
+<app-liabilities *ngIf="!showLiabilitiesCategory" [clientId]="clientId" [kind]="liabilityKind" (routeBackEvent)="showLiabilityCategory()" [client]="client"></app-liabilities>

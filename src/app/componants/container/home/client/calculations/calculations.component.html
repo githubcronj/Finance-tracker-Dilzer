@@ -1,0 +1,10 @@
+
+<div class="sidesubmenu margin-top-30px margin-bottom-10px">
+        <app-sidemenu #sidemenu (tabchange)="detectTabChange()"></app-sidemenu>
+</div>
+<div class="content-block" *ngIf="showDashboard">
+    <app-gratuity-calculator [clientId]="clientId" #gratuityCalculator *ngIf="activeTab == 0"> </app-gratuity-calculator> 
+    <app-emergency-fund-analysis [clientId]="clientId" #emergencyFund *ngIf="activeTab == 1"></app-emergency-fund-analysis>
+    <app-financial-ratio-calculator [clientId]="clientId" #financialRatioCalculator *ngIf="activeTab == 2"></app-financial-ratio-calculator>
+</div>
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

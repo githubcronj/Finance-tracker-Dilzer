@@ -1,0 +1,17 @@
+<div *ngIf="!isErrorOccured" class="alignCenter">
+    <div [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'risk-profile-center-align': true}">
+        <div [ngClass]="{'card': true}">
+            <div [ngClass]="{'card-block': true}">
+
+                <h6 *ngIf="(userDetails && userDetails.riskProfile && userDetails.riskProfile.name)">Your Current Risk Profile is <span class="riskProfileFont">{{riskProfile}}</span></h6>
+                <h4 *ngIf="userDetails && userDetails.riskProfile && userDetails.riskProfile.name == undefined">You have not analysed your Risk Profile</h4>
+
+                <div class="alignCenter">
+                    <button type="button" (click)="openDialog()" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Analyse Risk Profile</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

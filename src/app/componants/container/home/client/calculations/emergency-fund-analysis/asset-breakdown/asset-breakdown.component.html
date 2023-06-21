@@ -1,0 +1,38 @@
+<div class="asset-breakdown-holder">
+    <table>
+        <tr>
+            <td colspan="5" style="text-align:center;font-size:20px">
+                <b>{{translations.assetBreakupHeadingText}}</b>
+                <i class="fa fa-times float-right closeIcon" (click)="didClickCloseDialog()"></i>
+            </td>
+        </tr>
+        <tr>
+            <th>{{translations.nameText}}</th>
+            <th>{{translations.subTypeText}}</th>
+            <th>{{translations.ownerText}}</th>
+            <th>{{translations.currentValuationText}}</th>
+        </tr>
+
+        <tr *ngFor="let asset of insurance">
+            <td>
+                <label>{{(asset.name) ? (asset.name) : '-'}}</label>
+            </td>
+            <td>
+                <label>{{(asset.assetSubtype) ? (asset.assetSubtype) : '-'}}</label>
+            </td>
+            <td>
+                <label>{{(asset.owner) ? (asset.owner) : '-'}}</label>
+            </td>
+            <td>
+                <label>{{(asset.currentValuation) ? '&#8377;' +(emergencyFundViewModel.displayCurrency(asset.currentValuation))
+                    : '&#8377;' +'0'}}</label>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="border-right-style:none;" colspan="5">
+                <button type="button" class='btn btn-primary' (click)="didClickCloseDialog(true)">{{translations.okButtonText}}</button>
+            </td>
+        </tr>
+    </table>
+</div>

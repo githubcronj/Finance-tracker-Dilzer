@@ -1,0 +1,57 @@
+<div class="cancelButton">
+    <span class="fa fa-close" (click)="closeDialog()"></span>
+</div>
+<div class="riskProfile" [ngClass]="{'risk-profile-center-align': true}">
+    <div *ngIf="!isErrorOccured">
+        <form class="dialog-header" [formGroup]="riskProfileForm">
+            <h4 [ngClass]="{'margin-bottom-20px': true}">Risk Profile Questionnaires({{index + 1}}/{{riskProfileQuestionnaries.length}})</h4>
+
+            <div class="questions">{{questionaries.question}}</div>
+            <div *ngIf="questionaries.answer_type=='radio_opts' ">
+                <div *ngFor="let option of options; let idx=index;" id="htmlContentHolder">
+
+                    <input type="radio" formControlName="answerControl" [value]="idx" name="answerControl" (change)="setvalue(idx)" [(ngModel)]="answerObject.answer"
+                    />
+                    <span class="margin-left-10px" [innerHtml]="option"></span>
+                </div>
+                <div *ngIf="riskProfileForm.controls['answerControl'].hasError('required') && riskProfileForm.controls['answerControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    Please answer this question.
+                </div>
+            </div>
+
+            <div id="html_content" *ngIf="questionaries.answer_type=='html_content' " [innerHtml]="questionaries.options | safe">
+            </div>
+            <div *ngIf="questionaries.answer_type=='table_radio_opts' ">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-center"></th>
+                            <th class="text-center" *ngFor="let thead of tableRadioOptions.thead">{{thead}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let tbody of tableRadioOptions.tbody; let idx = index">
+                            <td class="text-center">
+                                <input type="radio" formControlName="answerControl" [value]="idx" name="answerControl" (change)="setvalue(idx)" [(ngModel)]="answerObject.answer"
+                                />
+                            </td>
+                            <td class="text-center" *ngFor="let tdValue of tbody">{{tdValue}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </form>
+        <div class="riskProfileButton">
+            <button *ngIf="index != 0" (click)="setIndex('prev')" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Prev</button>
+            <button *ngIf="index != riskProfileQuestionnaries.length-1" (click)="setIndex('next')" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Next</button>
+            <button *ngIf="index== riskProfileQuestionnaries.length-1 && !loadingOnSubmit" (click)="submitAnswers()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Submit</button>
+            <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'margin-left-10px': true, 'justify-content-center': true}">
+                <div class="loader"></div>
+            </button>
+        </div>
+        <div *ngIf="errorMessage" class="error"> Please answer this question. </div>
+    </div>
+
+    <app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

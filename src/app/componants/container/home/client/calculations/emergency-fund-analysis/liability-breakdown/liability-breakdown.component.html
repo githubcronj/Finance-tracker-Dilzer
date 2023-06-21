@@ -1,0 +1,37 @@
+<div class="liability-breakdown-holder">
+    <table>
+        <tr>
+            <td colspan="5" style="text-align:center;font-size:20px">
+                <b>{{translations.liabilityBreakupHeadingText}}</b>
+                <i class="fa fa-times float-right closeIcon" (click)="didClickCloseDialog()"></i>
+            </td>
+        </tr>
+        <tr>
+            <th>{{translations.nameText}}</th>
+            <th>{{translations.typeText}}</th>
+            <th>{{translations.loanAmountText}}</th>
+            <th>{{translations.rateOfInterestText}}</th>
+        </tr>
+
+        <tr *ngFor="let liability of liabilities">
+            <td>
+                <label class="text-left">{{(liability.name) ? (liability.name) : '-'}}</label>
+            </td>
+            <td>
+                <label class="text-left">{{(liability.kind) ? (emergencyFundViewModel.displayLiabilityType(liability.kind)) : '-'}}</label>
+            </td>
+            <td>
+                <label class="text-center">{{(liability.loanAmount) ? '&#8377;' +(emergencyFundViewModel.displayCurrency(liability.loanAmount)) : '&#8377;' +'0'}}</label>
+            </td>
+            <td>
+                <label>{{(liability.rateOfInterest) ? (liability.rateOfInterest)+'%' : '-'}}</label>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="border-right-style:none;" colspan="5">
+                <button type="button" class='btn btn-primary' (click)="didClickCloseDialog(true)">{{translations.okButtonText}}</button>
+            </td>
+        </tr>
+    </table>
+</div>

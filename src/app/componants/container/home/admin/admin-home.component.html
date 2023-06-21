@@ -1,0 +1,12 @@
+<mat-tab-group [(selectedIndex)]="selectedTab" (selectedTabChange)="tabChanged($event)">
+    <mat-tab label="Clients">
+        <div class="body-container-padding">
+            <app-client *ngIf="tabSelected == 0"></app-client>
+        </div>
+    </mat-tab>
+    <mat-tab label="Team">
+        <div class="body-container-padding">
+            <app-team *ngIf="tabSelected == 1"></app-team>
+        </div>
+    </mat-tab>
+</mat-tab-group>

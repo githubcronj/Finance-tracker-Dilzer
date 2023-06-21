@@ -1,0 +1,12 @@
+
+<div class="sidesubmenu margin-top-30px margin-bottom-10px">
+        <app-sidemenu #sidemenu (tabchange)="detectTabChange()"></app-sidemenu>
+</div>
+<div class="content-block" *ngIf="showDashboard">
+    <app-goals-list [clientId]="clientId" *ngIf="activeTab == 0"> </app-goals-list>
+    <app-goal-funding [clientId]="clientId" #goalFunding *ngIf="activeTab == 1"></app-goal-funding>
+    <app-goal-cost  [clientId]="clientId" *ngIf="activeTab == 2"></app-goal-cost>
+    <app-scenario-analysis [clientId]="clientId" #scenarioAnalysis *ngIf="activeTab == 3"></app-scenario-analysis>
+
+</div>
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

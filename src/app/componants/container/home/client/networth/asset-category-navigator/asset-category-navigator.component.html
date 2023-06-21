@@ -1,0 +1,2 @@
+<app-asset-category *ngIf="showAssetCategory" [clientId]="clientId" [assetCategoryType]=assetCategoryType (showAssetsDetails)="showAssets($event)"></app-asset-category>
+<app-assets *ngIf="!showAssetCategory" [clientId]="clientId" [kind]="assetKind" [client]="client" (routeBackEvent)="showAssetsCategory()"></app-assets>

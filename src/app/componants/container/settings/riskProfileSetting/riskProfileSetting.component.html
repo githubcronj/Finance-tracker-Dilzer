@@ -1,0 +1,36 @@
+<div *ngIf="!isErrorOccured">
+    <table class="displayTableData" width="100%">
+        <colgroup>
+            <col width="60%">
+            <col width="20%">
+            <col width="20%">
+        </colgroup>
+        <tbody>
+            <tr>
+                <th>Risk Profile</th>
+                <th>Return</th>
+                <th></th>
+            </tr>
+            <tr *ngFor="let assetClassSetting of riskProfileSettingViewModel.riskProfileSettingsList">
+                <td>
+                    <div>
+                        <label class="em-title-block">{{assetClassSetting.name}}</label>
+                    </div>
+                </td>
+                <td>
+                    <div>
+
+                        <input type="number" [ngClass]="{'form-control': true}" class="em-title-block" [(ngModel)]="assetClassSetting.rate" value="{{assetClassSetting.rate}}"
+                        />
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'margin-top-10px':true}" (click)="saveSettings()">Save</button>
+    <p-growl [(value)]="msgs"></p-growl>
+</div>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

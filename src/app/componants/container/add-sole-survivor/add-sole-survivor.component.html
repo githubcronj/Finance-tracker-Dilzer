@@ -1,0 +1,87 @@
+<app-navbar #navbar></app-navbar>
+
+<div *ngIf="!isErrorOccured" [ngClass]="{'margin-top-40px': true, 'float-left': true, 'width-100per': true}">
+    <div [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'assets-center-align': true}">
+        <div [ngClass]="{'card': true}">
+            <div [ngClass]="{'card-block': true}">
+                <form [formGroup]='soleSurvivorForm'>
+
+                    <div>
+                        <div [ngClass]="{'form-group': true}">
+                            <label>{{translations.setAmountBreakdown}}</label>
+                            <div class="input-group margin-0">
+                                <select formControlName="amountBreakdownControl" class="form-control" [(ngModel)]="soleSurvivor.amountBreakdownType" (change)="didChangeAmountBreakdownType($event)">
+                                    <option *ngFor="let type of amountBreakDownType" value="{{type.key}}">{{type.value}}</option>
+                                </select>
+                                <span class="percentage" *ngIf="soleSurvivor.amountBreakdownType == AmtBreakdownType.AmountViaExpenseBreakdown">
+                                    <a (click)="editExpenseBreakdown()">Edit breakdown</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="soleSurvivor.amountBreakdownType == AmtBreakdownType.AmountViaEstimatedTotal">
+                        <div [ngClass]="{'form-group': true}">
+                            <label>{{translations.copyExpenseFromText}}</label>
+                            <select formControlName="copyExpenseFromControl" class="form-control" [(ngModel)]="soleSurvivor.expensesCopiedFrom" (change)="didChangeCopyFromExpense($event)">
+                                <option *ngFor="let type of copyExpenseFromType" value="{{type.key}}">{{type.value}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div *ngIf="soleSurvivor.amountBreakdownType == AmtBreakdownType.AmountViaExpenseBreakdown">
+                        <div [ngClass]="{'form-group': true}">
+                            <label>{{translations.typeOfExpenseText}}</label>
+                            <select formControlName="typeOfExpenseControl" class="form-control" [(ngModel)]="soleSurvivor.typeOfExpense" (change)="didChangeTypeOfExpense($event)">
+                                <option *ngFor="let type of typeOfExpense" value="{{type.key}}">{{type.value}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{translations.inflationRateText}}</label>
+                        <div class="input-group margin-0">
+                            <input [ngClass]="{'form-control': true}" list=rate formControlName="inflationRateControl" [(ngModel)]="soleSurvivor.inflationRate">
+                            <datalist id=rate>
+                                <option *ngFor="let list of inflationList" [value]="list"></option>
+                            </datalist>
+                            <span class="percentage">% per annum</span>
+                        </div>
+                        <div *ngIf="soleSurvivorForm.controls['inflationRateControl'].hasError('required') && soleSurvivorForm.controls['inflationRateControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{translations.emptyErrorText}}.
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{translations.amountText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" formControlName="amountControl" placeholder="{{translations.amountPlaceHolderText}}" class="form-control"
+                                [(ngModel)]="soleSurvivor.amount" />
+                            <span class="percentage">₹ per annum</span>
+                        </div>
+                        <div *ngIf="soleSurvivorForm.controls['amountControl'].hasError('required') && soleSurvivorForm.controls['amountControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{translations.emptyErrorText}}.
+                        </div>
+                    </div>
+
+
+                    <div [ngClass]="{'form-group': true}">
+                        <button *ngIf="!loadingOnSubmit" type="button" class='btn btn-primary' (click)="didAddSoleSurvivor()">{{addUpdateSoleSurvivorButtonText}}</button>
+                        <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'justify-content-center': true}">
+                            <div class="loader"></div>
+                        </button>
+                        <button (click)="didClickCancelButton()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+

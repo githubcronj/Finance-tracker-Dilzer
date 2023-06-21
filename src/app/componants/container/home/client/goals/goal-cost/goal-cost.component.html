@@ -1,0 +1,58 @@
+<div *ngIf="!isErrorOccured">
+
+    <div class="margin-top-30px margin-bottom-10px">
+        <div class="row align-items-center">
+            <div class="col col-3 padding-0">
+                <h4 class="margin-0">Goal Cost
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="goalsListViewModel.goalItems && goalsListViewModel.goalItems.length == 0" [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'center-align-div': true}">
+        There are no Goals added for this client.       </div>
+
+    <p-table [scrollable]="true" *ngIf="goalsListViewModel.goalItems && goalsListViewModel.goalItems.length > 0" scrollHeight="250px" [columns]="cols" [value]="goalsListViewModel.goalItems" id="paginationColor">
+        <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+                <col *ngFor="let col of columns" class="column-width">
+            </colgroup>
+        </ng-template>
+
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">{{col.header}}</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-goal let-columns="columns" let-index="rowIndex">
+            <tr>
+                <td>
+                    <img width="20px" src="{{resources.goalIconPath + goal.imageName}}" class="margin-right-10px" /> {{goal.name}}
+                </td>
+                <td>{{goal.goalTypeDisplayString}}</td>
+                <td>{{goal.currentValuationDisplayString}}</td>
+                <td>{{goal.corpusRequiredDisplayString}}</td>
+                <td>{{(goal.goal && goal.goal.corpusRequired && goal.goal.corpusRequired.pvStartOfGoal) ? (goal.goal.corpusRequired.pvStartOfGoal)
+                    : '&#8377;'+'0'}}</td>
+                <td>{{(goal.goal && goal.goal.corpusRequired && goal.goal.corpusRequired.pvStartOfGoal) ? (goal.goal.corpusRequired.pecentageFunded)
+                    : '0'+'%'}}</td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <tr>
+                <td>Total :</td>
+                <td></td>
+                <td>{{goalsListViewModel.totalCurrentValuationDisplayString}}</td>
+                <td>{{goalsListViewModel.totalCorpusRequiredDisplayString}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

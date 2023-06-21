@@ -1,0 +1,53 @@
+<div *ngIf="!isErrorOccured" class="margin-top-10px">
+    <table *ngIf="assetTypeList" width="100%">
+        <colgroup>
+            <col width="60%">
+            <col width="20%">
+            <col width="20%">
+        </colgroup>
+        <tbody>
+            <tr class="heading">
+                <th>Asset Class</th>
+                <th>Return</th>
+                <th></th>
+            </tr>
+            <tr *ngFor="let assetType of assetTypeList">
+                <td colspan="3">
+                    <table class="displayTableData" width="100%">
+                        <colgroup>
+                            <col width="60%">
+                            <col width="20%">
+                            <col width="20%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th colspan="3">{{assetType}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let assetClassSetting of configuredAssetObjects[assetType]">
+                                <td>
+                                    <div>
+                                        <label class="em-title-block">{{getAssetSubTypeName(assetClassSetting.assetType, assetClassSetting.assetSubType)}}</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="number" [ngClass]="{'form-control': true}" class="em-title-block" [(ngModel)]="assetClassSetting.rate" value="{{assetClassSetting.rate}}"
+                                        />
+                                    </div>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'margin-top-10px':true}" (click)="saveSettings()">Save</button>
+    <p-growl [(value)]="msgs"></p-growl>
+</div>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

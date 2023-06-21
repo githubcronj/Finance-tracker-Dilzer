@@ -1,0 +1,57 @@
+<app-navbar #navbar></app-navbar>
+<div [ngClass]="{'invite-password-block': true }">
+  <div [ngClass]="{'margin-top-40px': true}">
+    <div [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'invite-password-center-align': true}">
+      <div *ngIf="inviteAdminSuccessStatus" [ngClass]="{'alert': true, 'alert-success': true}" role="alert">
+        {{inviteAdminMessage}}
+      </div>
+      <div *ngIf="inviteAdminErrorStatus" [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+        {{inviteAdminMessage}}
+      </div>
+      <div [ngClass]="{'card': true}">
+        <div [ngClass]="{'card-block': true}">
+          <form [formGroup]="inviteAdminForm">
+            <h4 *ngIf="!adminId" [ngClass]="{'margin-bottom-20px': true}">{{inviteAdminTranslations.headText}}</h4>
+            <h4 *ngIf="adminId" [ngClass]="{'margin-bottom-20px': true}">Update Details</h4>
+            <div [ngClass]="{'form-group': true}">
+              <input type="text" placeholder="{{inviteAdminTranslations.firstNameText}}" [readonly]="(loggedInAdmin.role != teamRole.ChiefFinancialPlanner)" id="firstName" [ngClass]="{'form-control': true}"
+                formControlName="firstNameControl" [(ngModel)]="userData.name.firstName" />
+              <div *ngIf="inviteAdminForm.controls['firstNameControl'].hasError('required') && inviteAdminForm.controls['firstNameControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{inviteAdminTranslations.emptyNameError}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <input type="text" [readonly]="(loggedInAdmin.role != teamRole.ChiefFinancialPlanner)" placeholder="{{inviteAdminTranslations.lastNameText}}" id="lastName" [ngClass]="{'form-control': true}"
+                formControlName="lastNameControl" [(ngModel)]="userData.name.lastName" />
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <input type="text" placeholder="{{inviteAdminTranslations.emailText}}" id="dilzerEmail" [ngClass]="{'form-control': true}"
+                formControlName="emailControl" [readonly]="(loggedInAdmin.role != teamRole.ChiefFinancialPlanner)" [(ngModel)]="userData.email" />
+              <div *ngIf="inviteAdminForm.controls['emailControl'].hasError('required') && inviteAdminForm.controls['emailControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{inviteAdminTranslations.emptyEmailError}}
+              </div>
+              <div *ngIf="inviteAdminForm.controls['emailControl'].hasError('pattern') && inviteAdminForm.controls['emailControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{inviteAdminTranslations.notValidEmailError}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <select [(ngModel)]="userData.role" formControlName="accessLevelControl" [ngClass]="{'form-control': true}">
+          <option *ngFor = "let accesslevel of accessLevelDropDown; let idx = index;" value = "{{accesslevel.key}}">
+            {{accesslevel.value}}
+          </option>
+        </select>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <button *ngIf="!loadingOnSubmit" [disabled]="(loggedInAdmin.role != teamRole.ChiefFinancialPlanner)"(click)="inviteAdmin()" type="button" [ngClass]="{'btn': true, 'btn-background': true, 'active': true}">{{buttonText}}</button>
+              <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-background': true, 'active': true, 'justify-content-center': true}"><div class="loader"></div></button>
+              <button (click)="routeBack()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

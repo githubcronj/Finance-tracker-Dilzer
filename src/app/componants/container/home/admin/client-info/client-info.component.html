@@ -1,0 +1,177 @@
+<div>
+    <div class="sub-heading-holder width-100per user-details-head">
+        <div>
+            <label class="headings">Client Information</label>
+            <i class="fa fa-times float-right closeIcon" (click)="didClickCloseDialog()"></i>
+        </div>
+    </div>
+    <table class="displayTableData" width="100%">
+        <colgroup>
+            <col width="50%">
+            <col width="50%">
+        </colgroup>
+        <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Email</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(data && data.client && data.client.email) ? data.client.email : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Mobile</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(data && data.client && data.client.ph && data.client.ph.ph) ? data.client.ph.ph : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Date Of Birth</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(data && data.client && data.client.dob) ? (data.client.dob | date: 'dd/MM/yyyy') : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">FP/WP</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{"-"}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Para Planner/Senior Para Planner</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        <select [ngClass]="{'select-options-dropdown':true}" #planners (click)="$event.stopPropagation()" (change)="assignPlannerToClient($event, data.client['_id'], planners.value, teamMemberRole.ParaPlanner)">
+                            <option>Assign</option>
+                            <option *ngFor="let team of data.paraFinancialPlanner; let idx = index;" [selected]="team._id == data.client.paraPlanner" value="{{team._id}}">{{team.name.firstName}}</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Operations RM</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        <select [ngClass]="{'select-options-dropdown':true}" #planners (click)="$event.stopPropagation()" (change)="assignPlannerToClient($event, data.client['_id'], planners.value, teamMemberRole.OperationalRelationshipManager)">
+                            <option>Assign</option>
+                            <option *ngFor="let team of data.operationalRelationshipManager; let idx = index;" [selected]="team._id === data.client.operationalRelationshipManager"
+                                value="{{team._id}}">{{team.name.firstName}}</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Research RM</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        <select [ngClass]="{'select-options-dropdown':true}" #planners (click)="$event.stopPropagation()" (change)="assignPlannerToClient($event, data.client['_id'], planners.value, teamMemberRole.ResearchRelationshipManager)">
+                            <option>Assign</option>
+                            <option *ngFor="let team of data.researchRelationshipManager; let idx = index;" [selected]="team._id == data.client.researchRelationshipManager"
+                                value="{{team._id}}">{{team.name.firstName}}</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Sales RM</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        <select [ngClass]="{'select-options-dropdown':true}" #planners (click)="$event.stopPropagation()" (change)="assignPlannerToClient($event, data.client['_id'], planners.value, teamMemberRole.SalesRelationshipManager)">
+                            <option>Assign</option>
+                            <option *ngFor="let team of data.salesRelationshipManager; let idx = index;" [selected]="team._id == data.client.salesRelationshipManager"
+                                value="{{team._id}}">{{team.name.firstName}}</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Chief Planner</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        <select [ngClass]="{'select-options-dropdown':true}" #planners (click)="$event.stopPropagation()" (change)="assignPlannerToClient($event, data.client['_id'], planners.value, teamMemberRole.ChiefFinancialPlanner)">
+                            <option *ngFor="let team of data.chiefFinancialPlanner; let idx = index;" [selected]="team._id === data.client.chiefFinancialPlanner"
+                                value="{{team._id}}">{{team.name.firstName}}</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Alerts</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Notes</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="margin-top-10px">
+        <button type="button" class="btn btn-primary" style="margin:auto;display:block" (click)="didClickCloseDialog()">Done</button>
+    </div>
+
+</div>
+
+<p-growl [(value)]="msgs"></p-growl>

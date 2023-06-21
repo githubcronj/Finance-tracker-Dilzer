@@ -1,0 +1,113 @@
+<div [ngClass]="{'registration-block': true }">
+  <div [ngClass]="{'col-md-12': true, 'col-lg-4': true, 'col-sm-12': true, 'col-12': true, 'col': true, 'registration-center-align': true}">
+    <div [ngClass]="{'d-flex': true, 'justify-content-center': true, 'logo-block': true}">
+      <img src="{{resources.logo}}" alt="Logo"  routerLink=""/>
+    </div>
+    <div>
+
+      <div *ngIf="registerSuccessStatus" class="container margin d-flex justify-content-center align-items-center">
+        <div class="card col col-md-12">
+          <div class="card-block">
+            <p class="card-text text-center">{{registrationMessage}}<br>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="registerErrorStatus" [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+        {{registrationMessage}}
+      </div>
+      <div [ngClass]="{'card': true}" *ngIf="registrationFormShowHide">
+        <div [ngClass]="{'card-block': true}">
+          <form [formGroup]="registrationForm">
+            <h4 [ngClass]="{'margin-bottom-20px': true}">{{registrationTranslations.registerHeadText}}</h4>
+            <div [ngClass]="{'form-group': true}">
+              <input type="text" placeholder="{{registrationTranslations.firstNameText}}" id="dilzerFirstName" [ngClass]="{'form-control': true}"
+                formControlName="dilzerFirstNameControl" [(ngModel)]="userData.name.firstName" />
+              <div *ngIf="registrationForm.controls['dilzerFirstNameControl'].hasError('required') && registrationForm.controls['dilzerFirstNameControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{registrationTranslations.emptyNameError}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <input type="text" placeholder="{{registrationTranslations.lastNameText}}" id="dilzerLastName" [ngClass]="{'form-control': true}"
+                formControlName="dilzerLastNameControl" [(ngModel)]="userData.name.lastName" />
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <input type="text" placeholder="{{registrationTranslations.emailText}}" id="dilzerEmail" [ngClass]="{'form-control': true}"
+                formControlName="dilzerEmailControl" [(ngModel)]="userData.email" />
+              <div *ngIf="registrationForm.controls['dilzerEmailControl'].hasError('required') && registrationForm.controls['dilzerEmailControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{registrationTranslations.emptyEmailError}}
+              </div>
+              <div *ngIf="registrationForm.controls['dilzerEmailControl'].hasError('pattern') && registrationForm.controls['dilzerEmailControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{registrationTranslations.notValidEmailError}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <input type="password" placeholder="{{registrationTranslations.passwordText}}" id="dilzerPassword" [ngClass]="{'form-control': true}"
+                formControlName="dilzerPasswordControl" [(ngModel)]="userData.password" />
+              <div *ngIf="registrationForm.controls['dilzerPasswordControl'].hasError('required') && registrationForm.controls['dilzerPasswordControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{registrationTranslations.emptyPasswordError}}
+              </div>
+              <div *ngIf="registrationForm.controls['dilzerPasswordControl'].hasError('pattern') && registrationForm.controls['dilzerPasswordControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{registrationTranslations.minlengthPasswordError}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <input type="password" placeholder="{{registrationTranslations.confirmPasswordText}}" id="dilzerConfirmPassword" [ngClass]="{'form-control': true}"
+                formControlName="dilzerConfirmPasswordControl" [(ngModel)]="userData.confirmPassword" />
+              <div *ngIf="registrationForm.controls['dilzerConfirmPasswordControl'].hasError('required') && registrationForm.controls['dilzerConfirmPasswordControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{registrationTranslations.passwordMismatch}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true, 'padding-0': true}">
+              <div class="row">
+                <div class="col col-3 padding-0">
+                  <select name="countryCode" id="" placeholder="ISD" [ngClass]="{'form-control': true, 'padding-0': true, 'vertical-align': middle}"
+                    [(ngModel)]="userData.ph.isd" formControlName="dilzerIsdControl">  
+                     <option value = "{{countriesCodes.dial_code}}"  *ngFor="let countriesCodes of countriesCode"> {{countriesCodes.code + "  " + countriesCodes.dial_code}}</option>
+                  </select>
+                </div>
+                <div class="col col-9 padding-0">
+                  <input type="text" [maxLength]="10" [minLength]="10" placeholder="{{registrationTranslations.mobilePhoneNumberText}}" id="dilzerMobilePhoneNumber"
+                    [ngClass]="{'form-control': true}" formControlName="dilzerMobilePhoneNumberControl" [(ngModel)]="userData.ph.ph"
+                  />
+                </div>
+              </div>
+
+
+              <div *ngIf="registrationForm.controls['dilzerMobilePhoneNumberControl'].hasError('required') && registrationForm.controls['dilzerMobilePhoneNumberControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{registrationTranslations.emptyMobileNumber}}
+              </div>
+              <div *ngIf="registrationForm.controls['dilzerMobilePhoneNumberControl'].hasError('pattern') && registrationForm.controls['dilzerMobilePhoneNumberControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{registrationTranslations.notValidMobileNumberError}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}" *ngIf="!loadingOnSubmit">
+              <button (click)="registerUsers()" type="button" [ngClass]="{'btn': true, 'btn-background': true, 'form-control': true, 'active': true}">{{registrationTranslations.registerButtonText}}</button>
+            </div>
+            <div [ngClass]="{'form-group': true}" *ngIf="loadingOnSubmit">
+              <button type="button" [ngClass]="{'btn': true, 'btn-background': true, 'form-control': true, 'active': true, 'd-flex': true, 'justify-content-center': true}"><div class="loader"></div></button>
+            </div>
+
+            <div [ngClass]="{'form-group': true}">
+              <label> Already have an account?</label> <a routerLink="/login"> Sign in</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col col-2 padding-0">
+
+  </div>
+</div>

@@ -1,0 +1,146 @@
+<app-navbar #navbar></app-navbar>
+<div [ngClass]="{'update-profile-block': true, 'margin-top-40px': true }">
+  <div [ngClass]="{'col-md-6': true, 'col-lg-4': true, 'col-sm-12': true, 'col-12': true, 'col': true, 'update-profile-center-align': true}">
+    <div>
+      <div *ngIf="updateAccountSuccessStatus" [ngClass]="{'alert': true, 'alert-success': true}" role="alert">
+        {{updateAccountMessage}}
+      </div>
+      <div *ngIf="updateAccountErrorStatus" [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+        {{updateAccountMessage}}
+      </div>
+      <div [ngClass]="{'card': true}">
+        <div [ngClass]="{'card-block': true}">
+          <form [formGroup]="updateAccountForm">
+            <h4 [ngClass]="{'margin-bottom-20px': true}">{{updateAccountTranslations.headText}}</h4>
+            <!--client-->
+            <div *ngIf="userData.kind == userType.Client">
+              <div [ngClass]="{'form-group': true}">
+                <input type="text" placeholder="{{updateAccountTranslations.firstNameText}}" id="dilzerName" [ngClass]="{'form-control': true}"
+                  formControlName="firstNameControl" [(ngModel)]="userData.name.firstName" />
+                <div *ngIf="updateAccountForm.controls['firstNameControl'].hasError('required') && updateAccountForm.controls['firstNameControl'].touched"
+                  [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                  {{updateAccountTranslations.emptyNameError}}
+                </div>
+              </div>
+              <div [ngClass]="{'form-group': true}">
+                <input type="text" placeholder="{{updateAccountTranslations.lastNameText}}" id="dilzerName" [ngClass]="{'form-control': true}"
+                  formControlName="lastNameControl" [(ngModel)]="userData.name.lastName" />
+              </div>
+              <div [ngClass]="{'form-group': true}">
+                <input type="text" placeholder="{{updateAccountTranslations.emailText}}" id="dilzerEmail" [ngClass]="{'form-control': true}"
+                  formControlName="emailControl" [(ngModel)]="userData.email" />
+                <div *ngIf="updateAccountForm.controls['emailControl'].hasError('required') && updateAccountForm.controls['emailControl'].touched"
+                  [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                  {{updateAccountTranslations.emptyEmailError}}
+                </div>
+                <div *ngIf="updateAccountForm.controls['emailControl'].hasError('pattern') && updateAccountForm.controls['emailControl'].touched"
+                  [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                  {{updateAccountTranslations.notValidEmailError}}
+                </div>
+              </div>
+
+              <div [ngClass]="{'form-group': true, 'padding-0': true}">
+                <div class="row">
+                  <div class="col col-3 padding-0">
+                    <select name="countryCode" id="" placeholder="ISD" [ngClass]="{'form-control': true, 'padding-0': true}" [(ngModel)]="userData.ph.isd"
+                      formControlName="isdControl">  
+                     <option value = "{{countriesCodes.dial_code}}"  *ngFor="let countriesCodes of countriesCode"> {{countriesCodes.code + "  " + countriesCodes.dial_code}}</option>
+                  </select>
+                  </div>
+                  <div class="col col-9 padding-0">
+                    <input type="text" placeholder="{{updateAccountTranslations.mobilePhoneNumberText}}" id="mobilePhoneNumber" [ngClass]="{'form-control': true}"
+                      formControlName="mobilePhoneNumberControl" [(ngModel)]="userData.ph.ph" />
+                  </div>
+                </div>
+                <div *ngIf="updateAccountForm.controls['mobilePhoneNumberControl'].hasError('required') && updateAccountForm.controls['mobilePhoneNumberControl'].touched"
+                  [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                  {{updateAccountTranslations.emptyMobileNumber}}
+                </div>
+                <div *ngIf="updateAccountForm.controls['mobilePhoneNumberControl'].hasError('pattern') && updateAccountForm.controls['mobilePhoneNumberControl'].touched"
+                  [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                  {{updateAccountTranslations.notValidMobileNumberError}}
+                </div>
+              </div>
+              <div [ngClass]="{'form-group': true}" *ngIf="!loadingOnSubmit">
+                <button (click)="updateAccount()" type="button" [ngClass]="{'btn': true, 'btn-background': true, 'form-control': true, 'active': true}">{{updateAccountTranslations.buttonText}}</button>
+              </div>
+              <div [ngClass]="{'form-group': true}" *ngIf="loadingOnSubmit">
+                <button type="button" [ngClass]="{'btn': true, 'btn-background': true, 'form-control': true, 'active': true, 'd-flex': true, 'justify-content-center': true}"><div class="loader"></div></button>
+              </div>
+            </div>
+            <!--Admin-->
+            <div *ngIf="userData.kind == userType.Admin">
+              <div [ngClass]="{'form-group': true}">
+                <input type="text" placeholder="{{updateAccountTranslations.firstNameText}}" id="dilzerName" [ngClass]="{'form-control': true}"
+                  formControlName="firstNameControl" [(ngModel)]="userData.name.firstName" />
+                <div *ngIf="updateAccountForm.controls['firstNameControl'].hasError('required') && updateAccountForm.controls['firstNameControl'].touched"
+                  [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                  {{updateAccountTranslations.emptyNameError}}
+                </div>
+              </div>
+              <div [ngClass]="{'form-group': true}">
+                <input type="text" placeholder="{{updateAccountTranslations.lastNameText}}" id="dilzerName" [ngClass]="{'form-control': true}"
+                  formControlName="lastNameControl" [(ngModel)]="userData.name.lastName" />
+              </div>
+              <div [ngClass]="{'form-group': true}">
+                <input readonly type="text" placeholder="{{updateAccountTranslations.emailText}}" id="dilzerEmail" [ngClass]="{'form-control': true}"
+                  formControlName="emailControl" [(ngModel)]="userData.email" />
+                <div *ngIf="updateAccountForm.controls['emailControl'].hasError('required') && updateAccountForm.controls['emailControl'].touched"
+                  [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                  {{updateAccountTranslations.emptyEmailError}}
+                </div>
+                <div *ngIf="updateAccountForm.controls['emailControl'].hasError('pattern') && updateAccountForm.controls['emailControl'].touched"
+                  [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                  {{updateAccountTranslations.notValidEmailError}}
+                </div>
+              </div>
+
+              <div [ngClass]="{'form-group': true, 'padding-0': true}">
+                <div class="row">
+                  <div class="col col-3 padding-0">
+                    <select name="countryCode" id="" placeholder="ISD" [ngClass]="{'form-control': true, 'padding-0': true}" [(ngModel)]="userData.ph.isd"
+                      formControlName="isdControl">  
+                     <option value = "{{countriesCodes.dial_code}}"  *ngFor="let countriesCodes of countriesCode"> {{countriesCodes.code + "  " + countriesCodes.dial_code}}</option>
+                  </select>
+                  </div>
+                  <div class="col col-9 padding-0">
+                    <input type="text" placeholder="{{updateAccountTranslations.mobilePhoneNumberText}}" id="mobilePhoneNumber" [ngClass]="{'form-control': true}"
+                      formControlName="mobilePhoneNumberControl" [(ngModel)]="userData.ph.ph" />
+                  </div>
+                </div>
+
+                <div *ngIf="updateAccountForm.controls['mobilePhoneNumberControl'].hasError('required') && updateAccountForm.controls['mobilePhoneNumberControl'].touched"
+                  [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                  {{updateAccountTranslations.emptyMobileNumber}}
+                </div>
+                <div *ngIf="updateAccountForm.controls['mobilePhoneNumberControl'].hasError('pattern') && updateAccountForm.controls['mobilePhoneNumberControl'].touched"
+                  [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                  {{updateAccountTranslations.notValidMobileNumberError}}
+                </div>
+              </div>
+
+              <div [ngClass]="{'form-group': true}">
+                <input type="text" placeholder="{{updateAccountTranslations.qualificationText}}" id="dilzerName" [ngClass]="{'form-control': true}"
+                  formControlName="qualificationControl" [(ngModel)]="userData.qualification" />
+              </div>
+
+
+              <div [ngClass]="{'form-group': true}">
+                <input type="text" placeholder="{{updateAccountTranslations.certificationText}}" id="dilzerName" [ngClass]="{'form-control': true}"
+                  formControlName="certificationControl" [(ngModel)]="userData.certification" />
+              </div>
+
+
+              <div [ngClass]="{'form-group': true}" *ngIf="!loadingOnSubmit">
+                <button (click)="updateAccount()" type="button" [ngClass]="{'btn': true, 'btn-background': true, 'form-control': true, 'active': true}">{{updateAccountTranslations.buttonText}}</button>
+              </div>
+              <div [ngClass]="{'form-group': true}" *ngIf="loadingOnSubmit">
+                <button type="button" [ngClass]="{'btn': true, 'btn-background': true, 'form-control': true, 'active': true, 'd-flex': true, 'justify-content-center': true}"><div class="loader"></div></button>
+              </div>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

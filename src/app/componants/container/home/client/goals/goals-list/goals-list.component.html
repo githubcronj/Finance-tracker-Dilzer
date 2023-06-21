@@ -1,0 +1,87 @@
+<div *ngIf="!isErrorOccured">
+
+    <div class="margin-top-30px margin-bottom-10px">
+        <div class="row align-items-center">
+            <div class="col col-3 padding-0">
+                <h4 *ngIf="!editEnable" class="margin-0">Goals
+                </h4>
+                <div *ngIf="editEnable">
+                    <h4 class="margin-0 float-left">Selected ({{goalsListViewModel.goalsSelectedForDelete}})</h4>
+                    <a class="float-left margin-left-10px" (click)="deleteSelectedGoals()">Delete Selected</a>
+                </div>
+            </div>
+            <div class="col col-3 text-center">
+                <input *ngIf="!editEnable" type="text" (keyup)="searchGoalsList()" [(ngModel)]="goalsListViewModel.searchTerm" class="form-control"
+                    placeholder="Search" />
+            </div>
+            <div class="col col-6 padding-0 text-right">
+                <button type="button" class="btn btn-link float-right margin-left-10px" (click)="didEditGoalDetails()">{{editButtonText}}</button>
+                <button type="button" class="btn btn-link float-right margin-left-10px" routerLink='/auth/client/{{clientId}}/add-goal'>Add</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="goalsListViewModel.goalItems && goalsListViewModel.goalItems.length == 0" [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'center-align-div': true}">
+        There are no Goals added for this client. Click on the Add button to add the Goals    </div>
+
+    <p-table [scrollable]="true" *ngIf="goalsListViewModel.goalItems && goalsListViewModel.goalItems.length > 0" scrollHeight="250px"
+        [columns]="cols" [value]="goalsListViewModel.goalItems" id="paginationColor" (onRowReorder)="didReorderTableRows($event)">
+        <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+                <col *ngFor="let col of columns" class="column-width">
+            </colgroup>
+        </ng-template>
+
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th style="width:2em"></th>
+                <th *ngIf="editEnable">
+                    <input type="checkbox" (change)="didSelectDeselectAllGoals($event)" />
+                </th>
+                <th *ngFor="let col of columns">{{col.header}}</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-goal let-columns="columns" let-index="rowIndex">
+            <tr [pReorderableRow]="index">
+                <td style="width:2em">
+                    <i class="fa fa-bars" pReorderableRowHandle></i>
+                </td>
+                <td *ngIf="editEnable">
+                    <input type="checkbox" (change)="goalsListViewModel.countSelected()"  [(ngModel)]="goal['isSelectedForDelete']"/>
+                    <button type="button" (click)="deleteGoal(goal.goal._id)" class="btn btn-link">Delete</button>
+                </td>
+                <td>
+                    <img width="20px" src="{{resources.goalIconPath + goal.imageName}}" />
+                    <a (click)="didShowGoalDetails(goal.goal._id)" class="margin-left-10px">{{goal.name}}</a>
+                </td>
+                <td>{{goal.goalTypeDisplayString}}</td>
+                <td>{{goal.owner}}</td>
+                <td>{{goal.currentValuationDisplayString}}</td>
+                <td>{{goal.inflationRateDisplayString}}</td>
+                <td>{{"-"}}</td>
+                <td>{{"-"}}</td>
+                <td>{{goal.goalCreatedDate}}</td>
+
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <tr>
+                <td style="width:2em"></td>
+                <td>Total :</td>
+                <td *ngIf="editEnable"></td>
+                <td></td>
+                <td></td>
+                <td>{{goalsListViewModel.totalCurrentValuationDisplayString}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

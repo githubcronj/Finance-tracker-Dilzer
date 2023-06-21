@@ -1,0 +1,51 @@
+<nav id="logo-header" class="navbar sticky-top navbar-light d-flex justify-content-between align-items-center">
+    <div>
+        <img src="{{resources.headerLogo}}" routerLink="/auth/home" />
+    </div>
+
+
+    <div [ngClass]="{'float-right': true}">
+        <div class="dropbtn">{{(repository && repository.loggedInUser && repository.loggedInUser.name) ? repository.loggedInUser.name.fullName()
+            : ''}} <i class="fa fa-angle-down" aria-hidden="true"></i>
+            <div class="dropdown-content">
+                <div class="card profile-block" style="">
+                    <div class="arrow-up"></div>
+                    <div class="arrow-up-border"></div>
+                    <div class="profile-details-block">
+                        <div class="user-detail-holder" style="">
+                            <img src="{{resources.userIcon}}" class="user-avtar-icon" />
+                            <div>
+                                <div>
+                                    <span class="nav-header">{{(repository && repository.loggedInUser && repository.loggedInUser.name) ? repository.loggedInUser.name.fullName() : ''}}</span>
+                                </div>
+                                <div>
+                                    <span class="text-color">{{(repository && repository.loggedInUser && repository.loggedInUser.email) ? repository.loggedInUser.email : ''}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-detail-holder padding-0" style="">
+                            <div class="width-100per">
+                                <div class="user-detail-links" style="">
+                                    <a routerLink="/auth/update-account">My Profile</a>
+                                </div>
+                                <div class="user-detail-links" style="">
+                                    <a routerLink="/auth/change-password">Change Password</a>
+                                </div>
+                                <div *ngIf="isChief" class="user-detail-links" style="">
+                                    <a routerLink="/auth/settings">Settings</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-detail-holder padding-0" style="">
+                            <div class="width-100per">
+                                <div class="user-detail-links" style="">
+                                    <a (click)="logoutUser()">Sign out</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

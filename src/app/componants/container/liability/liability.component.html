@@ -1,0 +1,578 @@
+<app-navbar #navbar></app-navbar>
+
+
+<div *ngIf="!isErrorOccured" class=" body-container-padding">
+    <div class="sub-heading-holder float-left width-100per user-details-head">
+        <div class="float-left headings">Liability Information </div>
+        <span class="float-right">
+            <button type="button" routerLink="{{editLiabilityInformation}}" class="btn btn-link">Edit</button>
+        </span>
+    </div>
+    <table class="displayTableData" width="100%">
+        <colgroup>
+            <col width="35%">
+            <col width="65%">
+        </colgroup>
+        <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Name Of The Liability</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.name) ? liabilityInformation.name : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Liability Type</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.kind) ? (liabilityInformation.displayLiabilityTypeName()) : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Associated Asset</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.associatedAsset) ? (associatedAssetName) : 'None'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Owner Of This Liability</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.owners) ? ownerName : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Original Loan Amount</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+
+                        {{(liabilityInformation && liabilityInformation.loanAmount) ? '&#8377;' +liabilityInformation.displayCurrencyString(liabilityInformation.loanAmount)
+                        : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Rate Of Interest</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.rateOfInterest) ? (liabilityInformation.rateOfInterest)+' % per annum' :
+                        '-'}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Loan Taken Date</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.loanTakenDate) ? (liabilityInformation.displayLoanTakenDate()) : '-'}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Loan End Date</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.loadEndDate) ? (liabilityInformation.displayLoanEndDate()) : '-'}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Tenure</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.tenure) ? (liabilityInformation.tenureDisplayString +' years') : '-'}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Total Interest Paid during Original Tenure</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.totalInterestPaid) ? '&#8377;' +liabilityInformation.displayCurrencyString(liabilityInformation.totalInterestPaid)
+                        : '-'}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Total Principal + Interest Paid with Original Tenure</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.totalAmountPaid) ? '&#8377;' +liabilityInformation.displayCurrencyString(liabilityInformation.totalAmountPaid)
+                        : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Pre Closure Percentage</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.preclosurePercentage) ? (liabilityInformation.preclosurePercentage + '%')
+                        : '-'}}
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <!-- Current Loan Stage -->
+    <div class="sub-heading-holder float-left width-100per user-details-head">
+        <div class="float-left headings">Current Loan Stage</div>
+        <span class="float-right">
+            <button type="button" (click)="editLoanStage()" class="btn btn-link">Edit</button>
+        </span>
+    </div>
+    <table class="displayTableData" width="100%">
+        <colgroup>
+            <col width="35%">
+            <col width="65%">
+        </colgroup>
+        <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">As On</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.currentStage) ? (liabilityInformation.currentStage.displayDate()) : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Loan Outstanding Amount</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.currentStage && liabilityInformation.currentStage.outStandingAmount != null)
+                        ? '&#8377;' +liabilityInformation.displayCurrencyString(liabilityInformation.currentStage.outStandingAmount)
+                        : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Current EMI Paid (monthly)</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.currentStage && liabilityInformation.currentStage.emiPaid != null) ? '&#8377;'
+                        +liabilityInformation.displayCurrencyString(liabilityInformation.currentStage.emiPaid) : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Number Of Repayments Paid</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.currentStage && liabilityInformation.currentStage.numberOfRepaymentsPaid
+                        != null) ? (liabilityInformation.displayNumberOfRepaymentsPaid())+' months' : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Number Of Repayments Payable</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.currentStage && liabilityInformation.currentStage.numberOfRepaymentsPayable
+                        != null) ? (liabilityInformation.displayNumberOfRepaymentsPayable())+' months' : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Remaining Interest Payable</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.currentStage && liabilityInformation.currentStage.remainingInterestPayable
+                        != null) ? '&#8377;' +liabilityInformation.displayCurrencyString(liabilityInformation.currentStage.remainingInterestPayable)
+                        : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Total Loan Amount Due</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(liabilityInformation && liabilityInformation.currentStage && liabilityInformation.currentStage.remainingPrincipalPayable
+                        != null) ? '&#8377;' + liabilityInformation.displayCurrencyString(liabilityInformation.currentStage.remainingPrincipalPayable)
+                        : '-'}}
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <!-- Savings with increased EMI Section -->
+    <div *ngIf="keychainService.isLoggedInAsAdmin()">
+        <div class="sub-heading-holder float-left width-100per user-details-head">
+            <div class="float-left headings">Increased EMI With Revised Tenure</div>
+            <span class="float-right margin-left-10px">
+                <button type="button" routerLink="/auth/client/{{clientId}}/liability/{{liabilityId}}/loan-revision" class="btn btn-link">Edit</button>
+            </span>
+        </div>
+        <table class="displayTableData" width="100%">
+            <colgroup>
+                <col width="35%">
+                <col width="65%">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Percentage Of Increase In EMI</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(liabilityInformation && liabilityInformation.loanRevision && liabilityInformation.loanRevision.increasePercentage != null)
+                            ? (liabilityInformation.loanRevision.increasePercentage)+' % per annum' : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Increased EMI Amount</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(liabilityInformation && liabilityInformation.loanRevision && liabilityInformation.loanRevision.emiPaidAfterRevision !=
+                            null) ? '&#8377;' +liabilityInformation.displayCurrencyString(liabilityInformation.loanRevision.emiPaidAfterRevision)
+                            + ' per month' : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Revised Rate Of Interest</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(liabilityInformation && liabilityInformation.loanRevision && liabilityInformation.loanRevision.revisedRate != null) ?
+                            liabilityInformation.loanRevision.revisedRate+' % per annum' : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Number Of Repayments Payable After Revision</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(liabilityInformation && liabilityInformation.loanRevision && liabilityInformation.loanRevision.numberOfRepaymentsPayableAfterRevision
+                            != null) ? (liabilityInformation.loanRevision.numberOfRepaymentsPayableAfterRevision)+' months'
+                            : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Interest Payable After Revision</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(liabilityInformation && liabilityInformation.loanRevision && liabilityInformation.loanRevision.remainingInterestPayableAfterRevision
+                            != null) ?'&#8377;' + liabilityInformation.displayCurrencyString(liabilityInformation.loanRevision.remainingInterestPayableAfterRevision)
+                            : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Savings After Revision</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(liabilityInformation && liabilityInformation.loanRevision && liabilityInformation.loanRevision.savingsAfterRevision !=
+                            null && liabilityInformation.loanRevision.savingsAfterRevision != 0) ? '&#8377;' + liabilityInformation.displayCurrencyString(liabilityInformation.loanRevision.savingsAfterRevision)
+                            : '-'}}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+    <!-- Decreased EMI Section -->
+    <div *ngIf="keychainService.isLoggedInAsAdmin()">
+        <div class="sub-heading-holder float-left width-100per user-details-head">
+            <div class="float-left headings">Decreased EMI With Revised Tenure</div>
+            <span class="float-right margin-left-10px">
+                <button type="button" routerLink="/auth/client/{{clientId}}/liability/{{liabilityId}}/decrease-emi" class="btn btn-link">Edit</button>
+            </span>
+        </div>
+        <table class="displayTableData" width="100%">
+            <colgroup>
+                <col width="35%">
+                <col width="65%">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Percentage Of Decrease In EMI</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(liabilityInformation && liabilityInformation.decreaseInEmi && liabilityInformation.decreaseInEmi.decreasePercentage !=
+                            null) ? (liabilityInformation.decreaseInEmi.decreasePercentage)+' % per annum' : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Decreased EMI Amount</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(liabilityInformation && liabilityInformation.decreaseInEmi && liabilityInformation.decreaseInEmi.emiPaidAfterRevision
+                            != null) ? '&#8377;' +liabilityInformation.displayCurrencyString(liabilityInformation.decreaseInEmi.emiPaidAfterRevision)+
+                            ' per month' : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Revised Rate Of Interest</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(liabilityInformation && liabilityInformation.decreaseInEmi && liabilityInformation.decreaseInEmi.revisedRate != null)
+                            ? liabilityInformation.decreaseInEmi.revisedRate+' % per annum' : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Number Of Repayments Payable After Revision</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(liabilityInformation && liabilityInformation.decreaseInEmi && liabilityInformation.decreaseInEmi.numberOfRepaymentsPayableAfterRevision
+                            != null) ? (liabilityInformation.decreaseInEmi.numberOfRepaymentsPayableAfterRevision)+' months'
+                            : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Interest Payable After Revision</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(liabilityInformation && liabilityInformation.decreaseInEmi && liabilityInformation.decreaseInEmi.remainingInterestPayableAfterRevision
+                            != null) ? '&#8377;' +liabilityInformation.displayCurrencyString(liabilityInformation.decreaseInEmi.remainingInterestPayableAfterRevision)
+                            : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Additional Interest Payable With Decrease In EMI</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(liabilityInformation && liabilityInformation.decreaseInEmi && liabilityInformation.decreaseInEmi.additionalInterestPayableAfterRevision
+                            != null && liabilityInformation.decreaseInEmi.additionalInterestPayableAfterRevision != 0) ?
+                            '&#8377;' +liabilityInformation.displayCurrencyString(liabilityInformation.decreaseInEmi.additionalInterestPayableAfterRevision)
+                            : '-'}}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+    <!-- Attachments Section -->
+    <div class="sub-heading-holder float-left width-100per user-details-head">
+        <div class="float-left headings">Attachments</div>
+
+        <span class="float-right margin-left-10px">
+            <label class="btn btn-link" for="upload-file-selector">
+                <input id="upload-file-selector" type="file" (change)="addAttachments($event)"> Add Attachment
+            </label>
+        </span>
+
+    </div>
+    <table *ngIf="liabilityInformation && liabilityInformation.attachments && liabilityInformation.attachments.length > 0" class="displayTableData"
+        width="100%">
+        <colgroup>
+            <col width="70%">
+            <col width="40%">
+        </colgroup>
+        <tbody>
+            <tr *ngFor="let attachment of liabilityInformation.attachments">
+                <td valign="top">
+                    {{attachment.originalname}}
+                </td>
+
+                <td class="text-right">
+                    <button type="button" (click)="downloadAttachments(attachment._id, attachment.originalname, attachment.mimetype)" class="btn btn-link">Download</button>
+                    <span class="float-right margin-left-10px">
+                        <button type="button" (click)="deleteAttachments(attachment._id)" class="btn btn-link">Delete</button>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <!-- Committed Repayments -->
+    <div class="sub-heading-holder float-left width-100per user-details-head">
+        <div class="float-left headings">Committed Repayments Of Loan Lumpsum Or Regular Contributions</div>
+        <span class="float-right margin-left-10px">
+            <button type="button" routerLink="/auth/client/{{clientId}}/liability/{{liabilityId}}/committed-repayment" class="btn btn-link">Add</button>
+        </span>
+    </div>
+    <table *ngIf="liabilityInformation && liabilityInformation.committedRepayments && liabilityInformation.committedRepayments.length > 0"
+        class="displayTableData" width="100%">
+        <colgroup>
+            <col width="35%">
+            <col width="45%">
+            <col width="20%">
+        </colgroup>
+
+        <tbody>
+            <tr *ngFor="let committedRepayment of liabilityInformation.committedRepayments">
+                <td valign="top">
+                    <label class="margin-left-10px">{{(committedRepayment.kind) ? displayKind(committedRepayment.kind) : ''}} {{committedRepayment.name ?
+                        '(' + committedRepayment.name + ')' : ''}}</label>
+                </td>
+                <td>
+                    <b>{{committedRepayment.amount?'&#8377;'+ committedRepayment.displayCurrencyString(committedRepayment.amount)
+                        :''}} {{committedRepayment.frequency != null ? '(' + committedRepayment.frequencyDisplayString()
+                        + ')' : '-' }}</b>
+                    <br/>
+                    <span style="font-size:12px;color: grey;">{{committedRepayment.displayString(client)}}</span>
+
+                    <div *ngIf="this.keychainService.isLoggedInAsAdmin()">
+                        <span style="font-size:12px;color: grey;">{{(committedRepayment.savingsAfterRepayment) ? committedRepayment.displaySavingsAfterRepayments()
+                            : '-'}}</span>
+                        <br/>
+                        <span style="font-size:12px;color: grey;">{{(committedRepayment.mutualFundNetGain) ? committedRepayment.displaymutualFundNetGain() : '-'}}</span>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <button type="button" (click)="editCommittedRepayments(committedRepayment._id)" class="btn btn-link">Edit</button>
+                    <span class="float-right margin-left-10px">
+                        <button type="button" (click)="deleteCommittedRepayments(committedRepayment._id)" class="btn btn-link">Delete</button>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<p-growl [(value)]="msgs"></p-growl>
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

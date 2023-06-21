@@ -1,0 +1,81 @@
+<div class="container margin d-flex justify-content-center align-items-center">
+    <div [ngClass]="{'col-md-6': true, 'col-lg-4': true, 'col-sm-12': true, 'col-12': true, 'col': true, 'registration-center-align': true}">
+
+        <div [ngClass]="{'d-flex': true, 'justify-content-center': true, 'logo-block': true}">
+            <img src="{{resources.logo}}" alt="Logo" routerLink="" />
+        </div>
+
+        <form action="https://secure.payu.in/_payment" name="payuform" method=POST #form>
+
+            <h4 class="text-center">{{translations.paymentHeading}}</h4>
+            <br/>
+
+            <div class="card">
+                <div class="card-block">
+                    <div class="float-left col-2 ">
+                        <input type="radio" name="options" value="fp" [(ngModel)]="selectedService" autocomplete="off">
+                    </div>
+                    <div class="float-left col-10">
+                        <h5 class="card-title">{{translations.fpHeading}}</h5>
+                    </div>
+
+                </div>
+            </div><br>
+
+            <div class="card">
+                <div class="card-block">
+                    <div class="float-left col-2 ">
+                        <input type="radio" name="options" value="wm" [(ngModel)]="selectedService" autocomplete="off">
+                    </div>
+                    <div class="float-left col-10">
+                        <h5 class="card-title">{{translations.wmHeading}}</h5>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="d-flex justify-content-center align-items-center">
+                <button type="submit" [ngClass]="{'btn': true, 'btn-background': true}" (click)="form.submit()">{{translations.payButtonTitle}}</button>
+            </div>
+
+            <input hidden name="key" [(ngModel)]="invoiceData.key" />
+            <input hidden name="hash" [(ngModel)]="invoiceData.hash" />
+            <input hidden type="hidden" name="txnid" [(ngModel)]="invoiceData.txnid" />
+
+            <table>
+                <tr hidden>
+                    <td><b>Mandatory Parameters</b></td>
+                </tr>
+                <tr hidden>
+                    <td>Amount: </td>
+                    <td><input name="amount" [(ngModel)]="invoiceData.amount" /></td>
+                    <td>First Name: </td>
+                    <td><input name="firstname" id="firstname" [(ngModel)]="invoiceData.firstname" /></td>
+                </tr>
+                <tr hidden>
+                    <td>Email: </td>
+                    <td><input name="email" id="email" [(ngModel)]="invoiceData.email" /></td>
+                    <td>Phone: </td>
+                    <td><input name="phone" [(ngModel)]="invoiceData.phone" /></td>
+                    <td>Product Info: </td>
+                    <td colspan="3"><input name="productinfo" [(ngModel)]="invoiceData.productinfo"> </td>
+                </tr>
+                <tr hidden>
+                    <td>Success URI: </td>
+                    <td colspan="3"><input name="surl" size="64" [(ngModel)]="invoiceData.surl" /></td>
+                </tr>
+                <tr hidden>
+                    <td>Failure URI: </td>
+                    <td colspan="3"><input name="furl" size="64" [(ngModel)]="invoiceData.furl" /></td>
+                </tr>
+                <tr hidden>
+                    <td colspan="3"><input type="hidden" name="service_provider" [(ngModel)]="invoiceData.service_provider" /></td>
+                </tr>
+
+                <tr hidden>
+                    <button type="submit" [ngClass]="{'btn': true, 'btn-secondary': true}" (click)="form.submit()">Search</button>
+                </tr>
+            </table>
+        </form>
+
+    </div>
+</div>

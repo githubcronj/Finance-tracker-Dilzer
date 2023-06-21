@@ -1,0 +1,945 @@
+<p-growl [(value)]="msgs">
+
+</p-growl>
+
+<div class="center-position" *ngIf="!isErrorOccured">
+<form [formGroup]="gratuityCalculatorForm" class="form-inline">
+
+    <div class="row tdCSS">
+        <div class="col-5 client-form">
+            <table class="displayTableData" width="100%">
+                <colgroup>
+                    <col width="50%">
+                    <col width="50%">
+                </colgroup>
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <div class="col-xs-1 center-block" style="text-align:center;">
+                                Client Gratuity Calculator
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="displayTableData" width="100%">
+                <colgroup>
+                    <col width="50%">
+                    <col width="50%">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Plan Date</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <p-calendar formControlName="planDateControl" inputStyleClass="form-control" [readonlyInput]="true" placeholder="dd/mm/yyyy" [monthNavigator]="true" (onSelect)="gratuityCalculatorViewModel.changeValuationDate($event)" 
+                                    [yearNavigator]="true" dateFormat="dd/mm/yy" yearRange="1900:2200" [(ngModel)]="gratuityCalculatorViewModel.gratuity.valuationDate" ></p-calendar>
+                                <div *ngIf="gratuityCalculatorForm.controls['planDateControl'].hasError('required') && gratuityCalculatorForm.controls['planDateControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Name of the client</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <!-- <select [ngClass]="{'form-control': true}" formControlName="nameControl" (change)="gratuityCalculatorViewModel.setGratuityValue($event)"
+                                    [(ngModel)]="gratuityCalculatorViewModel.gratuity.ownerName">
+                                    <option *ngFor="let name of gratuityCalculatorViewModel.ownersList " value="{{name.key}}">
+                                        {{name.key}}
+                                    </option>
+                                </select> -->
+                                <input [ngClass]="{'form-control': true}" formControlName="nameControl" [(ngModel)]="gratuityCalculatorViewModel.gratuity.ownerName" disabled/>
+                                <div *ngIf="gratuityCalculatorForm.controls['nameControl'].hasError('required') && gratuityCalculatorForm.controls['nameControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Date Of Birth</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <p-calendar formControlName="dateOfBirthControl" inputStyleClass="form-control" placeholder="dd/mm/yyyy" [monthNavigator]="true"
+                                    [yearNavigator]="true" dateFormat="dd/mm/yy" [readonlyInput]="true" yearRange="1900:2200" [(ngModel)]="gratuityCalculatorViewModel.gratuity.dob" disabled="true"></p-calendar>
+                                <div *ngIf="gratuityCalculatorForm.controls['dateOfBirthControl'].hasError('required') && gratuityCalculatorForm.controls['dateOfBirthControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">End of Service Age</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <input type="text" [ngClass]="{'form-control': true}" placeholder="End of Service Age" formControlName="endOfServiceAgeControl" (change)="gratuityCalculatorViewModel.changeEndOfServiceAge($event)" 
+                                    [(ngModel)]="gratuityCalculatorViewModel.gratuity.retirementAge" value="gratuityCalculatorViewModel.gratuity.retirementAge" />
+                                <div *ngIf="gratuityCalculatorForm.controls['endOfServiceAgeControl'].hasError('required') && gratuityCalculatorForm.controls['endOfServiceAgeControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">End of Service Date</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <p-calendar formControlName="endOfServiceDateControl" inputStyleClass="form-control" placeholder="dd/mm/yyyy" [monthNavigator]="true" (onYearChange)="gratuityCalculatorViewModel.changeEndOfServiceDate($event)" 
+                                    [yearNavigator]="true" [readonlyInput]="true" dateFormat="dd/mm/yy" yearRange="1900:2200" [(ngModel)]="gratuityCalculatorViewModel.gratuity.retirementDate" value="gratuityCalculatorViewModel.gratuity.retirementDate"></p-calendar>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Date of joining the current employer</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <p-calendar formControlName="dateOfJoiningControl" inputStyleClass="form-control" placeholder="dd/mm/yyyy" [monthNavigator]="true" 
+                                    (onSelect)="gratuityCalculatorViewModel.dateOfJoiningSelected($event)"  [yearNavigator]="true" dateFormat="dd/mm/yy" [readonlyInput]="true" yearRange="1900:2200" [(ngModel)]="gratuityCalculatorViewModel.gratuity.dateOfJoinng"></p-calendar>
+
+                                <div *ngIf="gratuityCalculatorForm.controls['dateOfJoiningControl'].hasError('required') && gratuityCalculatorForm.controls['dateOfJoiningControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="displayTableData" width="100%">
+                <colgroup>
+                    <col width="50%">
+                    <col width="50%">
+                </colgroup>
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Type of Current Employer</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <select [ngClass]="{'form-control': true}" (onchange) = "gratuityCalculatorViewModel.changeCompanyType"
+                                [(ngModel)]="gratuityCalculatorViewModel.gratuity.companyType" formControlName="typeOfEmployerControl">
+                                    <option *ngFor="let companyType of gratuityCalculatorViewModel.companyTypes" value="{{companyType.key}}">
+                                        {{companyType.value}}
+                                    </option>
+                                </select>
+                                <div *ngIf="gratuityCalculatorForm.controls['typeOfEmployerControl'].hasError('required') && gratuityCalculatorForm.controls['typeOfEmployerControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Salary (Basic + DA), Current Per month</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <input type="text" [ngClass]="{'form-control': true}" placeholder="Salary(Basic+DA)" [(ngModel)]="gratuityCalculatorViewModel.gratuity.salaryComponant"
+                                (change)="gratuityCalculatorViewModel.changeSalary($event)" formControlName="currentSalaryControl" [(ngModel)]="gratuityCalculatorViewModel.gratuity.salaryComponant"
+                                />
+                                <div *ngIf="gratuityCalculatorForm.controls['currentSalaryControl'].hasError('required') && gratuityCalculatorForm.controls['currentSalaryControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Avg. Expected hike in salary over the years</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <input type="text" [ngClass]="{'form-control': true}" placeholder="Avg. expected hike" formControlName="avgExpectedHikeControl"
+                                (change)="gratuityCalculatorViewModel.changeGrowthRate($event)" [(ngModel)]="gratuityCalculatorViewModel.gratuity.growthRate" />
+                                <!-- <span>%</span> -->
+                                <div *ngIf="gratuityCalculatorForm.controls['avgExpectedHikeControl'].hasError('required') && gratuityCalculatorForm.controls['avgExpectedHikeControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Age as on Date</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                {{gratuityCalculatorViewModel.gratuity.age ? gratuityCalculatorViewModel.gratuity.age : '-'}}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Time to Retire</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                {{gratuityCalculatorViewModel.gratuity.yearsToRetire ? gratuityCalculatorViewModel.gratuity.yearsToRetire :'-'}}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px"> Experience in Current Organization</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                {{gratuityCalculatorViewModel.gratuity.currentExperience ? gratuityCalculatorViewModel.gratuity.currentExperience
+                                : '-'}}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Salary (Basic + DA), at End-of-Service Per month</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                {{gratuityCalculatorViewModel.gratuity.salaryComponantDuringRetirement ?'&#8377; ' +  gratuityCalculatorViewModel.gratuity.salaryComponantDuringRetirement
+                                : '-'}}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px"> Time in case the employment is continued till End-of-Service with the current employer</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                {{gratuityCalculatorViewModel.gratuity.serviceYears ? gratuityCalculatorViewModel.gratuity.serviceYears : '-'}}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="displayTableData" width="100%">
+                <colgroup>
+                    <col width="50%">
+                    <col width="50%">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="result-text margin-left-10px"> Present Value Of Gratuity</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="result-text align-to-right">
+                                {{ gratuityCalculatorViewModel.gratuity.gratuityPresentValueDisplayString ?'&#8377; ' + gratuityCalculatorViewModel.gratuity.gratuityPresentValueDisplayString:
+                                ''}}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="result-text margin-left-10px">Future Value Of Gratuity</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="result-text align-to-right">
+                                {{gratuityCalculatorViewModel.gratuity.gratuityFutureValueDisplayString ? '&#8377; ' + gratuityCalculatorViewModel.gratuity.gratuityFutureValueDisplayString
+                                : ''}}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table *ngIf="loadClientTaxation" class="displayTableData" width="100%">
+                <table>
+                    <colgroup>
+                        <col width="100%">
+                    </colgroup>
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <div class="result-text margin-centre" style="text-align:center;">
+                                Condition of Gratuity receivable at End of Service,exempt
+                            </div>
+                        </tr>
+                    </tbody>
+                </table>
+                <table>
+                    <colgroup>
+                        <col width="60%">
+                        <col width="40%">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Gratuity as per Law
+                                </label>
+                            </td>
+                            <td>
+                                <div class="em-result-block result-block align-to-right">
+                                    {{gratuityCalculatorViewModel.gratuity.gratuityFutureValueDisplayString}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Actual received from Employer
+                                </label>
+                            </td>
+                            <td>
+                                <div class="em-result-block result-block align-to-right">
+                                    {{gratuityCalculatorViewModel.gratuity.gratuityFutureValueDisplayString}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Max. Limit for Exemption
+                                </label>
+                            </td>
+                            <td>
+                                <input  type="text" [ngClass]="{'form-control': true}" (change)="gratuityCalculatorViewModel.maxLimitForExemptionEvent($event)" placeholder="Limit For Exemption" formControlName="maxLimitExemptionControl" [(ngModel)]="gratuityCalculatorViewModel.gratuity.maxLimitExemption"/>
+                                <div *ngIf="gratuityCalculatorForm.controls['maxLimitExemptionControl'].hasError('required') && gratuityCalculatorForm.controls['maxLimitExemptionControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table>
+                    <colgroup>
+                        <col width="60%">
+                        <col width="60%">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Amount Exempted from Tax
+                                </label>
+                            </td>
+                            <td>
+                                <div class="em-result-block result-block align-to-right">
+                                    {{gratuityCalculatorViewModel.gratuity.maxLimitExemptionDisplayString? '&#8377; ' + gratuityCalculatorViewModel.gratuity.maxLimitExemptionDisplayString: "--"}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Taxable amount of Gratuity received
+                                </label>
+                            </td>
+                            <td>
+                                <div class="em-result-block result-block align-to-right">
+                                    {{gratuityCalculatorViewModel.gratuity.taxableAmountDisplayString ? '&#8377; ' + gratuityCalculatorViewModel.gratuity.taxableAmountDisplayString
+                                    : '--'}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Tax Slab
+                                </label>
+                            </td>
+                            <td>
+                                <input  type="text" [ngClass]="{'form-control': true}" (change)="gratuityCalculatorViewModel.taxSlabEvent($event)" placeholder="Tax Slab" formControlName="taxSlabControl" [(ngModel)]="gratuityCalculatorViewModel.gratuity.taxSlab"/>
+                                <div *ngIf="gratuityCalculatorForm.controls['taxSlabControl'].hasError('required') && gratuityCalculatorForm.controls['taxSlabControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Tax to be paid on Gratuity received @ applicable Tax Rate
+                                </label>
+                            </td>
+                            <td>
+                                <div class="em-result-block result-block align-to-right">
+                                    {{gratuityCalculatorViewModel.gratuity.taxToBePaidDisplayString ? '&#8377; ' + gratuityCalculatorViewModel.gratuity.taxToBePaidDisplayString
+                                    : '--'}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="result-text margin-left-10px">
+                                    TOTAL GRATUITY AMOUNT RECEIVABLE AT THE START OF THE RETIREMENT
+                                </label>
+                            </td>
+                            <td>
+                                <div class="em-result-block result-block align-to-right">
+                                    {{gratuityCalculatorViewModel.gratuity.totalGratuityDisplayString ? '&#8377; ' + gratuityCalculatorViewModel.gratuity.totalGratuityDisplayString
+                                    : '--'}}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </table>
+            <table class="displayTableData" width="100%">
+                <colgroup>
+                    <col width="50%">
+                    <col width="50%">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="floating-button" *ngIf="!loadClientTaxation">
+                            <button *ngIf="!loadingOnSubmit" (click)="calculateGratuity()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Calculate</button>
+                            <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'margin-left-10px': true, 'justify-content-center': true}">
+                                <div class="loader"></div>
+                            </button>
+                        </div>
+                        <div class="floating-button" *ngIf="loadClientTaxation">
+                            <button  (click)="calculateGratuityAndTaxation()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Calculate</button>
+                            <button  (click)="saveGratuity()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Save</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-5 spouse-form">
+            <table class="displayTableData" width="100%">
+                <colgroup>
+                    <col width="50%">
+                    <col width="50%">
+                </colgroup>
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <div class="col-xs-1 center-block" style="text-align:center;">
+                                Spouse Gratuity Calculator
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="displayTableData" width="100%">
+                <colgroup>
+                    <col width="50%">
+                    <col width="50%">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Plan Date</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <p-calendar formControlName="spousePlanDateControl" inputStyleClass="form-control" [readonlyInput]="true" placeholder="dd/mm/yyyy" [monthNavigator]="true" (onSelect)="gratuityCalculatorViewModel.changeSpouseValuationDate($event)"
+                                    [yearNavigator]="true" dateFormat="dd/mm/yy" yearRange="1900:2200" [(ngModel)]="gratuityCalculatorViewModel.gratuity.spouseValuationDate" ></p-calendar>
+                                <div *ngIf="gratuityCalculatorForm.controls['spousePlanDateControl'].hasError('required') && gratuityCalculatorForm.controls['spousePlanDateControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Name of the client</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <!-- <select [ngClass]="{'form-control': true}" formControlName="spouseNameControl" (change)="gratuityCalculatorViewModel.setSpouseGratuityValue($event)"
+                                    [(ngModel)]="gratuityCalculatorViewModel.gratuity.spouseOwnerName">
+                                    <option *ngFor="let name of gratuityCalculatorViewModel.ownersList " value="{{name.key}}" [ngValue]="name.key">
+                                        {{name.key}}
+                                    </option>
+                                </select> -->
+                                <input  type="text" [ngClass]="{'form-control': true}" placeholder="Name of Client" formControlName="spouseNameControl" [(ngModel)]="gratuityCalculatorViewModel.gratuity.spouseOwnerName" disabled />
+                                <div *ngIf="gratuityCalculatorForm.controls['spouseNameControl'].hasError('required') && gratuityCalculatorForm.controls['spouseNameControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Date Of Birth</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <p-calendar  inputStyleClass="form-control" 
+                                formControlName="spouseDateOfBirthControl"placeholder="dd/mm/yyyy" [monthNavigator]="true"
+                                    [yearNavigator]="true" dateFormat="dd/mm/yy" [readonlyInput]="true" yearRange="1900:2200" [(ngModel)]="gratuityCalculatorViewModel.gratuity.spousedob" disabled="true"></p-calendar>
+                                <div *ngIf="gratuityCalculatorForm.controls['dateOfBirthControl'].hasError('required') && gratuityCalculatorForm.controls['dateOfBirthControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">End of Service Age</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <input type="text" [ngClass]="{'form-control': true}" placeholder="End of Service Age" formControlName="spouseEndOfServiceAgeControl" (change)="gratuityCalculatorViewModel.changeSpouseEndOfServiceAge($event)" 
+                                    [(ngModel)]="gratuityCalculatorViewModel.gratuity.spouseRetirementAge" value="gratuityCalculatorViewModel.gratuity.spouseRetirementAge" />
+                                <div *ngIf="gratuityCalculatorForm.controls['spouseEndOfServiceAgeControl'].hasError('required') && gratuityCalculatorForm.controls['spouseEndOfServiceAgeControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">End of Service Date</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <p-calendar formControlName="spouseEndOfServiceDateControl" inputStyleClass="form-control" placeholder="dd/mm/yyyy" [monthNavigator]="true" (onYearChange)="gratuityCalculatorViewModel.changeSpouseEndOfServiceDate($event)" 
+                                    [yearNavigator]="true" [readonlyInput]="true" dateFormat="dd/mm/yy" yearRange="1900:2200" [(ngModel)]="gratuityCalculatorViewModel.gratuity.spouseRetirementDate" value="gratuityCalculatorViewModel.gratuity.spouseRetirementDate"></p-calendar>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Date of joining the current employer</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <p-calendar formControlName="spouseDateOfJoiningControl" inputStyleClass="form-control" placeholder="dd/mm/yyyy" [monthNavigator]="true" (onSelect)="gratuityCalculatorViewModel.spouseDateOfJoiningSelected($event)"
+                                    [yearNavigator]="true" dateFormat="dd/mm/yy" [readonlyInput]="true" yearRange="1900:2200" [(ngModel)]="gratuityCalculatorViewModel.gratuity.spouseDateOfJoinng"></p-calendar>
+
+                                <div *ngIf="gratuityCalculatorForm.controls['spouseDateOfJoiningControl'].hasError('required') && gratuityCalculatorForm.controls['spouseDateOfJoiningControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="displayTableData" width="100%">
+                <colgroup>
+                    <col width="50%">
+                    <col width="50%">
+                </colgroup>
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Type of Current Employer</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <select [ngClass]="{'form-control': true}" [(ngModel)]="gratuityCalculatorViewModel.gratuity.spouseCompanyType" 
+                                (change) = "gratuityCalculatorViewModel.changeSpouseCompanyType"
+                                formControlName="spouseTypeOfEmployerControl">
+                                    <option *ngFor="let companyType of gratuityCalculatorViewModel.companyTypes" value="{{companyType.key}}">
+                                        {{companyType.value}}
+                                    </option>
+                                </select>
+                                <div *ngIf="gratuityCalculatorForm.controls['spouseTypeOfEmployerControl'].hasError('required') && gratuityCalculatorForm.controls['spouseTypeOfEmployerControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Salary (Basic + DA), Current Per month</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <input type="text" [ngClass]="{'form-control': true}" placeholder="Salary(Basic+DA)"
+                                (change)="gratuityCalculatorViewModel.changeSpouseSalary($event)" formControlName="spouseCurrentSalaryControl" [(ngModel)]="gratuityCalculatorViewModel.gratuity.spouseSalaryComponant"
+                                />
+                                <div *ngIf="gratuityCalculatorForm.controls['spouseCurrentSalaryControl'].hasError('required') && gratuityCalculatorForm.controls['spouseCurrentSalaryControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Avg. Expected hike in salary over the years</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                <input type="text" [ngClass]="{'form-control': true}" placeholder="Avg. expected hike" formControlName="spouseAvgExpectedHikeControl"
+                                (change)="gratuityCalculatorViewModel.changeSpouseGrowthRate($event)" [(ngModel)]="gratuityCalculatorViewModel.gratuity.spouseGrowthRate" />
+                                <!-- <span>%</span> -->
+                                <div *ngIf="gratuityCalculatorForm.controls['spouseAvgExpectedHikeControl'].hasError('required') && gratuityCalculatorForm.controls['spouseAvgExpectedHikeControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Age as on Date</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                {{gratuityCalculatorViewModel.gratuity.spouseAge ? gratuityCalculatorViewModel.gratuity.spouseAge : '-'}}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Time to Retire</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                {{gratuityCalculatorViewModel.gratuity.spouseYearsToRetire ? gratuityCalculatorViewModel.gratuity.spouseYearsToRetire :'-'}}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px"> Experience in Current Organization</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                {{gratuityCalculatorViewModel.gratuity.spouseCurrentExperience ? gratuityCalculatorViewModel.gratuity.spouseCurrentExperience
+                                : '-'}}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px">Salary (Basic + DA), at End-of-Service Per month</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                {{gratuityCalculatorViewModel.gratuity.spouseSalaryComponantDuringRetirement ?'&#8377; ' +  gratuityCalculatorViewModel.gratuity.spouseSalaryComponantDuringRetirement
+                                : '-'}}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="em-title-block margin-left-10px"> Time in case the employment is continued till End-of-Service with the current employer</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="em-result-block result-block align-to-right">
+                                {{gratuityCalculatorViewModel.gratuity.spouseServiceYears ? gratuityCalculatorViewModel.gratuity.spouseServiceYears : '-'}}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="displayTableData" width="100%">
+                <colgroup>
+                    <col width="50%">
+                    <col width="50%">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="result-text margin-left-10px"> Present Value Of Gratuity</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="result-text align-to-right">
+                                {{ gratuityCalculatorViewModel.gratuity.spouseGratuityPresentValue ?'&#8377; ' + gratuityCalculatorViewModel.gratuity.spouseGratuityPresentValue:
+                                ''}}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="result-text margin-left-10px">Future Value Of Gratuity</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="result-text align-to-right">
+                                {{gratuityCalculatorViewModel.gratuity.spouseGratuityFutureValue ? '&#8377; ' + gratuityCalculatorViewModel.gratuity.spouseGratuityFutureValue
+                                : ''}}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <table *ngIf="loadSpouseTaxation" class="displayTableData" width="100%">
+                <table>
+                    <colgroup>
+                        <col width="100%">
+                    </colgroup>
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <div class="result-text margin-centre" style="text-align:center;">
+                                Condition of Gratuity receivable at End of Service,exempt
+                            </div>
+                        </tr>
+                    </tbody>
+                </table>
+                <table>
+                    <colgroup>
+                        <col width="60%">
+                        <col width="40%">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Gratuity as per Law
+                                </label>
+                            </td>
+                            <td>
+                                <div class="em-result-block result-block align-to-right">
+                                    {{gratuityCalculatorViewModel.gratuity.spouseGratuityFutureValueDisplayString}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Actual received from Employer
+                                </label>
+                            </td>
+                            <td>
+                                <div class="em-result-block result-block align-to-right">
+                                    {{gratuityCalculatorViewModel.gratuity.spouseGratuityFutureValueDisplayString}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Max. Limit for Exemption
+                                </label>
+                            </td>
+                            <td>
+                                <input  type="text" [ngClass]="{'form-control': true}" (change)="gratuityCalculatorViewModel.spouseMaxLimitForExemptionEvent($event)" placeholder="Limit For Exemption" formControlName="spouseMaxLimitExemptionControl" [(ngModel)]="gratuityCalculatorViewModel.gratuity.spouseMaxLimitExemption"/>
+                                <div *ngIf="gratuityCalculatorForm.controls['spouseMaxLimitExemptionControl'].hasError('required') && gratuityCalculatorForm.controls['spouseMaxLimitExemptionControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table>
+                    <colgroup>
+                        <col width="60%">
+                        <col width="60%">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Amount Exempted from Tax
+                                </label>
+                            </td>
+                            <td>
+                                <div class="em-result-block result-block align-to-right">
+                                    {{gratuityCalculatorViewModel.gratuity.spouseMaxLimitExemptionDisplayString? '&#8377; ' + gratuityCalculatorViewModel.gratuity.spouseMaxLimitExemptionDisplayString: "--"}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Taxable amount of Gratuity received
+                                </label>
+                            </td>
+                            <td>
+                                <div class="em-result-block result-block align-to-right">
+                                    {{gratuityCalculatorViewModel.gratuity.spouseTaxableAmountDisplayString ? '&#8377; ' + gratuityCalculatorViewModel.gratuity.spouseTaxableAmountDisplayString
+                                    : '--'}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Tax Slab
+                                </label>
+                            </td>
+                            <td>
+                                <input  type="text" [ngClass]="{'form-control': true}" (change)="gratuityCalculatorViewModel.spouseTaxSlabEvent($event)" placeholder="Tax Slab" formControlName="spouseTaxSlabControl" [(ngModel)]="gratuityCalculatorViewModel.gratuity.spouseTaxSlab"/>
+                                <div *ngIf="gratuityCalculatorForm.controls['spouseTaxSlabControl'].hasError('required') && gratuityCalculatorForm.controls['spouseTaxSlabControl'].touched"
+                                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                                    This feild cannot be empty.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="em-title-block margin-left-10px">
+                                    Tax to be paid on Gratuity received @ applicable Tax Rate
+                                </label>
+                            </td>
+                            <td>
+                                <div class="em-result-block result-block align-to-right">
+                                    {{gratuityCalculatorViewModel.gratuity.spouseTaxToBePaidDisplayString ? '&#8377; ' + gratuityCalculatorViewModel.gratuity.spouseTaxToBePaidDisplayString
+                                    : '--'}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="result-text margin-left-10px">
+                                    TOTAL GRATUITY AMOUNT RECEIVABLE AT THE START OF THE RETIREMENT
+                                </label>
+                            </td>
+                            <td>
+                                <div class="em-result-block result-block align-to-right">
+                                    {{gratuityCalculatorViewModel.gratuity.spouseTotalGratuityDisplayString ? '&#8377; ' + gratuityCalculatorViewModel.gratuity.spouseTotalGratuityDisplayString
+                                    : '--'}}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </table>
+
+            <table class="displayTableData" width="100%">
+                <colgroup>
+                    <col width="50%">
+                    <col width="50%">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="floating-button" *ngIf="!loadSpouseTaxation">
+                            <button *ngIf="!loadingOnSubmit" (click)="calculateSpouseGratuity()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Calculate</button>
+                            <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'margin-left-10px': true, 'justify-content-center': true}">
+                                <div class="loader"></div>
+                            </button>
+                        </div>
+                        <div class="floating-button" *ngIf="loadSpouseTaxation">
+                            <button  (click)="calculateSpouseGratuityAndTaxation()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Calculate</button>
+                            <button  (click)="saveSpouseGratuity()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Save</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+</div>
+
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

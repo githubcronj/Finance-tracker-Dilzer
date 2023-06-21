@@ -1,0 +1,7 @@
+<div *ngIf="this.keychain.isLoggedInAsClient()">
+    <app-client-home #clientHome></app-client-home>
+</div>
+
+<div *ngIf="this.keychain.isLoggedInAsAdmin()">
+    <app-admin-home></app-admin-home>
+</div>

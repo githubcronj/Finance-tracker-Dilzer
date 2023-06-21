@@ -1,0 +1,69 @@
+
+.logo-block {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.expense-center-align {
+    margin-right: auto;
+    margin-left: auto;
+}
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #d5d5d5;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #d5d5d5;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #d5d5d5;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #d5d5d5;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input::-webkit-calendar-picker-indicator {
+    opacity: 100;
+}
+.percentage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  margin-left: 5px;
+}
+
+.expense-header-table td {
+  text-align: left;
+  font-size: 14px;
+  font-weight: normal;
+  font-family: 'roboto-light'
+}
+.btn-link {
+  padding: 0px;
+  margin-left: 20px;
+}
+.heading-section {
+  padding: 10px 1.25rem;
+  border-bottom: 1px solid gainsboro
+}
+.floating-button {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  padding: 20px;
+  background: white;
+  text-align: center;
+  border-top: 1px solid gainsboro
+}
+.has-error {
+  border: solid 1px red;
+}
+
+.errorMessage {
+  color: #a94442 !important;
+}

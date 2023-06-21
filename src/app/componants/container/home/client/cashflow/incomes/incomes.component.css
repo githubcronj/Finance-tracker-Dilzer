@@ -1,0 +1,25 @@
+:host /deep/ .ui-datatable tfoot td.ui-state-default {
+    background: #285C83;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+:host /deep/ .ui-column-title{
+    color: white;
+}
+:host /deep/  .ui-cell-data {
+    color: black;
+}
+.column-width {
+    width: auto;
+}
+@media all and (max-width: 800px) {
+    .column-width {
+        width: 160px;
+    }
+}
+:host /deep/ .ui-table tfoot{
+    background: #285C83;
+    font-weight: bold;
+    color: white;
+}

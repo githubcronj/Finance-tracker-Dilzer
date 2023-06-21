@@ -1,0 +1,63 @@
+.sort-by-assets-type {
+    background: white;
+    outline: 0;
+    width: auto;
+    float: right;
+}
+.single-line
+{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+@media all and (max-width: 600px) {
+    .sort-by-assets-type {
+        width: 100px;
+    }
+}
+.center-align-div {
+    margin-top: 80px;
+    margin-right: auto;
+    margin-left: auto;
+    font-weight: bold;
+    font-size: 18px;
+  }
+:host /deep/ .ui-datatable tfoot td.ui-state-default {
+    background: #285C83;
+    font-weight: bold;
+    color: white;
+}
+:host /deep/ .ui-column-title{
+    color: white;
+}
+:host /deep/  .ui-cell-data {
+    color: black;
+}
+.asset-image {
+    margin-left: 10px;
+}
+.column-width {
+    width: auto;
+}
+@media all and (max-width: 800px) {
+    .column-width {
+        width: 160px;
+    }
+}
+.dashboard-content-block {
+    width: 50%;
+    float: left;
+}
+@media all and (max-width: 850px) {
+    table {
+        width: 100% !important;
+    }
+    .dashboard-content-block {
+        width: 100%;
+    }
+}
+:host /deep/ .ui-table tfoot{
+    background: #285C83;
+    font-weight: bold;
+    color: white;
+}

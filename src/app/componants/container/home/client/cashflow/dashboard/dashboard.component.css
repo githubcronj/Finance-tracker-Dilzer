@@ -1,0 +1,45 @@
+.sub-heading-holders {
+    font-family: 'roboto-light';
+    padding: 3px 0rem;
+    width: 100%;
+    font-size: 13px;
+    margin-top: 20px;
+    clear: both;
+}
+table {
+    clear: both;
+}
+@media all and (max-width: 850px) {
+    table {
+        width: 100% !important;
+    }
+}
+.button-color {
+    border-color: #285C83;
+    background-color: #285C83;
+    color: #fff;
+}
+.dashboard-content-block {
+    width: 50%;
+    float: left;
+}
+@media all and (max-width: 850px) {
+    table {
+        width: 100% !important;
+    }
+    .dashboard-content-block {
+        width: 100%;
+    }
+}
+:host /deep/ .ui-table tfoot{
+    background: #285C83;
+    font-weight: bold;
+    color: white;
+}
+.center-align-div {
+    margin-top: 80px;
+    margin-right: auto;
+    margin-left: auto;
+    font-weight: bold;
+    font-size: 18px;
+  }

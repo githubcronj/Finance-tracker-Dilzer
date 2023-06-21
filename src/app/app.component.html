@@ -1,0 +1,10 @@
+<div [ngClass] = "{'em-complete-content-holder': true}">
+    <router-outlet></router-outlet>
+</div>
+<app-footer></app-footer>
+<div class="float" *ngIf="isVisibleScrollToTop">
+    <button class='btn float-button-color btn-floating' role="button" (click)="goToTop()">
+        <span class="fa fa-arrow-up"></span>
+    </button>
+</div>
+<app-loading #loading *ngIf = "isLoading"></app-loading>

@@ -1,0 +1,28 @@
+.stage-change-holder {
+    padding: 15px 2rem;
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #e5e5e5;
+}
+.stage-change-holder .form-control {
+    width: 20%;
+}
+.em-title-block {
+    font-size: 13px;
+    color: #4c4c4c;
+}
+.em-result-block {
+    color: #4c4c4c;
+}
+.em-result-block::first-letter {
+    text-transform: capitalize;
+}
+.floating-button {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    padding: 20px;
+    background: white;
+    text-align: center;
+    border-top: 1px solid gainsboro
+}

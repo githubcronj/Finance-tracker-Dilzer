@@ -1,0 +1,74 @@
+.stage-change-holder {
+    padding: 15px 2rem;
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #e5e5e5;
+}
+.stage-change-holder .form-control {
+    width: 20%;
+}
+.em-title-block {
+    font-size: 13px;
+    color: #4c4c4c;
+}
+.em-result-block {
+    color: #4c4c4c;
+}
+.em-result-block::first-letter {
+    text-transform: capitalize;
+}
+div {
+    display: inline-block;
+    width: 100%;
+}
+.user-details-head {
+    display: flex;
+    align-items: center;
+}
+.family-member-name {
+    font-size: 15px;
+}
+.family-member-relation {
+    font-size: 13px;
+    font-family: 'roboto-light';
+}
+.padding-left-20 {
+    padding-left: 20px !important;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+.box-design
+{
+    width:380px;
+    border: 1px solid gainsboro;
+    position:relative;
+    margin-top: 20px;
+}
+.heading-holder {
+    font-family: 'roboto-light';
+    padding: 3px 0rem;
+    width: 100%;
+    border-bottom: 1px solid #cdcdcd;
+    font-size: 13px;
+}
+.align-to-right {
+    text-align: right;
+    padding-right: 10px;
+}
+.center-position {
+    display: flex;
+    justify-content: center;
+}
+.cursor-position {
+    text-align: right;
+    width: 100px;
+}
+.result-text {
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+}

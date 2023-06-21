@@ -1,0 +1,23 @@
+<div class="container">
+    <ul class="timeline">
+        <li>
+            <div class="tldate">Activity Log</div>
+        </li>
+        
+        <li class="timeline-inverted" *ngFor="let activityLog of data.activityLog">
+            <div class="tl-circ"></div>
+            <div class="timeline-panel">
+                <div class="tl-heading">
+                    <h4>{{stageUtils.getStagesText(activityLog.description)}}</h4>
+                    <p>
+                        <small class="text-muted">
+                            <i class="glyphicon glyphicon-time"></i>at {{activityLog.dateOfActivity | date: 'h:mm a'}}</small>
+                    </p>
+                </div>
+                <div class="tl-body">
+                    <p>On: {{activityLog.dateOfActivity | date: 'dd/MM/yyyy'}}</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

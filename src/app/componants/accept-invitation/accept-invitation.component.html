@@ -1,0 +1,107 @@
+<div [ngClass]="{'activate-block': true }">
+  <div [ngClass]="{ 'margin-top-40px': true}">
+    <div [ngClass]="{'d-flex': true, 'justify-content-center': true, 'logo-block': true}">
+      <img src="{{resources.logo}}" alt="Logo" routerLink="" />
+    </div>
+    <div [ngClass]="{'col-md-6': true, 'col-lg-4': true, 'col-sm-12': true, 'col-12': true, 'col': true, 'activate-center-align': true}">
+      <div *ngIf="acceptInvitationSuccessStatus" [ngClass]="{'alert': true, 'alert-success': true}" role="alert">
+        {{acceptInvitationMessage}}
+      </div>
+      <div *ngIf="acceptInvitationErrorStatus" [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+        {{acceptInvitationMessage}}
+      </div>
+      <div [ngClass]="{'card': true}">
+        <div [ngClass]="{'card-block': true}">
+          <form [formGroup]="acceptInvitationForm">
+            <h4 [ngClass]="{'margin-bottom-20px': true}">{{acceptInvitationTranslations.headText}}</h4>
+            <div [ngClass]="{'form-group': true, 'padding-0': true}">
+              <div class="row">
+                <div class="col col-3 padding-0">
+                  <select name="countryCode" id="" placeholder="ISD" [ngClass]="{'form-control': true, 'padding-0': true}" [(ngModel)]="userData.ph.isd"
+                    formControlName="dilzerIsdControl">  
+                     <option value = "{{countriesCodes.dial_code}}"  *ngFor="let countriesCodes of countriesCode"> {{countriesCodes.code + "  " + countriesCodes.dial_code}}</option>
+                  </select>
+                </div>
+                <div class="col col-9 padding-0">
+                  <input type="text" placeholder="{{acceptInvitationTranslations.mobileText}}" id="dilzerMobilePhoneNumber" [ngClass]="{'form-control': true}"
+                    formControlName="mobileControl" [(ngModel)]="userData.ph.ph" />
+                </div>
+              </div>
+              <div *ngIf="acceptInvitationForm.controls['mobileControl'].hasError('required') && acceptInvitationForm.controls['mobileControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{acceptInvitationTranslations.emptyMobileNumberError}}
+              </div>
+              <div *ngIf="acceptInvitationForm.controls['mobileControl'].hasError('pattern') && acceptInvitationForm.controls['mobileControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{acceptInvitationTranslations.validMobileNumberError}}
+              </div>
+            </div>
+
+            <div [ngClass]="{'form-group': true}">
+              <label>{{acceptInvitationTranslations.dobText}}</label>
+              <p-calendar formControlName="dobControl" placeholder="{{acceptInvitationTranslations.dobPlaceholder}}" [(ngModel)]="userData.dob"
+                [monthNavigator]="true" [yearNavigator]="true"  [readonlyInput]="true" inputStyleClass="form-control" dateFormat="dd-mm-yy" [maxDate]="maxDate"
+                yearRange="1931:{{maxDate.getFullYear()}}"></p-calendar>
+              <div *ngIf="acceptInvitationForm.controls['dobControl'].hasError('required') && acceptInvitationForm.controls['dobControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{acceptInvitationTranslations.emptyDobError}}
+              </div>
+            </div>
+
+            <div [ngClass]="{'form-group': true}">
+              <label>{{acceptInvitationTranslations.dojText}}</label>
+              <p-calendar formControlName="dojControl" placeholder="{{acceptInvitationTranslations.dojPlaceholder}}" [(ngModel)]="userData.doj"
+                [monthNavigator]="true" [readonlyInput]="true" [yearNavigator]="true" inputStyleClass="form-control" dateFormat="dd-mm-yy" yearRange="1930:2017"></p-calendar>
+              <div *ngIf="acceptInvitationForm.controls['dojControl'].hasError('required') && acceptInvitationForm.controls['dojControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{acceptInvitationTranslations.emptyDojError}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <input type="text" placeholder="{{acceptInvitationTranslations.qualificationText}}" id="qualification" [ngClass]="{'form-control': true}"
+                formControlName="qualificationControl" [(ngModel)]="userData.qualification" />
+              <div *ngIf="acceptInvitationForm.controls['qualificationControl'].hasError('required') && acceptInvitationForm.controls['qualificationControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{acceptInvitationTranslations.emptyQualificationError}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <input type="text" placeholder="{{acceptInvitationTranslations.certificationText}}" id="certification" [ngClass]="{'form-control': true}"
+                formControlName="certificationControl" [(ngModel)]="userData.certification" />
+              <div *ngIf="acceptInvitationForm.controls['certificationControl'].hasError('required') && acceptInvitationForm.controls['certificationControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{acceptInvitationTranslations.emptyCertificationError}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <input type="password" placeholder="{{acceptInvitationTranslations.passwordText}}" id="dilzerPassword" [ngClass]="{'form-control': true}"
+                formControlName="passwordControl" [(ngModel)]="userData.password" />
+              <div *ngIf="acceptInvitationForm.controls['passwordControl'].hasError('required') && acceptInvitationForm.controls['passwordControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{acceptInvitationTranslations.emptyPasswordError}}
+              </div>
+              <div *ngIf="acceptInvitationForm.controls['passwordControl'].hasError('pattern') && acceptInvitationForm.controls['passwordControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{acceptInvitationTranslations.minlengthPasswordError}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}">
+              <input type="password" placeholder="{{acceptInvitationTranslations.confirmPasswordText}}" id="dilzerConfirmPassword" [ngClass]="{'form-control': true}"
+                formControlName="confirmPasswordControl" [(ngModel)]="userData.confirmPassword" />
+              <div *ngIf="acceptInvitationForm.controls['confirmPasswordControl'].hasError('required') && acceptInvitationForm.controls['confirmPasswordControl'].touched"
+                [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                {{acceptInvitationTranslations.passwordMismatch}}
+              </div>
+            </div>
+            <div [ngClass]="{'form-group': true}" *ngIf="!loadingOnSubmit">
+              <button type="button" [ngClass]="{'btn': true, 'btn-background': true, 'form-control': true, 'active': true} " (click)="acceptInvitation()">{{acceptInvitationTranslations.buttonText}}</button>
+            </div>
+            <div [ngClass]="{'form-group': true}" *ngIf="loadingOnSubmit">
+              <button type="button" [ngClass]="{'btn': true, 'btn-background': true, 'form-control': true, 'active': true, 'd-flex': true, 'justify-content-center': true}"><div class="loader"></div></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

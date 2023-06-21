@@ -1,0 +1,117 @@
+<app-navbar #navbar></app-navbar>
+<div *ngIf="!isErrorOccured" [ngClass]="{'margin-top-40px': true}">
+  <div *ngIf="asset" [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'assets-center-align': true}">
+    <div [ngClass]="{'card': true}">
+      <div [ngClass]="{'card-block': true}">
+        <form [formGroup]="assetDetailForm">
+          <h4 [ngClass]="{'margin-bottom-20px': true}">{{blockHeader}}</h4>
+          <div [ngClass]="{'form-group': true}">
+            <label>Name Of The Asset</label>
+            <div class="input-group margin-0">
+              <input type="text" formControlName="assetNameControl" class="form-control" [(ngModel)]="asset.name" />
+              <span class="percentage" pTooltip={{tooltipTranslations.assetNameHelpTip}} tooltipPosition="right">
+                <img src="{{resources.infoIcon}}" class="infoIcon" />
+              </span>
+            </div>
+            <div *ngIf="assetDetailForm.controls['assetNameControl'].hasError('required') && assetDetailForm.controls['assetNameControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter asset name.
+            </div>
+          </div>
+          <div [ngClass]="{'form-group': true}">
+            <label>Current Valuation Amount / Cash Value</label>
+            <div class="input-group margin-0">
+              <input type="number" min="0" formControlName="currentValuationControl" class="form-control" [(ngModel)]="asset.currentValuation"
+              />
+              <span class="percentage">₹</span>
+              <span class="percentage" pTooltip={{tooltipTranslations.currentValuationHelpTip}} tooltipPosition="right">
+                <img src="{{resources.infoIcon}}" class="infoIcon" />
+              </span>
+            </div>
+            <div *ngIf="assetDetailForm.controls['currentValuationControl'].hasError('required') && assetDetailForm.controls['currentValuationControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter valuation amount.
+            </div>
+          </div>
+          <div [ngClass]="{'form-group': true}">
+            <label>Owner Of This Resource</label>
+            <div class="input-group margin-0">
+              <select (change)="didChangeOwner($event)" formControlName="assetOwnerControl" class="form-control" [(ngModel)]="ownerName">
+                <option *ngFor="let assetowner of ownerOfResourceList" value="{{assetowner.key}}">
+                  {{assetowner.value}}
+                </option>
+              </select>
+              <span class="percentage" pTooltip={{tooltipTranslations.assetOwnerHelpTip}} tooltipPosition="right">
+                <img src="{{resources.infoIcon}}" class="infoIcon" />
+              </span>
+            </div>
+            <div *ngIf="assetDetailForm.controls['assetOwnerControl'].hasError('required') && assetDetailForm.controls['assetOwnerControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please select the owner.
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>Choose Asset Type</label>
+            <div class="input-group margin-0">
+              <select (change)="didChangeAssetType()" formControlName="assetTypeControl" class="form-control" [(ngModel)]="asset.kind">
+                <option *ngFor="let assettype of assetTypeList" value="{{assettype.key}}">
+                  {{assettype.value}}
+                </option>
+              </select>
+              <span class="percentage" pTooltip={{tooltipTranslations.assetTypeHelpTip}} tooltipPosition="right">
+                <img src="{{resources.infoIcon}}" class="infoIcon" />
+              </span>
+            </div>
+            <div *ngIf="assetDetailForm.controls['assetTypeControl'].hasError('required') && assetDetailForm.controls['assetTypeControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please choose the asset type.
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>Choose Asset Sub Type</label>
+            <div class="input-group margin-0">
+              <select formControlName="assetSubTypeControl" class="form-control" [(ngModel)]="asset.assetSubtype" (change)="showAddOtherSubAssetField()">
+                <option *ngFor="let assetsubtype of assetSubTypeList" value="{{assetsubtype.key}}">
+                  {{assetsubtype.value}}
+                </option>
+              </select>
+              <span class="percentage" pTooltip={{tooltipTranslations.assetSubTypeHelpTip}} tooltipPosition="right">
+                <img src="{{resources.infoIcon}}" class="infoIcon" />
+              </span>
+            </div>
+            <div *ngIf="assetDetailForm.controls['assetSubTypeControl'].hasError('required') && assetDetailForm.controls['assetSubTypeControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please choose the sub-asset type.
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}" *ngIf="showHideOtherTextBox || asset.description">
+            <label>Describe The Asset</label>
+            <input type="text" formControlName="otherAssetSubTypeControl" class="form-control" [(ngModel)]="asset.description" />
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>Maturity Date</label>
+            <p-calendar formControlName="maturityDateControl" inputStyleClass="form-control" placeholder="dd/mm/yyyy" [monthNavigator]="true"
+              [yearNavigator]="true"  [readonlyInput]="true" dateFormat="dd/mm/yy" yearRange="1900:2200" [(ngModel)]="asset.maturityDate"></p-calendar>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <button *ngIf="!loadingOnSubmit" (click)="createBasicAsset()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">{{addUpdateAssetButtonText}}</button>
+            <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'justify-content-center': true}">
+              <div class="loader"></div>
+            </button>
+            <button (click)="routeBack()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

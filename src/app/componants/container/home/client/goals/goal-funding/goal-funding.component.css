@@ -1,0 +1,134 @@
+.asset-card-dimesion {
+    height: 115px;
+    width: 250px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.goal-card-dimesion {
+    height: 100px;
+    width: calc(100% - 320px);
+    margin: 10px
+}
+
+.margin {
+    margin: 10px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.margin-progress-bar {
+    margin: 0px 10px 10px 10px;
+}
+
+:host /deep/ .ui-progressbar .ui-progressbar-value {
+    border: 1px solid gainsboro;
+}
+.progress-zero {
+    justify-content: center;
+}
+.progress-zero div {
+    background: #eceeef;
+    color: black;
+}
+
+.floating-button {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    padding: 20px;
+    background: white;
+    text-align: center;
+    border-top: 1px solid gainsboro;
+    z-index: 5;
+    left: 0px;
+  }
+.goal-funding-added {
+    border: 0px;
+    outline: 0;
+}
+.goal-funding-added-link {
+    border: 0px;
+    outline: 0;
+    cursor: pointer;
+    color: #2390ff;
+}
+.multi-goal-funded {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #2390ff;
+}
+.delete-goal-funded {    
+    height: auto;
+    line-height: 1;
+    padding: 0px;
+    width: 50px;
+    text-align: right;
+    float: right;
+    background: white !important;
+}
+.mapped-asset {
+    background: #76da76;
+}
+.horizontal-vertical-align-center {
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+.asset-content-block {
+    width: 200px;
+    height: 100%;
+    justify-content: flex-start;
+}
+.asset-img-block {
+    width: 50px;
+    height: 100%;
+}
+.asset-sub-type {
+    font-size: 12px;
+}
+.available-from-date {
+    position: absolute;
+    bottom: 0px;
+    right: 5px;
+    font-size: 10px;
+}
+.card-body {
+    margin-top: -10px;
+}
+.text-wrap-ellipsis {
+    white-space: nowrap;
+    width: 175px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.font-size-12px {
+    font-size: 12px;
+}
+.background-green {
+    background-color: green !important;
+}
+.background-red {
+    background-color: #e45a5a !important;
+}
+.background-orange {
+    background-color: orange !important;
+}
+.divider {
+    border-left: 1px solid gainsboro;
+}
+
+.center-align-div {
+    margin-top: 80px;
+    margin-right: auto;
+    margin-left: auto;
+    font-weight: bold;
+    font-size: 18px;
+  }

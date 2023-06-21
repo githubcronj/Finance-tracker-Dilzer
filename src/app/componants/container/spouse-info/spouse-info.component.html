@@ -1,0 +1,306 @@
+<app-navbar #navbar></app-navbar>
+
+<div *ngIf="!isErrorOccured">
+
+<div class="body-container-padding">
+    <form [formGroup]="spouseInfo" *ngIf="editUserDetails && editUserDetails.spouse">
+            <div class="row container-fluid background-f9f9f9">
+                <div class="col-md-6">
+                    <div class="card-block">
+                        <div class="form-group">
+                            <strong>Name
+                                <span class="padding-5">*</span>
+                            </strong>
+                            <div class="row">
+                                <div class="col col-2 padding-0">
+                                    <select [ngClass]="{'form-control': true}" formControlName="title" [(ngModel)]="editUserDetails.spouse.title">
+                                        <option *ngFor="let title of titleOptions" value="{{title.key}}">
+                                            {{title.value}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="spouseInfo.controls['title'].hasError('required') && spouseInfo.controls['title'].touched" [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}"
+                                        role="alert">
+                                        {{informationTranslations.emptyError}}
+                                    </div>
+                                </div>
+                                <div class="col col-5">
+                                    <input [ngClass]="{'form-control': true}" type="text" placeholder="{{informationTranslations.firstNameText}}" formControlName="firstName"
+                                        [(ngModel)]="editUserDetails.spouse.name.firstName" />
+                                    <div *ngIf="spouseInfo.controls['firstName'].hasError('required') && spouseInfo.controls['firstName'].touched" [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}"
+                                        role="alert">
+                                        {{informationTranslations.emptyError}}
+                                    </div>
+                                </div>
+                                <div class="col col-5 padding-0">
+                                    <input type="text" [ngClass]="{'form-control': true}" placeholder="{{informationTranslations.lastNameText}}" formControlName="lastName"
+                                        [(ngModel)]="editUserDetails.spouse.name.lastName" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <strong>Date Of Birth</strong>
+                            <p-calendar formControlName="dob" placeholder="{{informationTranslations.dobText}}" [(ngModel)]="editUserDetails.spouse.dob"
+                                [monthNavigator]="true" [readonlyInput]="true" [yearNavigator]="true" inputStyleClass="form-control" dateFormat="dd/mm/yy"
+                                [maxDate]="maxDate" yearRange="1931:{{maxDate.getFullYear()}}"></p-calendar>
+                            <div *ngIf="spouseInfo.controls['dob'].hasError('required') && spouseInfo.controls['dob'].touched" [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}"
+                                role="alert">
+                                {{informationTranslations.emptyError}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <strong>{{informationTranslations.genderText}}</strong>
+                            <select [ngClass]="{'form-control': true}" formControlName="gender" [(ngModel)]="editUserDetails.spouse.gender">
+                                <option *ngFor="let gender of genderOptions" value="{{gender.key}}">
+                                    {{gender.value}}
+                                </option>
+                            </select>
+                            <div *ngIf="spouseInfo.controls['gender'].hasError('required') && spouseInfo.controls['gender'].touched" [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}"
+                                role="alert">
+                                {{informationTranslations.emptyError}}
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <strong>{{informationTranslations.residencialStatusText}}</strong>
+                            <select [ngClass]="{'form-control': true}" formControlName="residentialStatus" [(ngModel)]="editUserDetails.spouse.residentialStatus">
+                                <option *ngFor="let residentialStatus of residentialStatusOptions" value = {{residentialStatus.key}}>
+                                    {{residentialStatus.value}}
+                                </option>
+                            </select>
+                            <div *ngIf="spouseInfo.controls['residentialStatus'].hasError('required') && spouseInfo.controls['residentialStatus'].touched"
+                                [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}" role="alert">
+                                {{informationTranslations.emptyError}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <strong>Mobile Number</strong>
+                            <div class="row">
+                                <div class="col col-3 padding-0">
+                                    <select name="countryCode" id="" placeholder="ISD" [ngClass]="{'form-control': true, 'padding-0': true}" [(ngModel)]="editUserDetails.spouse.ph.isd"
+                                        formControlName="dilzerIsdControl">
+                                        <option value="{{countriesCodes.dial_code}}" *ngFor="let countriesCodes of countriesCode"> {{countriesCodes.code + " " + countriesCodes.dial_code}}</option>
+                                    </select>
+                                </div>
+                                <div class="col col-9">
+                                    <input type="text" [ngClass]="{'form-control': true}" placeholder="Mobile Number" formControlName="mobile_number" [(ngModel)]="editUserDetails.spouse.ph.ph"
+                                    />
+                                    <div *ngIf="spouseInfo.controls['mobile_number'].hasError('required') && spouseInfo.controls['mobile_number'].touched" [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}"
+                                        role="alert">
+                                        {{informationTranslations.emptyError}}
+                                    </div>
+                                    <div *ngIf="spouseInfo.controls['mobile_number'].hasError('pattern') && spouseInfo.controls['mobile_number'].touched" [ngClass]="{'alert': true, 'alert-danger': true}"
+                                        role="alert">
+                                        {{informationTranslations.notValidMobileNumberError}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <strong>Email</strong>
+                            <input type="text" [ngClass]="{'form-control': true}" placeholder="Email" formControlName="email" [(ngModel)]="editUserDetails.spouse.email"
+                            />
+                            <div *ngIf="spouseInfo.controls['email'].hasError('required') && spouseInfo.controls['email'].touched" [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}"
+                                role="alert">
+                                {{informationTranslations.emptyError}}
+                            </div>
+                            <div *ngIf="spouseInfo.controls['email'].hasError('pattern') && spouseInfo.controls['email'].touched" [ngClass]="{'alert': true, 'alert-danger': true}"
+                                role="alert">
+                                {{informationTranslations.notValidEmailError}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <strong>{{informationTranslations.employerNameText}}</strong>
+                            <input type="text" [ngClass]="{'form-control': true}" placeholder="{{informationTranslations.employerNameText}}" formControlName="employerName"
+                                [(ngModel)]="editUserDetails.spouse.employerName" />
+                        </div>
+
+                        <div class="form-group">
+                            <strong>Company Address</strong>
+
+                            <div class="card">
+                                <div class="card-block">
+                                    <div [ngClass]="{'form-group': true}">
+                                        <input type="text" [ngClass]="{'form-control': true}" placeholder="{{informationTranslations.addressLine1Text}}" formControlName="companyAddressLine1"
+                                            [(ngModel)]="editUserDetails.spouse.companyAddress.addressLine1" />
+                                    </div>
+                                    <div [ngClass]="{'form-group': true}">
+                                        <input type="text" [ngClass]="{'form-control': true}" placeholder="{{informationTranslations.addressLine2Text}}" formControlName="companyAddressLine2"
+                                            [(ngModel)]="editUserDetails.spouse.companyAddress.addressLine2" />
+                                    </div>
+                                    <div [ngClass]="{'form-group': true}">
+                                        <input type="text" [ngClass]="{'form-control': true}" placeholder="{{informationTranslations.localityText}}" formControlName="companyLocality"
+                                            [(ngModel)]="editUserDetails.spouse.companyAddress.locality" />
+                                    </div>
+                                    <div [ngClass]="{'form-group': true}">
+                                        <input type="text" [ngClass]="{'form-control': true}" placeholder="{{informationTranslations.cityText}}" formControlName="companyCity"
+                                            [(ngModel)]="editUserDetails.spouse.companyAddress.city" />
+                                    </div>
+                                    <div [ngClass]="{'form-group': true}">
+                                        <input type="text" [ngClass]="{'form-control': true}" placeholder="{{informationTranslations.pinCodeText}}" formControlName="companyPincode"
+                                            [(ngModel)]="editUserDetails.spouse.companyAddress.pincode" />
+                                    </div>
+                                    <div [ngClass]="{'form-group': true}">
+                                        <input type="text" [ngClass]="{'form-control': true}" placeholder="{{informationTranslations.countryText}}" formControlName="companyCountry"
+                                            [(ngModel)]="editUserDetails.spouse.companyAddress.country" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div>
+                        <div class="card-block">
+                            <div class="form-group">
+                                <strong>Retirement Age</strong>
+                                <select [ngClass]="{'form-control': true}" placeholder="Retirement Age" formControlName="retirementAge" [(ngModel)]="editUserDetails.spouse.retirementAge">
+                                    <option *ngFor="let age of ageList" value="{{age}}">
+                                        {{age}}
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <div class="form-group">
+                                <strong>Life Expectancy</strong>
+                                <select [ngClass]="{'form-control': true}" placeholder="Life Expectancy" formControlName="lifeExpectancy" formControlName="lifeExpectancy"
+                                    [(ngModel)]="editUserDetails.spouse.lifeExpectancy">
+                                    <option *ngFor="let age of ageList" value="{{age}}">
+                                        {{age}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <strong>{{informationTranslations.panText}}</strong>
+                                <input type="text" [ngClass]="{'form-control': true}" placeholder="{{informationTranslations.panPlaceHolderText}}" formControlName="pan"
+                                    [(ngModel)]="editUserDetails.spouse.pan" />
+                                <div *ngIf="spouseInfo.controls['pan'].hasError('required') && spouseInfo.controls['pan'].touched" [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}"
+                                    role="alert">
+                                    {{informationTranslations.emptyError}}
+                                </div>
+
+                                <div *ngIf="spouseInfo.controls['pan'].hasError('pattern') && spouseInfo.controls['pan'].touched" [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}"
+                                    role="alert">
+                                    {{informationTranslations.validPanCardNumberError}}
+                                </div>
+                            </div>
+
+                            <strong>Health Details</strong>
+
+                            <div [ngClass]="{'card': true, 'margin-left':false, 'margin-right':false}">
+
+                                <div [ngClass]="{'card-block': true}">
+                                    <div [ngClass]="{'form-group': true}">
+
+                                        <strong>{{healthHistoryTranslations.generalHealthConditionText}}</strong>
+                                        <select [ngClass]="{'form-control': true}" [(ngModel)]="editUserDetails.spouse.healthHistory.generalHealthCondition" formControlName="generalHealthCondition">
+                                            <option *ngFor="let type of generalHealthConditionTypes" value="{{type.key}}">
+                                                {{type.value}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div [ngClass]="{'form-group': true}">
+                                        <strong>{{healthHistoryTranslations.regularHealthCheckupText}}</strong>
+                                        <input type="text" [ngClass]="{'form-control': true}" formControlName="checkupInterval" [(ngModel)]="editUserDetails.spouse.healthHistory.checkupInterval"
+                                        />
+                                    </div>
+
+                                    <div [ngClass]="{'form-group': true}">
+                                        <strong>{{healthHistoryTranslations.healthParametersInNormalRangeText}}</strong>
+                                        <div>
+                                            <input type="radio" [value]="true" (change)="showHideParametersSection()" formControlName="isHeathParamertersNormal" [(ngModel)]="editUserDetails.spouse.healthHistory.isHeathParamertersNormal"
+                                                name="isHeathParamertersNormal" />
+                                            <span class="margin-left-10px">Yes</span>
+                                            <input class="margin-left-10px" type="radio" (change)="showHideParametersSection()" formControlName="isHeathParamertersNormal" [(ngModel)]="editUserDetails.spouse.healthHistory.isHeathParamertersNormal"
+                                                [value]="false" name="isHeathParamertersNormal" />
+                                            <span class="margin-left-10px">No</span>
+                                        </div>
+                                    </div>
+
+                                    <div [ngClass]="{'form-group': true}" *ngIf="!editUserDetails.spouse.healthHistory.isHeathParamertersNormal">
+                                        <strong>{{healthHistoryTranslations.healthParameterOutOfRangeText}}</strong>
+                                        <input type="text" formControlName="parametersOutOfRange" [ngClass]="{'form-control': true}" [(ngModel)]="editUserDetails.spouse.healthHistory.parametersOutOfRange"
+                                        />
+                                        <div *ngIf="spouseInfo.controls['parametersOutOfRange'].hasError('required') && spouseInfo.controls['parametersOutOfRange'].touched"
+                                            [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}" role="alert">
+                                            {{informationTranslations.emptyError}}
+                                        </div>
+                                    </div>
+
+                                    <div [ngClass]="{'form-group': true}">
+                                        <strong>{{healthHistoryTranslations.chronicHealthConditionText}}</strong>
+                                        <div>
+                                            <input type="radio" [value]="true" (change)="showHideChronicDurationSection()" [(ngModel)]="editUserDetails.spouse.healthHistory.isChronicHeathConditionNormal" name="isChronicHeathConditionNormal"
+                                                formControlName="isChronicHeathConditionNormal" />
+                                            <span class="margin-left-10px">Yes</span>
+                                            <input class="margin-left-10px" type="radio" (change)="showHideChronicDurationSection()" formControlName="isChronicHeathConditionNormal" [(ngModel)]="editUserDetails.spouse.healthHistory.isChronicHeathConditionNormal"
+                                                [value]="false" name="isChronicHeathConditionNormal" />
+                                            <span class="margin-left-10px">No</span>
+                                        </div>
+                                    </div>
+
+                                    <div [ngClass]="{'form-group': true}" *ngIf="editUserDetails.spouse.healthHistory.isChronicHeathConditionNormal">
+                                        <strong>{{healthHistoryTranslations.chronicHealthConditionDurationText}}</strong>
+                                        <input type="text" [ngClass]="{'form-control': true}" formControlName="chronicHeathConditionDuration" [(ngModel)]="editUserDetails.spouse.healthHistory.chronicHeathConditionDuration"
+                                        />
+                                        <div *ngIf="spouseInfo.controls['chronicHeathConditionDuration'].hasError('required') && spouseInfo.controls['chronicHeathConditionDuration'].touched"
+                                            [ngClass]="{'alert': true, 'alert-danger': true, 'col-12': true}" role="alert">
+                                            {{informationTranslations.emptyError}}
+                                        </div>
+                                    </div>
+
+                                    <div [ngClass]="{'form-group': true}" *ngIf="editUserDetails.spouse.healthHistory.isChronicHeathConditionNormal">
+                                        <strong>{{healthHistoryTranslations.regularMedicationText}}</strong>
+                                        <div>
+                                            <input type="radio" [value]="true" [(ngModel)]="editUserDetails.spouse.healthHistory.isChronicHeathConditionMedicated" name="isChronicHeathConditionMedicated"
+                                                formControlName="isChronicHeathConditionMedicated" />
+                                            <span class="margin-left-10px">Yes</span>
+                                            <input class="margin-left-10px" type="radio" formControlName="isChronicHeathConditionMedicated" [(ngModel)]="editUserDetails.spouse.healthHistory.isChronicHeathConditionMedicated"
+                                                [value]="false" name="isChronicHeathConditionMedicated" />
+                                            <span class="margin-left-10px">No</span>
+                                        </div>
+                                    </div>
+
+                                    <div [ngClass]="{'form-group': true}">
+                                        <strong>{{healthHistoryTranslations.otherHealthConcernText}}</strong>
+                                        <input type="text" [ngClass]="{'form-control': true}" formControlName="otherHealthCondition" [(ngModel)]="editUserDetails.spouse.healthHistory.otherHealthCondition"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+
+<div class="floating-button">
+    <button (click)="routeBack()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+    <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">
+        <div class="loader"></div>
+    </button>
+    <button type="button" *ngIf="!loadingOnSubmit" (click)="saveSpouseInformation()" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">Save</button>
+    <button type="button" (click)="deleteSpouseInformation()"  [ngClass]="{'btn': true, 'btn-danger': true, 'active': true}">Delete</button>
+</div>
+
+
+</div>
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+

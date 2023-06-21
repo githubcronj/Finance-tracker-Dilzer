@@ -1,0 +1,11 @@
+.sidesubmenu {
+    float: left;
+    max-width: 170px;
+    min-width: 140px;
+    margin-right: 20px;
+}
+.content-block {
+    float: left;
+    width: calc(100% - 190px);
+    overflow: hidden;
+}

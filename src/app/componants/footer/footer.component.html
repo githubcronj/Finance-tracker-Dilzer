@@ -1,0 +1,26 @@
+<!-- <div [ngClass]="{'d-flex': true, 'justify-content-center': true, 'float-left': true, 'width-100per': true, 'margin-top-20px': true, 'margin-bottom-20px': true}">
+  <div>
+    <div [ngClass]="{'margin-bottom-10px': true}">
+      <small [ngClass]="{'margin-right-30px': true, 'footerColor': true}">
+        {{footerTranslations.conditionsOfUseText}}
+      </small>
+      <small [ngClass]="{'margin-right-30px': true, 'footerColor': true}">
+        {{footerTranslations.privacyNoticeText}}
+      </small>
+      <small [ngClass]="{'footerColor': true}">
+        {{footerTranslations.helpText}}
+      </small>
+    </div>
+    <div [ngClass]="{'text-center': true}">
+      <small>
+        {{footerTranslations.year}}, 
+        <a href = "{{footerTranslations.belongsToLink}}"  [ngClass]="{'footerColor': true}"target = "_blank">{{footerTranslations.belongsToText}}</a>
+      </small>
+    </div>
+  </div> -->
+  <footer [ngClass] = "{'footer-block': true}">
+      <small>
+        Copyright © {{footerTranslations.year}} 
+        <a href = "{{footerTranslations.belongsToLink}}"  [ngClass]="{'footerColor': true}"target = "_blank">{{footerTranslations.belongsToText}}</a> All rights reserved.
+      </small>
+  </footer>

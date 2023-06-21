@@ -1,0 +1,434 @@
+<div class="margin-top-30px" *ngIf="!userDetails">
+    <div class="">
+        <div class="card-block">
+            <h3 class="card-title text-center">{{errorMessage}}</h3>
+            <div class="text-center">
+                <a (click)="getUserDetails()">Click Here</a> to try again.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!isErrorOccured">
+    <div class="sub-heading-holder float-left width-100per user-details-head">
+        <div class="float-left headings">Personal Information </div>
+        <span class="float-right">
+            <button type="button" routerLink="/auth/client/{{clientId}}/personal-info" class="btn btn-link">Edit</button>
+        </span>
+    </div>
+    <table class="displayTableData" width="100%">
+        <colgroup>
+            <col width="25%">
+            <col width="75%">
+        </colgroup>
+        <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Name</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(userDetails && userDetails.name) ? userDetails.name.fullName() : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Date Of Birth</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(userDetails && userDetails.dob) ? (userDetails.displayDOB()) : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Gender</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(userDetails && userDetails.gender != null) ? (userDetails.displayGender()) : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Client Type</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(userDetails && userDetails.clientType != null) ? (userDetails.displayClientType()) : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Marital Status</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(userDetails && userDetails.maritalStatus != null) ? (userDetails.displayMaritalStatus()) : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Residential Status</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(userDetails && userDetails.residentialStatus != null) ? (userDetails.displayResidentialStatus()) : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <div>
+                        <label class="em-title-block margin-left-10px">Present Address</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block" [innerHtml]="(userDetails && userDetails.residentialAddress) ? userDetails.residentialAddress.displayFullAddress() : ''">
+                        {{(userDetails && userDetails.residentialAddress) ? userDetails.residentialAddress.displayFullAddress() : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Landline</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(userDetails && userDetails.landline) ? (userDetails.landline.displayPhoneNumber()) : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Permanent Account Number</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(userDetails && userDetails.pan) ? (userDetails.pan) : ''}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Retirement Age</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(userDetails && userDetails.retirementAge) ? (userDetails.retirementAge)+' years' : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Life Expectancy</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(userDetails && userDetails.lifeExpectancy != null) ? (userDetails.lifeExpectancy)+' years' : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="em-title-block margin-left-10px">Employer Name</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block">
+                        {{(userDetails && userDetails.employerName) ? (userDetails.employerName) : '-'}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <div>
+                        <label class="em-title-block margin-left-10px">Company Address</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block" [innerHtml]="(userDetails && userDetails.companyAddress) ? userDetails.companyAddress.displayFullAddress() : '-'">
+                    </div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td valign="top">
+                    <div>
+                        <label class="em-title-block margin-left-10px">Health History</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="em-result-block result-block" [innerHtml]="(userDetails && userDetails.healthHistory) ? userDetails.healthHistory.displayGeneralHealthCondition() : '-'">
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="userDetails.maritalStatus == maritalStatus.Married">
+        <div class="sub-heading-holder float-left width-100per user-details-head">
+            <div class="float-left headings">Spouse Information </div>
+            <span class="float-right">
+                <button type="button" routerLink="/auth/client/{{clientId}}/spouse-info" class="btn btn-link">Edit</button>
+            </span>
+        </div>
+        <table class="displayTableData" width="100%">
+            <colgroup>
+                <col width="25%">
+                <col width="75%">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Name</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(userDetails && userDetails.spouse && userDetails.spouse.name) ? userDetails.spouse.name.fullName() : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Date Of Birth</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(userDetails && userDetails.spouse && userDetails.spouse.dob) ? (userDetails.spouse.displayDOB()) : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Gender</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(userDetails && userDetails.spouse && userDetails.spouse.gender != null) ? (userDetails.spouse.displayGender()) : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Residential Status</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(userDetails && userDetails.spouse && userDetails.spouse.residentialStatus != null) ? (userDetails.spouse.displayResidentialStatus())
+                            : '-'}}
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Mobile Number</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(userDetails && userDetails.spouse && userDetails.spouse.ph) ? (userDetails.spouse.ph.displayPhoneNumber()) : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Email</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(userDetails && userDetails.spouse && userDetails.spouse.email) ? (userDetails.spouse.email) : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Permanent account Number</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(userDetails && userDetails.spouse && userDetails.spouse.pan) ? (userDetails.spouse.pan) : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Retirement Age</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(userDetails && userDetails.spouse && userDetails.spouse.retirementAge != null) ? (userDetails.spouse.retirementAge)+'
+                            years' : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Life Expectancy</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(userDetails && userDetails.spouse && userDetails.spouse.lifeExpectancy != null) ? (userDetails.spouse.lifeExpectancy)+'
+                            years' : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label class="em-title-block margin-left-10px">Employer Name</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block">
+                            {{(userDetails && userDetails.spouse && userDetails.spouse.employerName) ? (userDetails.spouse.employerName) : '-'}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <div>
+                            <label class="em-title-block margin-left-10px">Company Address</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block" [innerHtml]="(userDetails && userDetails.spouse && userDetails.spouse.companyAddress) ? userDetails.spouse.companyAddress.displayFullAddress() : ''">
+
+                        </div>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td valign="top">
+                        <div>
+                            <label class="em-title-block margin-left-10px">Health History</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="em-result-block result-block" [innerHtml]="(userDetails && userDetails.spouse && userDetails.spouse.healthHistory) ? userDetails.spouse.healthHistory.displayGeneralHealthCondition() : ''">
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="sub-heading-holder float-left width-100per user-details-head">
+        <div class="float-left headings">Family Members Information </div>
+        <span class="float-right">
+            <button type="button" routerLink="/auth/client/{{clientId}}/family-member" class="btn btn-link">Add Family Member</button>
+        </span>
+    </div>
+    <table *ngIf="userDetails && userDetails.familyMembers && userDetails.familyMembers.length > 0" class="displayTableData"
+        width="100%">
+        <tbody >
+            <tr *ngFor="let familymember of userDetails.familyMembers">
+                <td width="70%">
+                    <div class="family-member-name margin-left-10px">{{familymember.name.firstName}}</div>
+                    <div class="family-member-relation margin-left-10px">{{familymember.displayRelationShip()? '(' + familymember.displayRelationShip() +')' : ''}}</div>
+                    <div class="padding-left-20">
+                        <table width="100%">
+                            <colgroup>
+                                <col width="34%">
+                                <col width="76%">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <label class="em-title-block">Date Of Birth</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="em-result-block result-block">
+                                            {{(familymember && familymember.dob) ? familymember.displayDOB() : '-'}}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">
+                                        <div>
+                                            <label class="em-title-block">Health History</label>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="em-result-block result-block" [innerHtml]="(familymember && familymember.healthHistory) ? familymember.healthHistory.displayGeneralHealthCondition() : ''">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <label class="em-title-block">Life Expectancy</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="em-result-block result-block">
+                                            {{(familymember && familymember.lifeExpectancy) ? familymember.lifeExpectancy+' years' : '-'}}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+                <td width="30%" class="text-right">
+                    <button type="button" (click)="editRelation(familymember._id)" class="btn btn-link">Edit</button>
+                    <span class="float-right margin-left-10px">
+                        <button type="button" (click)="deleteRelation(familymember._id)" class="btn btn-link">Delete</button>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

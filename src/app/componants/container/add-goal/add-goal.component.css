@@ -1,0 +1,36 @@
+.logo-block {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.assets-center-align {
+    margin-right: auto;
+    margin-left: auto;
+}
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #d5d5d5;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #d5d5d5;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #d5d5d5;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #d5d5d5;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+.percentage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+}
+
+input::-webkit-calendar-picker-indicator {
+    opacity: 100;
+}

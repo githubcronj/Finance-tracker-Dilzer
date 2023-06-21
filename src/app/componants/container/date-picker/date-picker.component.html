@@ -1,0 +1,113 @@
+<div *ngIf="eventDate" [ngClass]="{'card': true, 'col-12' : true}">
+
+
+    <form [formGroup]='datePickerFormGroup'>
+
+
+        <br *ngIf="isCommittedRepaymentEndDate">
+
+        <div class='form-inline row' *ngIf="isCommittedRepaymentEndDate">
+
+            <input type="radio" [value]="4" formControlName="typeControl" [(ngModel)]="eventDate.type">
+            <span class="margin-left-10px margin-right-10px width-300px">When the loan finishes</span>
+
+        </div>
+
+        <br>
+
+        <div class='form-inline row'>
+
+            <input type="radio" [value]="0" formControlName="typeControl" [(ngModel)]="eventDate.type">
+
+            <span class="margin-left-10px margin-right-10px width-35px">In</span>
+            <div>
+                <p-calendar inputStyleClass="form-control width-150px" placeholder="dd/mm/yyyy" formControlName="dateControl" [selectOtherMonths]="true"
+                    [(ngModel)]="eventDate.date" [readonlyInput]="true" dateFormat="dd/mm/yy" yearRange="1930:2080" [monthNavigator]="true"
+                    [yearNavigator]="true" [minDate]="minDate" (onSelect)="setMaxDate()">
+                </p-calendar>
+                <div *ngIf="datePickerFormGroup.controls['dateControl'].hasError('required') && datePickerFormGroup.controls['dateControl'].touched"
+                    [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                    This field cannot be empty.
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class='form-inline row'>
+
+            <input type="radio" [value]="1" formControlName="typeControl" [(ngModel)]="eventDate.type" (change)="changeDate()">
+
+            <span class="margin-left-10px margin-right-10px width-35px">When </span>
+
+            <select class="form-control width-150px" formControlName="ageMemberControl" [(ngModel)]="eventDate.ageMember" (change)="changeDate()">
+                <option *ngFor="let member of allMembers" value="{{member.key}}">
+                    {{member.value}}
+                </option>
+            </select>
+
+
+            <span class="margin-left-10px margin-right-10px width-50px">is </span>
+            <select [ngClass]="{'form-control': true}" formControlName="ageControl" [(ngModel)]="eventDate.age" class=" width-200px" (change)="changeDate()">
+                <option *ngFor="let age of ageList" value="{{age}}">
+                    {{age}}
+                </option>
+            </select>
+
+
+        </div>
+
+        <br>
+
+        <div class='form-inline row'>
+
+            <input type="radio" [value]="2" formControlName="typeControl" [(ngModel)]="eventDate.type"  (change)="changeDate()">
+
+            <span class="margin-left-10px margin-right-10px width-35px">When </span>
+
+            <select class="form-control width-150px" formControlName="retirementMemberControl" [(ngModel)]="eventDate.retirementMember" (change)="changeDate()">
+                <option *ngFor="let member of clientAndSpouse" value="{{member.key}}">
+                    {{member.value}}
+                </option>
+            </select>
+
+
+            <span class="margin-left-10px margin-right-10px width-50px">reaches </span>
+            <select [ngClass]="{'form-control': true}" formControlName="retirementControl" [(ngModel)]="eventDate.retirementIndex" class=" width-200px" (change)="changeDate()">
+                <option *ngFor="let option of retirementList" value="{{option.key}}">
+                    {{option.value}}
+                </option>
+            </select>
+
+        </div>
+
+        <br>
+
+        <div class='form-inline row'>
+
+            <input type="radio" [value]="3" formControlName="typeControl" [(ngModel)]="eventDate.type"  (change)="changeDate()">
+
+            <span class="margin-left-10px margin-right-10px width-35px">When </span>
+
+            <select class="form-control width-150px" formControlName="expiryMemberControl" [(ngModel)]="eventDate.expiryMember" (change)="changeDate()">
+                <option *ngFor="let member of clientAndSpouse" value="{{member.key}}">
+                    {{member.value}}
+                </option>
+            </select>
+
+
+            <span class="margin-left-10px margin-right-10px width-50px">reaches </span>
+            <select [ngClass]="{'form-control': true}" formControlName="expiryControl" [(ngModel)]="eventDate.expiryIndex" class=" width-200px"  (change)="changeDate()">
+                <option *ngFor="let option of expiryList" value="{{option.key}}">
+                    {{option.value}}
+                </option>
+            </select>
+
+        </div>
+
+        <br>
+
+
+    </form>
+
+</div>

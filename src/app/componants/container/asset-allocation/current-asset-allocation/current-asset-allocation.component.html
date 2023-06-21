@@ -1,0 +1,53 @@
+<app-navbar #navbar></app-navbar>
+
+<div *ngIf="!isErrorOccured" [ngClass]="{'margin-top-40px': true, 'float-left': true, 'width-100per': true}">
+  <div [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'assets-center-align': true}">
+    <div [ngClass]="{'card': true}">
+      <div [ngClass]="{'card-block': true}">
+        <form [formGroup]='assetAllocationForm'>
+
+          <div [ngClass]="{'form-group': true}">
+
+            <div [ngClass]="{'form-group': true}">
+              <label>Type</label>
+              <select formControlName="assetAllocationTypeControl" class="form-control" (change)="didSelectAssetAllocationType($event)"
+                [(ngModel)]="assetAllocation.allocationType">
+                <option *ngFor="let allocationType of assetAllocationTypes" value="{{allocationType.key}}">{{allocationType.value}}</option>
+              </select>
+            </div>
+
+            <div *ngIf="showAssetClassSetting">
+              <label class="col-10 padding-0 title">Select Asset Class</label>
+              <div>
+                <select formControlName="assetClassRateControl" class="form-control" [(ngModel)]="assetAllocation.displayString" (change)="didSelectAssetClassType($event)">
+                  <option *ngFor="let assetClassSetting of assetClassSettings" value="{{assetClassSetting.assetSubType}}">{{assetTypeUtils.getAssetSubTypeName(assetClassSetting.assetType,assetClassSetting.assetSubType)}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div *ngIf="assetAllocation.allocationType == rateOptions.SetByAssetClass" [ngClass]="{'form-group': true}">
+              <label>Rate</label>
+              <div class="input-group margin-0">
+                <input type="number" formControlName="rateControl" class="form-control" [(ngModel)]="assetAllocation.rate" [readonly]="true"
+                />
+                <span class="percentage">%</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <button *ngIf="!loadingOnSubmit" type="button" class='btn btn-primary' (click)="didClickAddCurrentAssetAlllocation()"> Save </button>
+            <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'justify-content-center': true}">
+              <div class="loader"></div>
+            </button>
+            <button (click)="didClickCancelButton()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>

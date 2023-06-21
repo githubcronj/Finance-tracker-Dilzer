@@ -1,0 +1,106 @@
+<app-navbar #navbar></app-navbar>
+<div *ngIf="!isErrorOccured" [ngClass]="{'margin-top-40px': true, 'float-left': true, 'width-100per': true}">
+    <div [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'assets-center-align': true}">
+        <div [ngClass]="{'card': true}">
+            <div [ngClass]="{'card-block': true}">
+                <form [formGroup]="loanStageForm">
+                    <div [ngClass]="{'form-group': true}">
+                        <label>As On</label>
+                        <p-calendar [monthNavigator]="true" [yearNavigator]="true" inputStyleClass="form-control" placeholder="dd/mm/yyyy" formControlName="dateControl"
+                            [selectOtherMonths]="true" [readonlyInput]="true" dateFormat="dd/mm/yy" yearRange="1930:2080" [(ngModel)]="liability.currentStage.date"></p-calendar>
+                        <div *ngIf="loanStageForm.controls['dateControl'].hasError('required') && loanStageForm.controls['dateControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Please enter loan taken date.
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Current Outstanding Amount</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [(ngModel)]="liability.currentStage.outStandingAmount" formControlName="outStandingAmountControl" class="form-control" (keyup)="didClickLoanOutstandingField()"
+                            />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{translations.outstandingAmountHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                  
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Current EMI Paid (Monthly)</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [(ngModel)]="liability.currentStage.emiPaid" formControlName="emiPaidControl" class="form-control" (keyup)="autoCalculateTotalLoanDue()"
+                            />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{translations.outstandingAmountHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                 
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Number Of Repayments Paid (in Months)</label>
+                        <div class="input-group margin-0">
+                        <input type="number" [readonly]="true" [(ngModel)]="liability.currentStage.numberOfRepaymentsPaid" min="0" formControlName="repaymentsPaidControl" class="form-control"
+                        />
+                        <span class="percentage" pTooltip={{translations.outstandingAmountHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                                          
+                        </div>
+                        <div *ngIf="loanStageForm.controls['repaymentsPaidControl'].hasError('required') && loanStageForm.controls['repaymentsPaidControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Please enter number of repayments paid.
+                        </div>
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Number Of Repayments Payable (in Months)</label>
+                        <div class="input-group margin-0">
+                        <input type="number" [readonly]="true" [(ngModel)]="liability.currentStage.numberOfRepaymentsPayable" min="0" formControlName="repaymentsPayableControl"
+                            class="form-control" />
+                        <span class="percentage" pTooltip={{translations.outstandingAmountHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                                          
+                        </div>
+                        <div *ngIf="loanStageForm.controls['repaymentsPayableControl'].hasError('required') && loanStageForm.controls['repaymentsPayableControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Please enter number of repayments payable.
+                        </div>
+                    </div>
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Remaining Interest Payable</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" [(ngModel)]="liability.currentStage.remainingInterestPayable" min="0" formControlName="remainingInterestPayableControl" (keyup)="didClickRemainingInterestPayableField()"
+                                class="form-control" />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{translations.outstandingAmountHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                                                                      
+                        </div>
+                        <div *ngIf="loanStageForm.controls['remainingInterestPayableControl'].hasError('required') && loanStageForm.controls['remainingInterestPayableControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Please enter remaining interest payable.
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>Total Loan Amount Due</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" [(ngModel)]="liability.currentStage.remainingPrincipalPayable" min="0" formControlName="remainingPrincipalPayableControl"
+                                class="form-control" />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{translations.outstandingAmountHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                                         
+                        </div>
+                        <div *ngIf="loanStageForm.controls['remainingPrincipalPayableControl'].hasError('required') && loanStageForm.controls['remainingPrincipalPayableControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            Please enter remaining principal payable.
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <button *ngIf="!loadingOnSubmit" (click)="didClickAddLoanStage()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">{{addLoanStageButtonText}}</button>
+                        <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'justify-content-center': true}">
+                            <div class="loader"></div>
+                        </button>
+                        <button (click)="routeBack()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+

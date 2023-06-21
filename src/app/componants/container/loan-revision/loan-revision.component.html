@@ -1,0 +1,108 @@
+<app-navbar #navbar></app-navbar>
+
+<div *ngIf="!isErrorOccured" [ngClass]="{'margin-top-40px': true, 'float-left': true, 'width-100per': true}">
+    <div [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'assets-center-align': true}">
+        <div [ngClass]="{'card': true}">
+            <div [ngClass]="{'card-block': true}">
+                <form [formGroup]='loanRevisionForm'>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{loanRevisionTranslation.percentageIncreaseText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [(ngModel)]="liability.loanRevision.increasePercentage" (keyup)="didChangePercentage()" formControlName="percentageIncreaseControl"
+                                class="form-control" />
+                            <span class="percentage">%</span>
+                            <span class="percentage" pTooltip={{loanRevisionTranslation.increaseInEmiPercentHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                                              
+                        </div>
+                        <div *ngIf="loanRevisionForm.controls['percentageIncreaseControl'].hasError('required') && loanRevisionForm.controls['percentageIncreaseControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{loanRevisionTranslation.emptyErrorText}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{loanRevisionTranslation.increasedEMIText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" [(ngModel)]="liability.loanRevision.emiPaidAfterRevision" (keyup)="didChangeEmiAmount()" formControlName="increasedEMIControl"
+                                class="form-control" />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{loanRevisionTranslation.increaseInEmiPercentHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                        
+                        </div>
+                        <div *ngIf="loanRevisionForm.controls['increasedEMIControl'].hasError('required') && loanRevisionForm.controls['increasedEMIControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{loanRevisionTranslation.emptyErrorText}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{loanRevisionTranslation.revisedRateText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [(ngModel)]="liability.loanRevision.revisedRate" (keyup)="didChangeRate()" formControlName="rateOfInterestControl"
+                                class="form-control" />
+                            <span class="percentage">% per annum</span>
+                            <span class="percentage" pTooltip={{loanRevisionTranslation.increaseInEmiPercentHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                            
+                        </div>
+                        <div *ngIf="loanRevisionForm.controls['rateOfInterestControl'].hasError('required') && loanRevisionForm.controls['rateOfInterestControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{loanRevisionTranslation.emptyErrorText}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{loanRevisionTranslation.repaymentsPayableAfterRevisionText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" [(ngModel)]="liability.loanRevision.numberOfRepaymentsPayableAfterRevision" formControlName="repaymentsPayableAfterRevisionControl"
+                                class="form-control" />
+                                <span class="percentage" pTooltip={{loanRevisionTranslation.increaseInEmiPercentHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                
+                        </div>
+                        <div *ngIf="loanRevisionForm.controls['repaymentsPayableAfterRevisionControl'].hasError('required') && loanRevisionForm.controls['repaymentsPayableAfterRevisionControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{loanRevisionTranslation.emptyErrorText}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{loanRevisionTranslation.interestPayableAfterRevisionText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" [(ngModel)]="liability.loanRevision.remainingInterestPayableAfterRevision" formControlName="interestPayableAfterRevisionControl"
+                                class="form-control" />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{loanRevisionTranslation.increaseInEmiPercentHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                                                                          
+                        </div>
+                        <div *ngIf="loanRevisionForm.controls['interestPayableAfterRevisionControl'].hasError('required') && loanRevisionForm.controls['interestPayableAfterRevisionControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{loanRevisionTranslation.emptyErrorText}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <label>{{loanRevisionTranslation.savingsAfterRevisionText}}</label>
+                        <div class="input-group margin-0">
+                            <input type="number" [readonly]="true" [(ngModel)]="liability.loanRevision.savingsAfterRevision" formControlName="savingsAfterRevisionControl" class="form-control"
+                            />
+                            <span class="percentage">₹</span>
+                            <span class="percentage" pTooltip={{loanRevisionTranslation.increaseInEmiPercentHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                                                                                                                                                          
+                        </div>
+                        <div *ngIf="loanRevisionForm.controls['savingsAfterRevisionControl'].hasError('required') && loanRevisionForm.controls['savingsAfterRevisionControl'].touched"
+                            [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+                            {{loanRevisionTranslation.emptyErrorText}}
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'form-group': true}">
+                        <button *ngIf="!loadingOnSubmit" type="button" class='btn btn-primary' (click)="didAddLoanRevision()">{{addUpdateLoanRevisionButtonText}}</button>
+                        <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'justify-content-center': true}">
+                            <div class="loader"></div>
+                        </button>
+                        <button (click)="didClickCancelButton()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+

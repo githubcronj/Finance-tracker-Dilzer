@@ -1,0 +1,48 @@
+<div *ngIf="!isErrorOccured" class="float-left width-100per">
+    <div class="dashboard-content-block">
+        <div class="margin-top-30px">
+            <h4 class="margin-bottom-10px">Dashboard</h4>
+            <p-table *ngIf="dashboardViewModel.totalNetworth != 0" [scrollable]="true" [value]="dashboardViewModel.networthItems" scrollHeight="250px"
+                id="paginationColor">
+                <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                    <tr>
+                        <td>
+                            <div>
+                                <label (click)="navigate(rowIndex)">{{item.title}}</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <label>{{item.percentage}}</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <label>{{item.amountDisplayString}}</label>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr>
+                        <td>Networth :</td>
+                        <td></td>
+
+                        <td>{{ dashboardViewModel.totalNetworthDisplayString }}</td>
+
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    <div class="dashboard-content-block margin-top-20px">
+        <p-chart *ngIf="dashboardViewModel.networthItems && dashboardViewModel.totalNetworth != 0" type="pie" [data]="dashboardViewModel.graphData"
+            [options]="dashboardViewModel.graphData.options" (onDataSelect)="navigate($event.element._index)"></p-chart>
+    </div>
+    <div *ngIf="dashboardViewModel.totalNetworth == 0" [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'center-align-div': true}">
+        No Assets and Liabilities are added yet.
+    </div>
+</div>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryßEmitter)="retry()"> </app-error-handling>

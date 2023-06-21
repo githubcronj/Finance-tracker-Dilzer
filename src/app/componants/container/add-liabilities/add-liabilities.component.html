@@ -1,0 +1,191 @@
+<app-navbar #navbar></app-navbar>
+<div *ngIf="!isErrorOccured" [ngClass]="{'margin-top-40px': true}">
+  <div *ngIf="liability" [ngClass]="{'col-md-6': true, 'col-12': true, 'col-lg-4': true, 'col-sm-6': true, 'assets-center-align': true}">
+    <div [ngClass]="{'card': true}">
+      <div [ngClass]="{'card-block': true}">
+        <form [formGroup]="liabilityDetailForm">
+          <h4 [ngClass]="{'margin-bottom-20px': true}">{{blockHeader}}</h4>
+          <div [ngClass]="{'form-group': true}">
+            <label>Name Of The Liability</label>
+            <div class="input-group margin-0">
+            <input type="text" formControlName="liabilityNameControl" class="form-control" [(ngModel)]="liability.name" />
+            <span class="percentage" pTooltip={{tooltipTranslations.liabilityNameHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>            
+          </div>
+          </div>
+          <div [ngClass]="{'form-group': true}">
+            <label>Choose Liability Type</label>
+            <div class="input-group margin-0">
+            <select formControlName="liabilityTypeControl" class="form-control" [(ngModel)]="liability.kind">
+              <option *ngFor="let liabilityType of liabilityTypeList" value="{{liabilityType.key}}">
+                {{liabilityType.value}}
+              </option>
+            </select>
+            <span class="percentage" pTooltip={{tooltipTranslations.liabilityTypeHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>
+          </div>
+            <div *ngIf="liabilityDetailForm.controls['liabilityTypeControl'].hasError('required') && liabilityDetailForm.controls['liabilityTypeControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter liability type.
+            </div>
+          </div>
+          <div [ngClass]="{'form-group': true}">
+            <label>Associated Asset</label>
+            <div class="input-group margin-0">
+            <select formControlName="associatedAssetControl" class="form-control" [(ngModel)]="liability.associatedAsset">
+              <option value="">None</option>
+              <option *ngFor="let associatedAsset of associatedAssetList" value="{{associatedAsset.key}}">
+                {{associatedAsset.value}}
+              </option>
+            </select>
+            <span class="percentage" pTooltip={{tooltipTranslations.associatedAssetHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>
+          </div>
+          </div>
+          <div [ngClass]="{'form-group': true}">
+            <label>Owner Of This Liability</label>
+            <div class="input-group margin-0">
+            <select formControlName="liabilityOwnerControl" (change)="didChangeOwner($event)" class="form-control" [(ngModel)]="ownerName">
+              <option *ngFor="let owner of ownerOfResourceList" value="{{owner.key}}">
+                {{owner.value}}
+              </option>
+            </select>
+            <span class="percentage" pTooltip={{tooltipTranslations.liabilityOwnerHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>
+          </div>
+            <div *ngIf="liabilityDetailForm.controls['liabilityOwnerControl'].hasError('required') && liabilityDetailForm.controls['liabilityOwnerControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter owner name.
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>Original Loan Amount</label>
+            <div class="input-group margin-0">
+              <input type="number" (change)="didChangeLoanAmount($event)" formControlName="loanAmountControl" class="form-control" [(ngModel)]="liability.loanAmount"
+              />
+              <span class="percentage">₹</span>
+              <span class="percentage" pTooltip={{tooltipTranslations.originalLoanAmountHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                          
+              
+            </div>
+            <div *ngIf="liabilityDetailForm.controls['loanAmountControl'].hasError('required') && liabilityDetailForm.controls['loanAmountControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter loan amount.
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>Rate Of Interest</label>
+            <div class="input-group margin-0">
+              <input type="number" (change)="didChangeRateOfInterest($event)" formControlName="rateOfInterestControl" class="form-control"
+                [(ngModel)]="liability.rateOfInterest" />
+              <span class="percentage">% per annum</span>
+            </div>
+            <div *ngIf="liabilityDetailForm.controls['rateOfInterestControl'].hasError('required') && liabilityDetailForm.controls['rateOfInterestControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter Rate of Interest.
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>Loan Taken Date</label>
+            <p-calendar [monthNavigator]="true" [yearNavigator]="true" inputStyleClass="form-control" placeholder="dd/mm/yyyy" formControlName="loanTakenDateControl"
+              [selectOtherMonths]="true" (onSelect)="didSelectLoanStartDateTextBox($event)" [readonlyInput]="true" dateFormat="dd/mm/yy"
+              yearRange="1930:2080" [(ngModel)]="liability.loanTakenDate"></p-calendar>
+            <div *ngIf="liabilityDetailForm.controls['loanTakenDateControl'].hasError('required') && liabilityDetailForm.controls['loanTakenDateControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter loan taken date.
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>Loan End Date</label>
+            <p-calendar [monthNavigator]="true" [minDate]="liability.loanTakenDate" [yearNavigator]="true" inputStyleClass="form-control"
+              placeholder="dd/mm/yyyy" formControlName="loanEndDateControl" [selectOtherMonths]="true" (onSelect)="didSelectLoanEndDateTextBox($event)"
+              [readonlyInput]="true" dateFormat="dd/mm/yy" yearRange="1930:2080" [(ngModel)]="liability.loadEndDate"></p-calendar>
+            <div *ngIf="liabilityDetailForm.controls['loanEndDateControl'].hasError('required') && liabilityDetailForm.controls['loanEndDateControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter loan end date.
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>Tenure (In years)</label>
+            <div class="input-group margin-0">
+            <input type="text" [readonly]="true" formControlName="tenureControl" class="form-control" [(ngModel)]="liability.tenureDisplayString"
+            />
+            <span class="percentage" pTooltip={{tooltipTranslations.tenureHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                          
+            </div>
+            <div *ngIf="liabilityDetailForm.controls['tenureControl'].hasError('required') && liabilityDetailForm.controls['tenureControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter tenure.
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>Total Interest Paid during Original Tenure</label>
+            <div class="input-group margin-0">
+              <input type="number" [readonly]="true" formControlName="totalInterestPaidControl" class="form-control" [(ngModel)]="liability.totalInterestPaid"
+              />
+              <span class="percentage">₹</span>
+            </div>
+            <div *ngIf="liabilityDetailForm.controls['totalInterestPaidControl'].hasError('required') && liabilityDetailForm.controls['totalInterestPaidControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter total interest paid.
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>Total Principal + Interest Paid with Original Tenure</label>
+            <div class="input-group margin-0">
+              <input type="number" [readonly]="true" formControlName="totalAmountPaidControl" class="form-control" [(ngModel)]="liability.totalAmountPaid"
+              />
+              <span class="percentage">₹</span>
+            </div>
+            <div *ngIf="liabilityDetailForm.controls['totalAmountPaidControl'].hasError('required') && liabilityDetailForm.controls['totalAmountPaidControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter total amount paid.
+            </div>
+          </div>
+
+            <div [ngClass]="{'form-group': true}">
+            <label>Pre-Closure Percentage</label>
+            <div class="input-group margin-0">
+              <input type="number" formControlName="preclosurePercentageControl" class="form-control"
+                [(ngModel)]="liability.preclosurePercentage" />
+              <span class="percentage">% per annum</span>
+            </div>
+            <div *ngIf="liabilityDetailForm.controls['preclosurePercentageControl'].hasError('required') && liabilityDetailForm.controls['preclosurePercentageControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter Pre-Closure Percentage.
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <label>Current Loan Outstanding Amount</label>
+            <div class="input-group margin-0">
+              <input type="number" formControlName="outstandingAmountControl" class="form-control" [(ngModel)]="liability.currentStage.outStandingAmount"
+              />
+              <span class="percentage">₹</span>
+              <span class="percentage" pTooltip={{tooltipTranslations.currentLoanOutstandingAmountHelpTip}} tooltipPosition="right"><img src="{{resources.infoIcon}}" class="infoIcon"/></span>                          
+            </div>
+            <div *ngIf="liabilityDetailForm.controls['outstandingAmountControl'].hasError('required') && liabilityDetailForm.controls['outstandingAmountControl'].touched"
+              [ngClass]="{'alert': true, 'alert-danger': true}" role="alert">
+              Please enter current outstanding amount.
+            </div>
+          </div>
+
+          <div [ngClass]="{'form-group': true}">
+            <button *ngIf="!loadingOnSubmit" (click)="createBasicLiability()" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true}">{{addUpdateLiabilityButtonText}}</button>
+            <button *ngIf="loadingOnSubmit" type="button" [ngClass]="{'btn': true, 'btn-primary': true, 'active': true, 'justify-content-center': true}">
+              <div class="loader"></div>
+            </button>
+            <button (click)="routeBack()" type="button" [ngClass]="{'btn': true, 'btn-secondary': true, 'active': true}">Back</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<app-error-handling #errorHandling *ngIf="isErrorOccured" (retryEmitter)="retry()"> </app-error-handling>
+
